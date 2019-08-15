@@ -2,7 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { green, yellow, red } from "@material-ui/core/colors";
 import Icon from "@material-ui/core/Icon";
- 
+
 const useStyles = makeStyles({
     redAvatar: {
         margin: 10,
@@ -20,7 +20,6 @@ const useStyles = makeStyles({
  
 export default function IconAvatars() {
 const classes = useStyles();
- 
     return (
         <div>
         <Icon className={classes.redAvatar} onClick="">place</Icon>
