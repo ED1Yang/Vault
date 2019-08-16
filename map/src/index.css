@@ -4,6 +4,10 @@ body {
   /* font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace; */
 }
 
+.container {
+  display: flex; /* or inline-flex */
+}
+
 #main-id {
   position:relative;
 }
@@ -12,17 +16,16 @@ body {
   position:absolute;
 }
 
-/* 
-star width: 24, height:28
-width-12, height-14
-*/
+.currentPoints{
+  position:absolute;
+}
+
 #point-id {
   position:absolute;
   /* left: 100px; */
   /* top: 100px; */
   /* background-position: center; */
 } 
-
 
 /* for dev only, could be delete in the future version */
 #coordinate {
