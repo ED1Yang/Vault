@@ -5,27 +5,27 @@ body {
 }
 
 #main-id {
-  /* z-index: 1; */
   position:relative;
 }
 
 #picture-id {
-  /* z-index: 2; */
   position:absolute;
 }
 
+/* 
+star width: 24, height:28
+width-12, height-14
+*/
 #point-id {
-  /* z-index: 3;   */
   position:absolute;
-  left:100px;
-  top:100px;
+  /* left: 100px; */
+  /* top: 100px; */
   /* background-position: center; */
 } 
 
 
 /* for dev only, could be delete in the future version */
 #coordinate {
-  /* z-index: 4; */
   position: relative;;
 } 
 
