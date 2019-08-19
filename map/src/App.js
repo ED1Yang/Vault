@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {Icon} from '@material-ui/core';
+import { Icon } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 
@@ -36,120 +36,114 @@ function Icons() {
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.setPosition=this.setPosition.bind(this);
-    this.handleOnClick=this.handleOnClick.bind(this);
-    this.changetoEditMode=this.changetoEditMode.bind(this);
-    this.changetoReviewMode=this.changetoReviewMode.bind(this);
-    this.changeMode=this.changeMode.bind(this);
-    this.insertMarker=this.insertMarker.bind(this);
-    this.addNewPoint=this.addNewPoint.bind(this);
+    this.setPosition = this.setPosition.bind(this);
+    this.handleOnClick = this.handleOnClick.bind(this);
+    this.changetoEditMode = this.changetoEditMode.bind(this);
+    this.changetoReviewMode = this.changetoReviewMode.bind(this);
+    this.insertMarker = this.insertMarker.bind(this);
+    this.addNewPoint = this.addNewPoint.bind(this);
     this.state = {
-      x: "", 
-      y: "", 
-      isEditMode:false,
-      points:[],
+      x: "",
+      y: "",
+      isEditMode: false,
+      points: [],
       message: "",
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     fetch('http://localhost/api/client/2')
-    .then((r)=>r.json()
-    .then((data)=>{
-      this.setState({ points: data });
-    }));
+      .then((r) => r.json()
+        .then((data) => {
+          this.setState({ points: data });
+        }));
   }
 
   displayPoints = () => {
-    return this.state.points.map((point) =>{
-      return this.showOnePoint(point.ID,point.Lat,point.Lon);
-      }
+    return this.state.points.map((point) => {
+      return this.showOnePoint(point.ID, point.Lat, point.Lon);
+    }
     )
   }
 
-  showOnePoint(key,x,y){
-    let pointStyle={
-      color:'green',
+  showOnePoint(key, x, y) {
+    let pointStyle = {
+      color: 'green',
       // set center of the point to the coordinates
-      left:x-12+'px',
-      top:y-12+'px',
+      left: x - 12 + 'px',
+      top: y - 12 + 'px',
     }
-    return(
-        <div className='currentPoints' style={pointStyle} key={key}>
-            <Icons /> 
-        </div>
-        
-    )}
+    return (
+      <div className='currentPoints' style={pointStyle} key={key}>
+        <Icons />
+      </div>
+
+    )
+  }
 
   setPosition(e) {
-    if(this.state.isEditMode)
+    if (this.state.isEditMode)
       this.setState({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY });
   }
 
-  handleOnClick(){
-    return console.log('X is: '+this.state.x+' Y is: '+this.state.y);
+  handleOnClick() {
+    return console.log('X is: ' + this.state.x + ' Y is: ' + this.state.y);
   }
 
-  editPoint(){
+  editPoint() {
 
   }
 
-  insertMarker(){
-    if(this.state.isEditMode && this.state.x!==""){
-    const markerStyle={
-      color:'goldenrod',
-      // set center of the point to the coordinates
-      left:this.state.x-12+'px',
-      top:this.state.y-12+'px',
-    }
-    // const classes = useStyles();
-      return <div id='point-id' style={markerStyle} onClick={this.editPoint}>      
+  insertMarker() {
+    if (this.state.isEditMode && this.state.x !== "") {
+      const markerStyle = {
+        color: 'goldenrod',
+        // set center of the point to the coordinates
+        left: this.state.x - 12 + 'px',
+        top: this.state.y - 12 + 'px',
+      }
+      // const classes = useStyles();
+      return <div id='point-id' style={markerStyle} onClick={this.editPoint}>
         <Icons />
       </div>
     }
   }
 
-  changetoEditMode(){
-    this.setState({isEditMode: true});
+  changetoEditMode() {
+    this.setState({ isEditMode: true });
     console.log('changed to edit');
   }
 
-  changetoReviewMode(){
-    this.setState({isEditMode: false});
-    this.setState({x: "", y: ""})
+  changetoReviewMode() {
+    this.setState({ isEditMode: false });
+    this.setState({ x: "", y: "" });
     console.log('changed to review');
   }
 
-  changeMode(mode){
-    this.setState({isEditMode: mode});
-    mode=true? console.log('changed to edit mode'):console.log('changed to review mode');
-    
-  }
 
-  addNewPoint(){
-      let formData = new FormData();
-      formData.append('latitude', this.state.x)
-      formData.append('longitude', this.state.y)
-      formData.append('information', 'test')
-      formData.append('user_id', '2')
-      fetch('http://localhost/api/client',
-      {method: 'POST', body: formData}
-      )
+  addNewPoint() {
+    let formData = new FormData();
+    formData.append('latitude', this.state.x);
+    formData.append('longitude', this.state.y);
+    formData.append('information', 'test');
+    formData.append('user_id', '2');
+    fetch('http://localhost/api/client',
+      { method: 'POST', body: formData }
+    )
       .then(res => res.json())
       .then(data => {
-      this.setState({message: data.Message})
-      alert(this.state.message)
-      window.location.reload(false)
+        this.setState({ message: data.Message })
+        alert(this.state.message)
+        window.location.reload(false)
       })
       .catch(e => console.log('error:', e))
+  }
 
-      }
-  
-      render() {
-    return <div  className="container" >
+  render() {
+    return <div className="container" >
       <div id='main-id'>
         <div id='picture-id'>
-          <img 
+          <img
             alt='map'
             src="https://www.livebakerblock.com/wp-content/uploads/2017/07/baker-plan-c1-1600px.png"
             onClick={this.setPosition}
@@ -159,13 +153,13 @@ class App extends React.Component {
         {this.insertMarker()}
       </div>
       <div id='coordinate'>
-        <input type='button' value='Review' onClick={this.changetoReviewMode}/>
-        <input type='button' value='Edit'  onClick={this.changetoEditMode}/>
-        {this.state.isEditMode && <input type='button' value='Submit'  onClick={this.addNewPoint}/>}
-        <h1>{ this.state.x } { this.state.y }</h1>
+        <input type='button' value='Review' onClick={this.changetoReviewMode} />
+        <input type='button' value='Edit' onClick={this.changetoEditMode} />
+        {this.state.isEditMode && <input type='button' value='Submit' onClick={this.addNewPoint} />}
+        <h1>{this.state.x} {this.state.y}</h1>
       </div>
     </div>
-    ;
+      ;
   }
 }
 export default App;
