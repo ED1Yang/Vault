@@ -22,12 +22,8 @@ body {
 
 .marker {
   position:absolute;
-  /* left: 100px; */
-  /* top: 100px; */
-  /* background-position: center; */
 } 
 
-/* for dev only, could be delete in the future version */
 .panel {
   position: relative;;
 } 
