@@ -139,7 +139,8 @@ class App extends React.Component {
       .then(data => {
       this.setState({message: data.Message})
       alert(this.state.message)
-      window.location.reload(false)
+      this.componentDidMount()
+      this.changetoReviewMode()
       })
       .catch(e => console.log('error:', e))
 
@@ -161,7 +162,7 @@ class App extends React.Component {
       <div id='coordinate'>
         <input type='button' value='Review' onClick={this.changetoReviewMode}/>
         <input type='button' value='Edit'  onClick={this.changetoEditMode}/>
-        {this.state.isEditMode && <input type='button' value='Submit'  onClick={this.addNewPoint}/>}
+        {this.state.isEditMode && this.state.x!=="" && <input type='button' value='Submit'  onClick={this.addNewPoint}/>}
         <h1>{ this.state.x } { this.state.y }</h1>
       </div>
     </div>
