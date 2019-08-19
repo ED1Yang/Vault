@@ -2,7 +2,8 @@ import React from 'react';
 import './App.css';
 import {Icon} from '@material-ui/core';
 
-const testPoints = [];
+//for test
+// const testPoints = [];
 
 
 class App extends React.Component {
@@ -12,30 +13,55 @@ class App extends React.Component {
     this.handleOnClick=this.handleOnClick.bind(this);
     this.changetoEditMode=this.changetoEditMode.bind(this);
     this.changetoReviewMode=this.changetoReviewMode.bind(this);
+    this.changeMode=this.changeMode.bind(this);
     this.insertMarker=this.insertMarker.bind(this);
+    this.addNewPoint=this.addNewPoint.bind(this);
     this.state = {
       x: 0, 
       y: 0, 
       isEditMode:false,
+      points:[],
+      message: "",
+      // initialX1:-36.848461,
+      // initialY1:174.764623,
+      // initialX2:,
+      // initialY2:,
     };
   }
 
   componentDidMount(){
-    this.getRandomPoints();
-       
+    fetch('http://localhost/api/client/2')
+    .then((r)=>r.json()
+    .then((data)=>{
+      this.setState({ points: data });
+    }));
   }
 
-  getRandomPoints(){
-    for(let i=0;i<10;i++){
-      testPoints.push({
-        x:Math.floor(Math.random()*(200)+50),
-        y:Math.floor(Math.random()*(200)+50),
-      });
-    }
-    console.log(testPoints)
+  displayPoints = () => {
+    return this.state.points.map((point) =>{
+      return this.showOnePoint(point.ID,point.Lat,point.Lon);
+      }
+    )
   }
+//for test
+  // getRandomPoints(){
+  //   for(let i=0;i<10;i++){
+  //     testPoints.push({
+  //       key:i,
+  //       x:Math.floor(Math.random()*(800)+300),
+  //       y:Math.floor(Math.random()*(800)+300),
+  //     });
+  //   }
+  //   console.log(testPoints)
+  // }
 
-  showOnePoint(x,y){
+    // showAllPoints(){
+    //   return testPoints.map((point)=>(
+    //     this.showOnePoint(point.key,point.x,point.y)
+    //     ))
+    // }
+
+  showOnePoint(key,x,y){
     let pointStyle={
       color:'green',
       // set center of the point to the coordinates
@@ -43,27 +69,10 @@ class App extends React.Component {
       top:y-12+'px',
     }
     return(
-        <div className='currentPoints' style={pointStyle}>
+        <div className='currentPoints' style={pointStyle} key={key}>
             <Icon>fiber_manual_record</Icon>
-            {console.log(pointStyle)}
         </div>
         
-    )}
-
-  showTest(){
-      return (
-        <div>
-          {this.showOnePoint(100,100)}
-          {this.showOnePoint(200,200)}
-        </div>
-      )}
-
-  showAllPoints(){
-    let points="";
-    for(let j=0;j<testPoints.length;j++){
-        points = points + this.showOnePoint(testPoints[j].x,testPoints[j].y)
-    }
-    return (<div>{points}</div>
     )}
 
   setPosition(e) {
@@ -74,6 +83,10 @@ class App extends React.Component {
     return console.log('X is: '+this.state.x+' Y is: '+this.state.y);
   }
 
+  editPoint(){
+
+  }
+
   insertMarker(){
     const markerStyle={
       color:'goldenrod',
@@ -81,23 +94,55 @@ class App extends React.Component {
       left:this.state.x-12+'px',
       top:this.state.y-12+'px',
     }
+    const iconHover={
+      '&:hover': {
+        color: 'red',
+      },
+    }
     // console.log('X is: '+this.state.x+' Y is: '+this.state.y);
     if(this.state.isEditMode){
-    return <div id='point-id' style={markerStyle}>
-      <Icon>fiber_manual_record</Icon>
-    </div>
-  }
+      return <div id='point-id' style={markerStyle} onclick={this.editPoint}>      
+        <Icon className={iconHover}>fiber_manual_record</Icon>
+      </div>
+    }
   }
 
   changetoEditMode(){
     this.setState({isEditMode: true});
-    console.log('changed to edit')
+    console.log('changed to edit');
   }
 
   changetoReviewMode(){
     this.setState({isEditMode: false});
-    console.log('changed to review')
+    console.log('changed to review');
   }
+
+  changeMode(mode){
+    this.setState({isEditMode: mode});
+    mode=true? console.log('changed to edit mode'):console.log('changed to review mode');
+    
+  }
+
+  addNewPoint(){
+    let formData = new FormData();
+    formData.append('latitude', this.state.x)
+    formData.append('longitude', this.state.y)
+    formData.append('information', 'test')
+    formData.append('user_id', '2')
+    fetch('http://localhost/api/client',
+    {method: 'POST', body: formData}
+    )
+    .then(res => res.json())
+    .then(data => {
+    this.setState({message: data.Message})
+    alert(this.state.message)
+    window.location.reload(false)
+    })
+    .catch(e => console.log('error:', e))
+
+    }
+  
+
 
   render() {
     return <div  className="container" >
@@ -109,14 +154,15 @@ class App extends React.Component {
             onClick={this.setPosition}
           />
         </div>
-        {/* {this.showOnePoint(100,200)} */}
-        {this.showAllPoints()}
+        {this.displayPoints()}
         {this.insertMarker()}
       </div>
       <div id='coordinate'>
         <h1>{ this.state.x } { this.state.y }</h1>
+        <h4>{this.state.message.Message}</h4>
         <input type='button' value='Review' onClick={this.changetoReviewMode}/>
         <input type='button' value='Edit'  onClick={this.changetoEditMode}/>
+        <input type='button' value='Submit'  onClick={this.addNewPoint}/>
       </div>
     </div>
     ;
