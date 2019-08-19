@@ -1,10 +1,36 @@
 import React from 'react';
 import './App.css';
 import {Icon} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { red } from '@material-ui/core/colors';
 
-//for test
-// const testPoints = [];
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'flex-end',
+  },
+  icon: {
+    margin: theme.spacing(2),
+  },
+  iconHover: {
+    margin: theme.spacing(2),
+    '&:hover': {
+      color: red[800],
+    },
+  },
+}));
 
+function Icons() {
+  const classes = useStyles();
+  return (
+    <div className={classes.root}>
+      <Icon className={classes.iconHover}>
+        fiber_manual_record
+      </Icon>
+    </div>
+  );
+}
 
 class App extends React.Component {
   constructor(props) {
@@ -22,10 +48,6 @@ class App extends React.Component {
       isEditMode:false,
       points:[],
       message: "",
-      // initialX1:-36.848461,
-      // initialY1:174.764623,
-      // initialX2:,
-      // initialY2:,
     };
   }
 
@@ -43,23 +65,6 @@ class App extends React.Component {
       }
     )
   }
-//for test
-  // getRandomPoints(){
-  //   for(let i=0;i<10;i++){
-  //     testPoints.push({
-  //       key:i,
-  //       x:Math.floor(Math.random()*(800)+300),
-  //       y:Math.floor(Math.random()*(800)+300),
-  //     });
-  //   }
-  //   console.log(testPoints)
-  // }
-
-    // showAllPoints(){
-    //   return testPoints.map((point)=>(
-    //     this.showOnePoint(point.key,point.x,point.y)
-    //     ))
-    // }
 
   showOnePoint(key,x,y){
     let pointStyle={
@@ -70,7 +75,7 @@ class App extends React.Component {
     }
     return(
         <div className='currentPoints' style={pointStyle} key={key}>
-            <Icon>fiber_manual_record</Icon>
+            <Icons /> 
         </div>
         
     )}
@@ -94,15 +99,10 @@ class App extends React.Component {
       left:this.state.x-12+'px',
       top:this.state.y-12+'px',
     }
-    const iconHover={
-      '&:hover': {
-        color: 'red',
-      },
-    }
-    // console.log('X is: '+this.state.x+' Y is: '+this.state.y);
+    // const classes = useStyles();
     if(this.state.isEditMode){
-      return <div id='point-id' style={markerStyle} onclick={this.editPoint}>      
-        <Icon className={iconHover}>fiber_manual_record</Icon>
+      return <div id='point-id' style={markerStyle} onClick={this.editPoint}>      
+        <Icons />
       </div>
     }
   }
@@ -124,27 +124,25 @@ class App extends React.Component {
   }
 
   addNewPoint(){
-    let formData = new FormData();
-    formData.append('latitude', this.state.x)
-    formData.append('longitude', this.state.y)
-    formData.append('information', 'test')
-    formData.append('user_id', '2')
-    fetch('http://localhost/api/client',
-    {method: 'POST', body: formData}
-    )
-    .then(res => res.json())
-    .then(data => {
-    this.setState({message: data.Message})
-    alert(this.state.message)
-    window.location.reload(false)
-    })
-    .catch(e => console.log('error:', e))
+      let formData = new FormData();
+      formData.append('latitude', this.state.x)
+      formData.append('longitude', this.state.y)
+      formData.append('information', 'test')
+      formData.append('user_id', '2')
+      fetch('http://localhost/api/client',
+      {method: 'POST', body: formData}
+      )
+      .then(res => res.json())
+      .then(data => {
+      this.setState({message: data.Message})
+      alert(this.state.message)
+      window.location.reload(false)
+      })
+      .catch(e => console.log('error:', e))
 
-    }
+      }
   
-
-
-  render() {
+      render() {
     return <div  className="container" >
       <div id='main-id'>
         <div id='picture-id'>
