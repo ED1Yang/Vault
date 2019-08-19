@@ -8,11 +8,11 @@ body {
   display: flex; /* or inline-flex */
 }
 
-#main-id {
+.main_div {
   position:relative;
 }
 
-#picture-id {
+.map {
   position:absolute;
 }
 
@@ -20,7 +20,7 @@ body {
   position:absolute;
 }
 
-#point-id {
+.marker {
   position:absolute;
   /* left: 100px; */
   /* top: 100px; */
@@ -28,7 +28,7 @@ body {
 } 
 
 /* for dev only, could be delete in the future version */
-#coordinate {
+.panel {
   position: relative;;
 } 
 

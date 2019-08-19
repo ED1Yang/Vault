@@ -77,7 +77,6 @@ class App extends React.Component {
       <div className='currentPoints' style={pointStyle} key={key}>
         <Icons />
       </div>
-
     )
   }
 
@@ -90,10 +89,6 @@ class App extends React.Component {
     return console.log('X is: ' + this.state.x + ' Y is: ' + this.state.y);
   }
 
-  editPoint() {
-
-  }
-
   insertMarker() {
     if (this.state.isEditMode && this.state.x !== "") {
       const markerStyle = {
@@ -103,7 +98,7 @@ class App extends React.Component {
         top: this.state.y - 12 + 'px',
       }
       // const classes = useStyles();
-      return <div id='point-id' style={markerStyle} onClick={this.editPoint}>
+      return <div className='marker' style={markerStyle}>
         <Icons />
       </div>
     }
@@ -119,7 +114,6 @@ class App extends React.Component {
     this.setState({ x: "", y: "" });
     console.log('changed to review');
   }
-
 
   addNewPoint() {
     let formData = new FormData();
@@ -142,8 +136,8 @@ class App extends React.Component {
 
   render() {
     return <div className="container" >
-      <div id='main-id'>
-        <div id='picture-id'>
+      <div className='main_div'>
+        <div className='map'>
           <img
             alt='map'
             src="https://www.livebakerblock.com/wp-content/uploads/2017/07/baker-plan-c1-1600px.png"
@@ -153,7 +147,7 @@ class App extends React.Component {
         {this.displayPoints()}
         {this.insertMarker()}
       </div>
-      <div id='coordinate'>
+      <div className='panel'>
         <input type='button' value='Review' onClick={this.changetoReviewMode} />
         <input type='button' value='Edit' onClick={this.changetoEditMode} />
         {this.state.isEditMode && this.state.x !== "" && <input type='button' value='Submit' onClick={this.addNewPoint} />}
