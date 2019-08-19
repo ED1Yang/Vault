@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(2),
   },
   iconHover: {
+    cursor: "pointer",
     margin: theme.spacing(2),
     '&:hover': {
       color: red[800],
@@ -158,11 +159,10 @@ class App extends React.Component {
         {this.insertMarker()}
       </div>
       <div id='coordinate'>
-        <h1>{ this.state.x } { this.state.y }</h1>
-        <h4>{this.state.message.Message}</h4>
         <input type='button' value='Review' onClick={this.changetoReviewMode}/>
         <input type='button' value='Edit'  onClick={this.changetoEditMode}/>
         {this.state.isEditMode && <input type='button' value='Submit'  onClick={this.addNewPoint}/>}
+        <h1>{ this.state.x } { this.state.y }</h1>
       </div>
     </div>
     ;
