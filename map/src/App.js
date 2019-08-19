@@ -43,8 +43,8 @@ class App extends React.Component {
     this.insertMarker=this.insertMarker.bind(this);
     this.addNewPoint=this.addNewPoint.bind(this);
     this.state = {
-      x: 0, 
-      y: 0, 
+      x: "", 
+      y: "", 
       isEditMode:false,
       points:[],
       message: "",
@@ -81,7 +81,8 @@ class App extends React.Component {
     )}
 
   setPosition(e) {
-    this.setState({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY });
+    if(this.state.isEditMode)
+      this.setState({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY });
   }
 
   handleOnClick(){
@@ -93,6 +94,7 @@ class App extends React.Component {
   }
 
   insertMarker(){
+    if(this.state.isEditMode && this.state.x!==""){
     const markerStyle={
       color:'goldenrod',
       // set center of the point to the coordinates
@@ -100,7 +102,6 @@ class App extends React.Component {
       top:this.state.y-12+'px',
     }
     // const classes = useStyles();
-    if(this.state.isEditMode){
       return <div id='point-id' style={markerStyle} onClick={this.editPoint}>      
         <Icons />
       </div>
@@ -114,6 +115,7 @@ class App extends React.Component {
 
   changetoReviewMode(){
     this.setState({isEditMode: false});
+    this.setState({x: "", y: ""})
     console.log('changed to review');
   }
 
@@ -160,7 +162,7 @@ class App extends React.Component {
         <h4>{this.state.message.Message}</h4>
         <input type='button' value='Review' onClick={this.changetoReviewMode}/>
         <input type='button' value='Edit'  onClick={this.changetoEditMode}/>
-        <input type='button' value='Submit'  onClick={this.addNewPoint}/>
+        {this.state.isEditMode && <input type='button' value='Submit'  onClick={this.addNewPoint}/>}
       </div>
     </div>
     ;
