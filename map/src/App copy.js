@@ -4,9 +4,6 @@ import { Icon } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import Modal from '@material-ui/core/Modal';
-import './css/popup.css'
-import Popup from 'react-popup';
-import Prompt from './component/Prompt';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   },
   iconHover: {
     cursor: "pointer",
-    // margin: theme.spacing(2),
+    margin: theme.spacing(2),
     '&:hover': {
       color: red[800],
     },
@@ -31,42 +28,38 @@ const useStyles = makeStyles(theme => ({
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 4),
-    //customized:
-    color: 'green',
-    'text-align': 'center',
   },
 }));
 
-function centerModal() {
-  const top = 50;
-  const left = 50;
+// function getModalStyle() {
+//   const top = 10;
+//   const left = 10;
 
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
+//   return {
+//     top: `${top}%`,
+//     left: `${left}%`,
+//     transform: `translate(-${top}%, -${left}%)`,
+//   };
+// }
 
 function Icons(props) {
-  let x = props.value.x;
-  let y = props.value.y;
-
-  const img = () => {
-    if (props.value.img === '') {
-      return <p style={{ color: 'red' }}>No image yet</p>
-    }
-    else {
-      return <img alt='360photo' src={props.value.img}></img>
-    }
-  }
-
+  let x=props.value.x;
+  let y=props.value.y;
+  // console.log(props)
+  // console.log('x: '+x+' y: '+y);
   const classes = useStyles();
-  const [modalStyle] = React.useState(centerModal);
+  // const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
-
+  const modalStyle={
+      color: 'black',
+      // set center of the point to the coordinates
+      left: x + 'px',
+      top: y + 'px',
+  }
+  
   const handleOpen = () => {
     setOpen(true);
+    console.log('handle open');
   };
 
   const handleClose = () => {
@@ -75,18 +68,17 @@ function Icons(props) {
 
   return (
     <div className={classes.root}>
-      <Modal className='modals'
+    <Modal className='modals'
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
         open={open}
         onClose={handleClose}
-
+        style={modalStyle}
       >
-        <div style={modalStyle} className={classes.paper}>
-          {img()}
+        <div className={classes.paper}>
           <h2 id="simple-modal-title">Current point position:</h2>
           <p id="simple-modal-description">
-            x: {x} y: {y}
+            x: {x} y:{y}
           </p>
         </div>
       </Modal>
@@ -96,6 +88,17 @@ function Icons(props) {
     </div>
   );
 }
+
+// function Icons() {
+//   const classes = useStyles();
+//   return (
+//     <div className={classes.root}>
+//       <Icon className={classes.iconHover}>
+//         fiber_manual_record
+//       </Icon>
+//     </div>
+//   );
+// }
 
 class App extends React.Component {
   constructor(props) {
@@ -115,25 +118,22 @@ class App extends React.Component {
     };
   }
 
-  getData() {
+  componentDidMount() {
     fetch('http://localhost/api/client/2')
       .then((r) => r.json()
         .then((data) => {
           this.setState({ points: data });
         }));
   }
-  componentDidMount() {
-    this.getData()
-  }
 
   displayPoints = () => {
     return this.state.points.map((point) => {
-      return this.showOnePoint(point.ID, point.Lat, point.Lon, point.Img);
+      return this.showOnePoint(point.ID, point.Lat, point.Lon);
     }
     )
   }
 
-  showOnePoint(key, x, y, img) {
+  showOnePoint(key, x, y) {
     let pointStyle = {
       color: 'green',
       // set center of the point to the coordinates
@@ -143,10 +143,9 @@ class App extends React.Component {
     return (
       <div className='currentPoints' style={pointStyle} key={key}>
         <Icons value={{
-          x: x,
-          y: y,
-          img: img,
-        }} />
+          x:x,
+          y:y
+          }}/>
       </div>
     )
   }
@@ -165,15 +164,16 @@ class App extends React.Component {
       const markerStyle = {
         color: 'goldenrod',
         // set center of the point to the coordinates
-        left: this.state.x - 12 + 'px',
-        top: this.state.y - 12 + 'px',
+        // ????
+        left: this.state.x - 28 + 'px',
+        top: this.state.y - 28 + 'px',
       }
+      // const classes = useStyles();
       return <div className='marker' style={markerStyle}>
         <Icons value={{
-          x: this.state.x,
-          y: this.state.y,
-          img: '',
-        }} />
+          x:this.state.x,
+          y:this.state.y,
+          }}/>
       </div>
     }
   }
@@ -190,54 +190,26 @@ class App extends React.Component {
   }
 
   addNewPoint() {
-    let x = this.state.x;
-    let y = this.state.y;
-    let feedback = "";
-    /** Prompt plugin */
-    Popup.registerPlugin('prompt', function (defaultValue, placeholder, callback) {
-      let promptValue = null;
-      let promptChange = function (value) {
-        promptValue = value;
-      };
-      this.create({
-        title: 'Confirmation window',
-        content: <Prompt onChange={promptChange} placeholder={placeholder} value={defaultValue} />,
-        buttons: {
-          left: ['cancel'],
-          right: [{
-            text: 'Submit',
-            key: '⌘+s',
-            className: 'success',
-            action: function () {
-              let formData = new FormData();
-              formData.append('latitude', x)
-              formData.append('longitude', y)
-              formData.append('information', promptValue)
-              formData.append('user_id', '2')
-              fetch('http://localhost/api/client',
-                { method: 'POST', body: formData }
-              )
-                .then(res => res.json())
-                .then(data => {
-                  feedback = data.Message;
-                  callback(feedback);
-                  Popup.close();
-                  console.log("1");
-                  this.props.parent.getData();
-                  console.log("2");
-                  this.props.parent.displayPoints();
-                  this.props.parent.setState({ x: '', y: '' });
-                })
-                .catch(e => console.log('error:', e))
-            }
-          }]
-        }
-      });
-    });
-    /** Call the plugin */
-    Popup.plugins().prompt('', 'extra information', function (value) {
-      alert('feedback: ' + value);
-    });
+    let formData = new FormData();
+    formData.append('latitude', this.state.x);
+    formData.append('longitude', this.state.y);
+    formData.append('information', 'test');
+    formData.append('user_id', '2');
+    fetch('http://localhost/api/client',
+      { method: 'POST', body: formData }
+    )
+      .then(res => res.json())
+      .then(data => {
+        this.setState({ message: data.Message })
+        alert(this.state.message)
+        this.componentDidMount()
+        this.changetoReviewMode()
+      })
+      .catch(e => console.log('error:', e))
+  }
+
+  showPointInfo(){
+
   }
 
   render() {
@@ -259,7 +231,6 @@ class App extends React.Component {
         {this.state.isEditMode && this.state.x !== "" && <input type='button' value='Submit' onClick={this.addNewPoint} />}
         <h1>{this.state.x} {this.state.y}</h1>
       </div>
-      <Popup parent={this} />
     </div>
       ;
   }
