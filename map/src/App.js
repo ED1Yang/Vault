@@ -212,7 +212,7 @@ class App extends React.Component {
               let formData = new FormData();
               formData.append('latitude', x)
               formData.append('longitude', y)
-              formData.append('information', promptValue)
+              formData.append('info', promptValue)
               formData.append('user_id', '2')
               fetch('http://localhost/api/client',
                 { method: 'POST', body: formData }
