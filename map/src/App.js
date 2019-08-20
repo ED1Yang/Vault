@@ -1,156 +1,29 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './App.css';
-import { Icon } from '@material-ui/core';
-import { makeStyles, withStyles } from '@material-ui/core/styles';
-import { red } from '@material-ui/core/colors';
-import Modal from '@material-ui/core/Modal';
-import Switch from '@material-ui/core/Switch';
-import './css/popup.css'
+import { makeStyles } from '@material-ui/core/styles';
 import Popup from 'react-popup';
-import Prompt from './component/Prompt';
-import Viewer from './Viewer'
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
-import { Pannellum } from "pannellum-react";
+//components
+import Prompt from './component/Prompt';
+import Icons from './component/Icons';
+import AntSwitch from './component/AntSwitch';
+//css
+import './App.css';
+import './css/popup.css'
+
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'flex-end',
-  },
-  icon: {
-    margin: theme.spacing(2),
-  },
-  iconHover: {
-    cursor: "pointer",
-    // margin: theme.spacing(2),
-    '&:hover': {
-      color: red[800],
-    },
-  },
-  paper: {
-    position: 'absolute',
-    width: 400,
-    backgroundColor: theme.palette.background.paper,
-    border: '2px solid #000',
-    boxShadow: theme.shadows[5],
-    padding: theme.spacing(2, 4, 4),
-    //customized:
-    color: 'green',
-    'text-align': 'center',
-  },
   fab: {
     margin: theme.spacing(1),
   },
 }));
 
-const AntSwitch = withStyles(theme => ({
-  root: {
-    width: 28,
-    height: 16,
-    padding: 0,
-    display: 'flex',
-  },
-  switchBase: {
-    padding: 2,
-    color: theme.palette.grey[500],
-    '&$checked': {
-      color: theme.palette.common.white,
-      '& + $track': {
-        opacity: 1,
-        backgroundColor: theme.palette.primary.main,
-        borderColor: theme.palette.primary.main,
-      },
-    },
-  },
-  thumb: {
-    width: 12,
-    height: 12,
-    boxShadow: 'none',
-  },
-  track: {
-    border: `1px solid ${theme.palette.grey[500]}`,
-    borderRadius: 16 / 2,
-    opacity: 1,
-    backgroundColor: theme.palette.common.white,
-  },
-  checked: {},
-}))(Switch);
-
-function centerModal() {
-  const top = 50;
-  const left = 50;
-
-  return {
-    top: `${top}%`,
-    left: `${left}%`,
-    transform: `translate(-${top}%, -${left}%)`,
-  };
-}
-
-function Icons(props) {
-  let x = props.value.x;
-  let y = props.value.y;
-  const getPicInfo = () =>{
-    console.log("1")
-    let test = Pannellum.current
-    console.log(test);
-  }
-  const img = () => {
-    if (props.value.img === '') {
-      return <p style={{ color: 'red' }}>No image yet</p>
-    }
-    else {
-      return <img alt='360photo' src={props.value.img}></img>
-    }
-  }
-
-  const classes = useStyles();
-  const [modalStyle] = React.useState(centerModal);
-  const [open, setOpen] = React.useState(false);
-
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  return (
-    <div className={classes.root}>
-      <Modal className='modals'
-        aria-labelledby="simple-modal-title"
-        aria-describedby="simple-modal-description"
-        open={open}
-        onClose={handleClose}
-
-      >
-        <div style={modalStyle} className={classes.paper}>
-        <Viewer/><button onClick={getPicInfo}>click</button>
-          {img()}
-          <h2 id="simple-modal-title">Current point position:</h2>
-          <p id="simple-modal-description">
-            x: {x} y: {y}
-          </p>
-        </div>
-      </Modal>
-      <Icon className={classes.iconHover} onClick={handleOpen}>
-        fiber_manual_record
-      </Icon>
-    </div>
-  );
-}
-
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.setPosition = this.setPosition.bind(this);
-    this.handleOnClick = this.handleOnClick.bind(this);
     this.insertMarker = this.insertMarker.bind(this);
     this.addNewPoint = this.addNewPoint.bind(this);
     this.handleModeChange = this.handleModeChange.bind(this);
@@ -162,7 +35,7 @@ class App extends React.Component {
       message: "",
     };
   }
-  
+
   getData() {
     fetch('http://localhost/api/client/2')
       .then((r) => r.json()
@@ -190,11 +63,14 @@ class App extends React.Component {
     }
     return (
       <div className='currentPoints' style={pointStyle} key={key}>
-        <Icons value={{
-          x: x,
-          y: y,
-          img: img,
-        }} parent={this} />
+        <Icons 
+          value={{
+            x: x,
+            y: y,
+            img: img,
+          }} 
+          parent={this} 
+        />
       </div>
     )
   }
@@ -202,10 +78,6 @@ class App extends React.Component {
   setPosition(e) {
     if (this.state.isEditMode)
       this.setState({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY });
-  }
-
-  handleOnClick() {
-    return console.log('X is: ' + this.state.x + ' Y is: ' + this.state.y);
   }
 
   insertMarker() {
@@ -313,9 +185,7 @@ class App extends React.Component {
         <h1>{this.state.x} {this.state.y}</h1>
       </div>
       <Popup parent={this} />
-      
     </div>
-      ;
   }
 }
 export default App;

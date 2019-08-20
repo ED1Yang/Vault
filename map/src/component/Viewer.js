@@ -1,9 +1,7 @@
-import React, { Component } from 'react';
-import { render } from 'react-dom';
-
-import { Pannellum, PannellumVideo } from "pannellum-react";
-import myImage1 from "./test1.png";
-import myImage2 from "./test2.png";
+import React from 'react';
+import { Pannellum } from "pannellum-react";
+// import myImage1 from "../image/test1.png";
+ import myImage2 from "../image/test2.png";
 
 
 export default class ImageDemo extends React.Component {
@@ -16,7 +14,7 @@ export default class ImageDemo extends React.Component {
   render() {
     return (
       <div>
-        <h1>Pannellum React Component</h1>
+        <h1>360 Photo Viewer</h1>
         <Pannellum
           ref={this.panImage}
           width="100%"
