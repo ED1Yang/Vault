@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import './App.css';
 import { Icon } from '@material-ui/core';
 import { makeStyles, withStyles } from '@material-ui/core/styles';
@@ -8,10 +9,12 @@ import Switch from '@material-ui/core/Switch';
 import './css/popup.css'
 import Popup from 'react-popup';
 import Prompt from './component/Prompt';
+import Viewer from './Viewer'
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+import { Pannellum } from "pannellum-react";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -92,7 +95,11 @@ function centerModal() {
 function Icons(props) {
   let x = props.value.x;
   let y = props.value.y;
-
+  const getPicInfo = () =>{
+    console.log("1")
+    let test = Pannellum.current
+    console.log(test);
+  }
   const img = () => {
     if (props.value.img === '') {
       return <p style={{ color: 'red' }}>No image yet</p>
@@ -124,6 +131,7 @@ function Icons(props) {
 
       >
         <div style={modalStyle} className={classes.paper}>
+        <Viewer/><button onClick={getPicInfo}>click</button>
           {img()}
           <h2 id="simple-modal-title">Current point position:</h2>
           <p id="simple-modal-description">
@@ -154,7 +162,7 @@ class App extends React.Component {
       message: "",
     };
   }
-
+  
   getData() {
     fetch('http://localhost/api/client/2')
       .then((r) => r.json()
@@ -186,7 +194,7 @@ class App extends React.Component {
           x: x,
           y: y,
           img: img,
-        }} />
+        }} parent={this} />
       </div>
     )
   }
@@ -217,12 +225,12 @@ class App extends React.Component {
       </div>
     }
   }
-  
-  handleModeChange(){
-    if(this.state.isEditMode === false){
+
+  handleModeChange() {
+    if (this.state.isEditMode === false) {
       this.setState({ isEditMode: true })
     }
-    else{
+    else {
       this.setState({ isEditMode: false })
     }
   }
@@ -289,22 +297,23 @@ class App extends React.Component {
         {this.insertMarker()}
       </div>
       <div className='panel'>
-      <Typography component="div">
-        <Grid component="label" container alignItems="center" spacing={1}>
-          <Grid item>Review</Grid>
-          <Grid item>
-            <AntSwitch
-              onChange={this.handleModeChange}
-              value={this.state.isEditMode}
-            />
+        <Typography component="div">
+          <Grid component="label" container alignItems="center" spacing={1}>
+            <Grid item>Review</Grid>
+            <Grid item>
+              <AntSwitch
+                onChange={this.handleModeChange}
+                value={this.state.isEditMode}
+              />
+            </Grid>
+            <Grid item>Edit</Grid>
           </Grid>
-          <Grid item>Edit</Grid>
-        </Grid>
-      </Typography>
+        </Typography>
         {this.state.isEditMode && this.state.x !== "" && <Fab color="primary" aria-label="add" className={useStyles.fab} onClick={this.addNewPoint}><AddIcon /></Fab>}
         <h1>{this.state.x} {this.state.y}</h1>
       </div>
       <Popup parent={this} />
+      
     </div>
       ;
   }
