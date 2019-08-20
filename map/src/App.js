@@ -222,9 +222,7 @@ class App extends React.Component {
                   feedback = data.Message;
                   callback(feedback);
                   Popup.close();
-                  console.log("1");
                   this.props.parent.getData();
-                  console.log("2");
                   this.props.parent.displayPoints();
                   this.props.parent.setState({ x: '', y: '' });
                 })
