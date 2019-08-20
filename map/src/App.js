@@ -103,7 +103,7 @@ class App extends React.Component {
       this.setState({ isEditMode: true })
     }
     else {
-      this.setState({ isEditMode: false })
+      this.setState({ isEditMode: false, x: '', y: ''})
     }
   }
   addNewPoint() {
@@ -181,8 +181,9 @@ class App extends React.Component {
             <Grid item>Edit</Grid>
           </Grid>
         </Typography>
-        {this.state.isEditMode && this.state.x !== "" && <Fab color="primary" aria-label="add" className={useStyles.fab} onClick={this.addNewPoint}><AddIcon /></Fab>}
-        <h1>{this.state.x} {this.state.y}</h1>
+        {this.state.isEditMode && this.state.x !== "" && <div>
+        <Fab color="primary" aria-label="add" className={useStyles.fab} onClick={this.addNewPoint}><AddIcon /></Fab>
+        <h1>{this.state.x} {this.state.y}</h1></div>}
       </div>
       <Popup parent={this} />
     </div>
