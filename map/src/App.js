@@ -1,12 +1,17 @@
 import React from 'react';
 import './App.css';
 import { Icon } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, withStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import Modal from '@material-ui/core/Modal';
+import Switch from '@material-ui/core/Switch';
 import './css/popup.css'
 import Popup from 'react-popup';
 import Prompt from './component/Prompt';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,7 +40,43 @@ const useStyles = makeStyles(theme => ({
     color: 'green',
     'text-align': 'center',
   },
+  fab: {
+    margin: theme.spacing(1),
+  },
 }));
+
+const AntSwitch = withStyles(theme => ({
+  root: {
+    width: 28,
+    height: 16,
+    padding: 0,
+    display: 'flex',
+  },
+  switchBase: {
+    padding: 2,
+    color: theme.palette.grey[500],
+    '&$checked': {
+      color: theme.palette.common.white,
+      '& + $track': {
+        opacity: 1,
+        backgroundColor: theme.palette.primary.main,
+        borderColor: theme.palette.primary.main,
+      },
+    },
+  },
+  thumb: {
+    width: 12,
+    height: 12,
+    boxShadow: 'none',
+  },
+  track: {
+    border: `1px solid ${theme.palette.grey[500]}`,
+    borderRadius: 16 / 2,
+    opacity: 1,
+    backgroundColor: theme.palette.common.white,
+  },
+  checked: {},
+}))(Switch);
 
 function centerModal() {
   const top = 50;
@@ -102,10 +143,9 @@ class App extends React.Component {
     super(props);
     this.setPosition = this.setPosition.bind(this);
     this.handleOnClick = this.handleOnClick.bind(this);
-    this.changetoEditMode = this.changetoEditMode.bind(this);
-    this.changetoReviewMode = this.changetoReviewMode.bind(this);
     this.insertMarker = this.insertMarker.bind(this);
     this.addNewPoint = this.addNewPoint.bind(this);
+    this.handleModeChange = this.handleModeChange.bind(this);
     this.state = {
       x: "",
       y: "",
@@ -177,18 +217,15 @@ class App extends React.Component {
       </div>
     }
   }
-
-  changetoEditMode() {
-    this.setState({ isEditMode: true });
-    console.log('changed to edit');
+  
+  handleModeChange(){
+    if(this.state.isEditMode === false){
+      this.setState({ isEditMode: true })
+    }
+    else{
+      this.setState({ isEditMode: false })
+    }
   }
-
-  changetoReviewMode() {
-    this.setState({ isEditMode: false });
-    this.setState({ x: "", y: "" });
-    console.log('changed to review');
-  }
-
   addNewPoint() {
     let x = this.state.x;
     let y = this.state.y;
@@ -234,7 +271,7 @@ class App extends React.Component {
     });
     /** Call the plugin */
     Popup.plugins().prompt('', 'extra information', function (value) {
-      alert('feedback: ' + value);
+      Popup.alert('feedback: ' + value);
     });
   }
 
@@ -252,9 +289,19 @@ class App extends React.Component {
         {this.insertMarker()}
       </div>
       <div className='panel'>
-        <input type='button' value='Review' onClick={this.changetoReviewMode} />
-        <input type='button' value='Edit' onClick={this.changetoEditMode} />
-        {this.state.isEditMode && this.state.x !== "" && <input type='button' value='Submit' onClick={this.addNewPoint} />}
+      <Typography component="div">
+        <Grid component="label" container alignItems="center" spacing={1}>
+          <Grid item>Review</Grid>
+          <Grid item>
+            <AntSwitch
+              onChange={this.handleModeChange}
+              value={this.state.isEditMode}
+            />
+          </Grid>
+          <Grid item>Edit</Grid>
+        </Grid>
+      </Typography>
+        {this.state.isEditMode && this.state.x !== "" && <Fab color="primary" aria-label="add" className={useStyles.fab} onClick={this.addNewPoint}><AddIcon /></Fab>}
         <h1>{this.state.x} {this.state.y}</h1>
       </div>
       <Popup parent={this} />
