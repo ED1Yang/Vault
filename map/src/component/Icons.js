@@ -51,6 +51,7 @@ const useStyles = makeStyles(theme => ({
   export default function Icons(props) {
     let x = props.value.x;
     let y = props.value.y;
+    let info=props.value.info;
     const img = () => {
       if (props.value.img === '') {
         return <p style={{ color: 'red' }}>No image yet</p>
@@ -86,6 +87,7 @@ const useStyles = makeStyles(theme => ({
             <p id="simple-modal-description">
               x: {x} y: {y}
             </p>
+            <p> Photo Info: {info}</p>
           </div>
         </Modal>
         <Icon className={classes.iconHover} onClick={handleOpen}>

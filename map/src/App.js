@@ -9,6 +9,7 @@ import AddIcon from '@material-ui/icons/Add';
 import Prompt from './component/Prompt';
 import Icons from './component/Icons';
 import AntSwitch from './component/AntSwitch';
+import ShowPoints from './component/ShowPoints';
 //css
 import './App.css';
 import './css/popup.css'
@@ -33,52 +34,7 @@ class App extends React.Component {
       x: "",
       y: "",
       isEditMode: false,
-      points: [],
-      message: "",
     };
-  }
-
-  getData() {
-    fetch('http://localhost/api/client/2')
-      .then((r) => r.json()
-        .then((data) => {
-          this.setState({ points: data });
-        }));
-  }
-  componentDidMount() {
-    this.getData()
-  }
-
-  displayPoints = () => {
-    if(this.state.points === null){
-      return;
-    }
-    else{
-      return this.state.points.map((point) => {
-        return this.showOnePoint(point.ID, point.Lat, point.Lon, point.Img);
-      })
-    } 
-  }
-
-  showOnePoint(key, x, y, img) {
-    let pointStyle = {
-      color: 'green',
-      // set center of the point to the coordinates
-      left: x - 12 + 'px',
-      top: y - 12 + 'px',
-    }
-    return (
-      <div className='currentPoints' style={pointStyle} key={key}>
-        <Icons 
-          value={{
-            x: x,
-            y: y,
-            img: img,
-          }} 
-          parent={this} 
-        />
-      </div>
-    )
   }
 
   setPosition(e) {
@@ -171,7 +127,7 @@ class App extends React.Component {
             onClick={this.setPosition}
           />
         </div>
-        {this.displayPoints()}
+        <ShowPoints />
         {this.insertMarker()}
       </div>
       <div className='panel'>
