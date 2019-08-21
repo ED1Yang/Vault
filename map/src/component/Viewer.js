@@ -1,7 +1,7 @@
 import React from 'react';
 import { Pannellum } from "pannellum-react";
 // import myImage1 from "../image/test1.png";
- import myImage2 from "../image/test2.png";
+// import myImage2 from "../image/test2.png";
 
 
 export default class ImageDemo extends React.Component {
@@ -19,14 +19,11 @@ export default class ImageDemo extends React.Component {
           ref={this.panImage}
           width="100%"
           height="950px"
-          image={myImage2}
+          image={this.img}
           pitch={6}
           yaw={60}
           hfov={100}
           autoLoad
-          onLoad={() => {
-            console.log("panorama loaded");
-          }}
         >
           <Pannellum.Hotspot
             type="info"
