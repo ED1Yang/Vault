@@ -4,7 +4,6 @@ import { red } from '@material-ui/core/colors';
 import Modal from '@material-ui/core/Modal';
 import { Icon } from '@material-ui/core';
 import Viewer from './Viewer'
-import { Pannellum } from "pannellum-react";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -23,7 +22,8 @@ const useStyles = makeStyles(theme => ({
     },
     paper: {
       position: 'absolute',
-      width: 400,
+      width: '80%',
+      height: '80%',
       backgroundColor: theme.palette.background.paper,
       border: '2px solid #000',
       boxShadow: theme.shadows[5],
@@ -51,17 +51,12 @@ const useStyles = makeStyles(theme => ({
   export default function Icons(props) {
     let x = props.value.x;
     let y = props.value.y;
-    const getPicInfo = () =>{
-      console.log("1")
-      let test = Pannellum.current
-      console.log(test);
-    }
     const img = () => {
       if (props.value.img === '') {
         return <p style={{ color: 'red' }}>No image yet</p>
       }
       else {
-        return <img alt='360photo' src={props.value.img}></img>
+        return <Viewer img={props.value.img}/>
       }
     }
   
@@ -86,10 +81,8 @@ const useStyles = makeStyles(theme => ({
           onClose={handleClose}
         >
           <div style={modalStyle} className={classes.paper}>
-            <Viewer/>
             {img()}
-            <button onClick={getPicInfo}>click</button>
-            <h2 id="simple-modal-title">Current point position:</h2>
+            <h2 id="simple-modal-title">Current point position: </h2>
             <p id="simple-modal-description">
               x: {x} y: {y}
             </p>

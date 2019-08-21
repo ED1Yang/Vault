@@ -9,8 +9,8 @@ export default class ImageDemo extends React.Component {
   constructor(props) {
     super(props);
     this.panImage = React.createRef()
+    this.img = this.props.img;
   }
-  
   render() {
     return (
       <div>
@@ -18,11 +18,11 @@ export default class ImageDemo extends React.Component {
         <Pannellum
           ref={this.panImage}
           width="100%"
-          height="500px"
+          height="950px"
           image={myImage2}
-          pitch={10}
-          yaw={180}
-          hfov={10}
+          pitch={6}
+          yaw={60}
+          hfov={100}
           autoLoad
           onLoad={() => {
             console.log("panorama loaded");
@@ -36,7 +36,7 @@ export default class ImageDemo extends React.Component {
             URL="https://github.com/ED1Yang/Vault"
           />
         </Pannellum>
-        <button onClick={() => console.log(this.panImage.current.getViewer().getHfov())}>get pitch</button>
+        <br/><button onClick={() => console.log(this.panImage.current.getViewer().getHfov())}>get pitch</button>
       </div>
     );
   }

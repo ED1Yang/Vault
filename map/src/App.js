@@ -12,6 +12,8 @@ import AntSwitch from './component/AntSwitch';
 //css
 import './App.css';
 import './css/popup.css'
+//images
+import floorPlan from './image/Ground_floor.png';
 
 
 const useStyles = makeStyles(theme => ({
@@ -48,10 +50,14 @@ class App extends React.Component {
   }
 
   displayPoints = () => {
-    return this.state.points.map((point) => {
-      return this.showOnePoint(point.ID, point.Lat, point.Lon, point.Img);
+    if(this.state.points === null){
+      return;
     }
-    )
+    else{
+      return this.state.points.map((point) => {
+        return this.showOnePoint(point.ID, point.Lat, point.Lon, point.Img);
+      })
+    } 
   }
 
   showOnePoint(key, x, y, img) {
@@ -161,7 +167,7 @@ class App extends React.Component {
         <div className='map'>
           <img
             alt='map'
-            src="https://www.livebakerblock.com/wp-content/uploads/2017/07/baker-plan-c1-1600px.png"
+            src={floorPlan}
             onClick={this.setPosition}
           />
         </div>
