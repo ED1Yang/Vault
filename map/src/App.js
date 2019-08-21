@@ -34,7 +34,11 @@ class App extends React.Component {
       x: "",
       y: "",
       isEditMode: false,
+      points: [],
     };
+  }
+  onRef=(ref)=>{
+    this.showPoints = ref;
   }
 
   setPosition(e) {
@@ -101,8 +105,8 @@ class App extends React.Component {
                   feedback = data.Message;
                   callback(feedback);
                   Popup.close();
-                  this.props.parent.getData();
-                  this.props.parent.displayPoints();
+                  ShowPoints.testfunction();
+                  this.props.parent.showPoints.displayPoints();
                   this.props.parent.setState({ x: '', y: '' });
                 })
                 .catch(e => console.log('error:', e))
@@ -127,7 +131,7 @@ class App extends React.Component {
             onClick={this.setPosition}
           />
         </div>
-        <ShowPoints />
+        <ShowPoints onRef={this.onRef}/>
         {this.insertMarker()}
       </div>
       <div className='panel'>

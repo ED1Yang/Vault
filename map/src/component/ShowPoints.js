@@ -10,7 +10,11 @@ class ShowPoints extends React.Component {
     };
   }
 
-  componentDidMount() {
+  testfunction(){
+    console.log('test is successful')
+  }
+  
+  getData() {
     fetch('http://localhost/api/client/2')
       .then((r) => r.json()
         .then((data) => {
@@ -18,7 +22,13 @@ class ShowPoints extends React.Component {
         }));
   }
 
+  componentDidMount() {
+    this.props.onRef&&this.props.onRef(this);
+    this.displayPoints();
+  }
+
   displayPoints = () => {
+    this.getData()
     if (this.state.points === null) {
       return;
     }
