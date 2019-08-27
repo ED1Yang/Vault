@@ -139,5 +139,18 @@ export default [
     phone: '021-301-7894',
     avatarUrl: '/images/avatars/avatar_10.png',
     createdAt: 1522702800000
+  },
+  {
+    id: uuid(),
+    name: 'Kayle Smith',
+    address: {
+      country: 'USA',
+      state: 'Utah',
+      city: 'Salt Lake City',
+      street: '338 Queens Road'
+    },
+    email: 'kayle.smith@vault.com',
+    phone: '021-101-0824',
+    avatarUrl: '/images/avatars/avatar_11.png',
   }
 ];
