@@ -1,6 +1,10 @@
 import * as React from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
-import Dashboard from './dashboard'
+//pages
+import Dashboard from './dashboard/Dashboard'
+import FloorPlan from './floorplan/FloorPlan'
+import Login from './login/Login'
+import NotFound from './dashboard/NotFound'
 
 
 const Routes = () => {
@@ -19,6 +23,22 @@ const Routes = () => {
                             exact
                             path="/dashboard"
                         />
+                        <Route
+                            component={Login}
+                            exact
+                            path="/login"
+                        />
+                        <Route
+                            component={FloorPlan}
+                            exact
+                            path="/floorplan"
+                        />
+                        <Route
+                            component={NotFound}
+                            exact
+                            path="/notfound"
+                        />
+                        <Redirect to="/notfound" />
                     </Switch>
                 </main>
             </div>

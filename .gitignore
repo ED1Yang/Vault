@@ -1,4 +1,3 @@
-# ignore public folder
-**/public
+
 # ignore node_modules
 **/node_modules

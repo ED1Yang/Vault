@@ -11,8 +11,8 @@ import Icons from './component/Icons';
 import AntSwitch from './component/AntSwitch';
 import ShowPoints from './component/ShowPoints';
 //css
-import './App.css';
-import './css/popup.css'
+import './css/popup.css';
+import './css/map.css';
 //images
 import floorPlan from './image/Ground_floor.png';
 
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-class App extends React.Component {
+class FloorPlan extends React.Component {
   constructor(props) {
     super(props);
     this.setPosition = this.setPosition.bind(this);
@@ -155,4 +155,4 @@ class App extends React.Component {
     </div>
   }
 }
-export default App;
+export default FloorPlan;

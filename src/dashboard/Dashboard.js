@@ -13,14 +13,22 @@ import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
-import Link from '@material-ui/core/Link';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './ListItems';
+import Link from '@material-ui/core/Link';
+//components
 import Chart from './Chart';
 import Deposits from './Deposits';
-import Orders from './Orders';
+import Tasks from './Tasks';
+//images
+// import logo1 from '../assets/images/asbuilt-digital-logo.png'
+import logo from '../assets/images/logo.png'
+// import { getThemeProps } from '@material-ui/styles';
+
+const drawerWidth = 240;
+
 
 function Copyright() {
   return (
@@ -28,17 +36,13 @@ function Copyright() {
       {'Copyright © '}
       <Link color="inherit" href="https://asbuiltdigital.com/">
         asBUILT
-      </Link>{' '}
+        </Link>{' '}
       {new Date().getFullYear()}
-      {'. Built with '}
-      <Link color="inherit" href="">
-        Love.
-      </Link>
+      <br />
+      {'Built with Love'}
     </Typography>
   );
 }
-
-const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -119,7 +123,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Dashboard() {
+export default function Dashboard(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -129,6 +133,37 @@ export default function Dashboard() {
     setOpen(false);
   };
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
+  // const bgcolor={'background-color':'white'}
+
+  const defaultDashboard =
+    <Grid container spacing={3}>
+      {/* Chart */}
+      <Grid item xs={12} md={8} lg={9}>
+        <Paper className={fixedHeightPaper}>
+          <Chart />
+        </Paper>
+      </Grid>
+      {/* recent deposits */}
+      <Grid item xs={12} md={4} lg={3}>
+        <Paper className={fixedHeightPaper}>
+          <Deposits />
+        </Paper>
+      </Grid>
+      {/* recent orders */}
+      <Grid item xs={12}>
+        <Paper className={classes.paper}>
+          <Tasks />
+        </Paper>
+      </Grid>
+    </Grid>
+
+  const displayContent = () => {
+    if (props.value === undefined) {
+      return defaultDashboard;
+    } else {
+      return props.value;
+    }
+  }
 
   return (
     <div className={classes.root}>
@@ -145,7 +180,8 @@ export default function Dashboard() {
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            Dashboard
+            <img alt ='asBUILT-logo' src={logo} width='40'></img>
+            {/* <img alt='asBUILT-logo' src={logo1}></img> */}
           </Typography>
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
@@ -174,34 +210,7 @@ export default function Dashboard() {
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
         <Container maxWidth="lg" className={classes.container}>
-          <Grid container spacing={3}>
-            {/* Chart */}
-            <Grid item xs={12} md={8} lg={9}>
-              <Paper className={fixedHeightPaper}>
-                <Chart />
-              </Paper>
-            </Grid>
-            {/* Recent Deposits */}
-            <Grid item xs={12} md={4} lg={3}>
-              <Paper className={fixedHeightPaper}>
-
-
-
-
-                <Deposits />
-
-
-
-
-              </Paper>
-            </Grid>
-            {/* Recent Orders */}
-            <Grid item xs={12}>
-              <Paper className={classes.paper}>
-                <Orders />
-              </Paper>
-            </Grid>
-          </Grid>
+          {displayContent()}
         </Container>
         <Copyright />
       </main>
