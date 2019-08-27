@@ -4,6 +4,7 @@ import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import Dashboard from './dashboard/Dashboard'
 import FloorPlan from './floorplan/FloorPlan'
 import Login from './login/Login'
+import UserList from './UserList/UserList'
 import NotFound from './dashboard/NotFound'
 
 
@@ -32,6 +33,11 @@ const Routes = () => {
                             component={FloorPlan}
                             exact
                             path="/floorplan"
+                        />
+                        <Route
+                            component={UserList}
+                            exact
+                            path="/clients"
                         />
                         <Route
                             component={NotFound}
