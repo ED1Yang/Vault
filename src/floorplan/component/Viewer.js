@@ -6,7 +6,7 @@ import Fullscreen from "react-full-screen";
 
 const style = {
   position: 'absolute',
-        top: 95+'px',
+        top: 5+'px',
         left: 80+'px',
         width: 26+'px',
         height: 26+'px',
@@ -20,7 +20,6 @@ export default class ImageDemo extends React.Component {
     this.panImage = React.createRef()
     this.img = this.props.img;
     this.state={
-
       isFull: false,
     }
   }
@@ -46,10 +45,10 @@ export default class ImageDemo extends React.Component {
     return (
       <div>
         <h1>360 Photo Viewer</h1>
+        
         <button onClick={this.goFull}>
           Go Fullscreen
         </button>
- 
         <Fullscreen
           enabled={this.state.isFull}
           onChange={isFull => this.setState({isFull})}
@@ -58,7 +57,7 @@ export default class ImageDemo extends React.Component {
         <Pannellum
           ref={this.panImage}
           width="100%"
-          height="600px"
+          height={this.state.isFull ? "100%" : "600px"}
           image={this.img}
           pitch={6}
           yaw={60}
