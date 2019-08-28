@@ -5,12 +5,26 @@ import '../../assets/css/uploadimg.css';
 class ImageUpload extends React.Component {
     constructor(props) {
       super(props);
-      this.state = {file: null,imagePreviewUrl: null};
+      this.state = {taskId: this.props.taskId, file: null,imagePreviewUrl: null, parent: this.props.parent};
     }
   
     _handleSubmit(e) {
       e.preventDefault();
-      this.state.file === null ? alert("please add images") : alert("Ready to upload: " + this.state.file.name + ". Waiting for back-end API");
+      let feedback = '';
+      let formData = new FormData();
+      formData.append('id', this.state.taskId)
+      formData.append('image', this.state.file)
+      fetch('http://localhost/api/emp',
+        { method: 'POST', body: formData }
+      )
+        .then(res => res.json())
+        .then(data => {
+          feedback = data.Message;
+          alert(feedback);
+          this.state.parent.getData();
+          this.state.parent.displayPoints();
+        })
+        .catch(e => console.log('error:', e))
     }
   
     _handleImageChange(e) {

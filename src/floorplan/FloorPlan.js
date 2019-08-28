@@ -60,7 +60,7 @@ class JobMap extends React.Component {
           x: this.state.x,
           y: this.state.y,
           img: '',
-        }} />
+        }} parent={this} />
       </div>
     }
   }
@@ -106,6 +106,7 @@ class JobMap extends React.Component {
                   feedback = data.Message;
                   callback(feedback);
                   Popup.close();
+                  this.props.parent.showPoints.getData();
                   this.props.parent.showPoints.displayPoints();
                   this.props.parent.setState({ x: '', y: '' });
                 })

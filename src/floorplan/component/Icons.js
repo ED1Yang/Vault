@@ -50,6 +50,8 @@ const useStyles = makeStyles(theme => ({
   }
   
   export default function Icons(props) {
+    let parent = props.parent;
+    let taskId = props.value.taskId;
     let x = props.value.x;
     let y = props.value.y;
     let info=props.value.info;
@@ -57,7 +59,7 @@ const useStyles = makeStyles(theme => ({
       if (props.value.img === '') {
         return <div>
             <p style={{ color: 'red' }}>No image yet</p>
-            <ImageUploader/>
+            <ImageUploader taskId = {taskId} parent={parent}/>
           </div>
       }
       else {

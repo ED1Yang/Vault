@@ -8,10 +8,11 @@ class ShowPoints extends React.Component {
     this.state = {
       points: [],
     };
-  }
-
-  testfunction(){
-    console.log('test is successful')
+    fetch('http://localhost/api/client/2')
+      .then((r) => r.json()
+        .then((data) => {
+          this.setState({ points: data });
+        })).catch(e => console.log('error:', e));
   }
   
   getData() {
@@ -28,7 +29,6 @@ class ShowPoints extends React.Component {
   }
 
   displayPoints = () => {
-    this.getData()
     if (this.state.points === null) {
       return;
     }
@@ -41,7 +41,7 @@ class ShowPoints extends React.Component {
 
   getPointColor(status) {
     return (
-      status === 'New' ? 'green' :
+      status === 'New' ? 'green' : 
         status === 'Closed' ? 'grey' : 'blue'
     )
   }
@@ -58,6 +58,7 @@ class ShowPoints extends React.Component {
       <div className='currentPoints' style={pointStyle} key={key}>
         <Icons
           value={{
+            taskId: key,
             x: x,
             y: y,
             img: img,
