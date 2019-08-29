@@ -1,4 +1,15 @@
 import uuid from 'uuid/v1';
+import avatar_1 from '../assets/images/avatars/avatar_1.png'
+import avatar_2 from '../assets/images/avatars/avatar_2.png'
+import avatar_3 from '../assets/images/avatars/avatar_3.png'
+import avatar_4 from '../assets/images/avatars/avatar_4.png'
+import avatar_5 from '../assets/images/avatars/avatar_5.png'
+import avatar_6 from '../assets/images/avatars/avatar_6.png'
+import avatar_7 from '../assets/images/avatars/avatar_7.png'
+import avatar_8 from '../assets/images/avatars/avatar_8.png'
+import avatar_9 from '../assets/images/avatars/avatar_9.png'
+import avatar_10 from '../assets/images/avatars/avatar_10.png'
+import avatar_11 from '../assets/images/avatars/avatar_11.png'
 
 export default [
   {
@@ -12,7 +23,7 @@ export default [
     },
     email: 'ekaterina.tankova@vault.com',
     phone: '021-428-3097',
-    avatarUrl: '/images/avatars/avatar_3.png',
+    avatarUrl: avatar_1,
     createdAt: 1555016400000
   },
   {
@@ -25,7 +36,7 @@ export default [
       street: '1865  Pleasant Hill Road'
     },
     email: 'cao.yu@vault.com',
-    avatarUrl: '/images/avatars/avatar_4.png',
+    avatarUrl: avatar_2,
     phone: '022-351-5711',
     createdAt: 1555016400000
   },
@@ -40,7 +51,7 @@ export default [
     },
     email: 'alexa.richardson@vault.com',
     phone: '027-635-2682',
-    avatarUrl: '/images/avatars/avatar_2.png',
+    avatarUrl: avatar_3,
     createdAt: 1555016400000
   },
   {
@@ -53,7 +64,7 @@ export default [
       street: '4158  Hedge Street'
     },
     email: 'anje.keizer@vault.com',
-    avatarUrl: '/images/avatars/avatar_5.png',
+    avatarUrl: avatar_4,
     phone: '023-691-3242',
     createdAt: 1554930000000
   },
@@ -68,7 +79,7 @@ export default [
     },
     email: 'clarke.gillebert@vault.com',
     phone: '021-333-4106',
-    avatarUrl: '/images/avatars/avatar_6.png',
+    avatarUrl: avatar_5,
     createdAt: 1554757200000
   },
   {
@@ -82,7 +93,7 @@ export default [
     },
     email: 'adam.denisov@vault.com',
     phone: '028-602-3409',
-    avatarUrl: '/images/avatars/avatar_1.png',
+    avatarUrl: avatar_6,
     createdAt: 1554670800000
   },
   {
@@ -95,7 +106,7 @@ export default [
       street: '2188  Armbrester Drive'
     },
     email: 'ava.gregoraci@vault.com',
-    avatarUrl: '/images/avatars/avatar_7.png',
+    avatarUrl: avatar_7,
     phone: '025-907-2647',
     createdAt: 1554325200000
   },
@@ -110,7 +121,7 @@ export default [
     },
     email: 'emilee.simchenko@vault.com',
     phone: '022-661-1654',
-    avatarUrl: '/images/avatars/avatar_8.png',
+    avatarUrl: avatar_8,
     createdAt: 1523048400000
   },
   {
@@ -123,7 +134,7 @@ export default [
       street: '3934  Wildrose Lane'
     },
     email: 'kwak.seong.min@vault.com',
-    avatarUrl: '/images/avatars/avatar_9.png',
+    avatarUrl: avatar_9,
     phone: '023-812-8947'
   },
   {
@@ -137,7 +148,7 @@ export default [
     },
     email: 'merrile.burgett@vault.com',
     phone: '021-301-7894',
-    avatarUrl: '/images/avatars/avatar_10.png',
+    avatarUrl: avatar_10,
     createdAt: 1522702800000
   },
   {
@@ -151,6 +162,6 @@ export default [
     },
     email: 'kayle.smith@vault.com',
     phone: '021-101-0824',
-    avatarUrl: '/images/avatars/avatar_11.png',
+    avatarUrl: avatar_11,
   }
 ];

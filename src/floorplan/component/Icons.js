@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
           </div>
       }
       else {
-        return <Viewer img={props.value.img}/>
+        return <Viewer taskId = {taskId} img={props.value.img}/>
       }
     }
   

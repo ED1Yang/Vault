@@ -1,23 +1,39 @@
-#panorama {
-    width: 600px;
-    height: 400px;
+.custom-hotspot {
+    height:50px;
+    width:50px;
+    border-radius:46px;
+    background-color:transparent;
+    border:5px solid #dcdcdc;
 }
-#controls {
+.custom-hotspot:hover{
+    background-color:rgba(255,255,255,.2)
+}
+
+div.custom-tooltip span {
+    visibility: hidden;
     position: absolute;
-    bottom: 0;
-    z-index: 2;
+    border-radius: 3px;
+    background-color: #fff;
+    color: #000;
     text-align: center;
-    width: 100%;
-    padding-bottom: 3px;
+    font-size: 200%;
+    max-width: 200px;
+    padding: 10px 20px;
+    margin-left: -220px;
+    cursor: default;
 }
-.ctrl {
-    padding: 8px 5px;
-    width: 30px;
-    text-align: center;
-    background: rgba(200, 200, 200, 0.8);
-    display: inline-block;
-    cursor: pointer;
+div.custom-tooltip:hover span{
+    visibility: visible;
 }
-.ctrl:hover {
-    background: rgba(200, 200, 200, 1);
+div.custom-tooltip:hover span:after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-width: 10px;
+    border-style: solid;
+    border-color: #fff transparent transparent transparent;
+    bottom: -20px;
+    left: -10px;
+    margin: 0 50%;
 }

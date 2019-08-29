@@ -2,6 +2,7 @@ import * as React from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 //pages
 import Dashboard from './dashboard/Dashboard'
+import Project from './projectlist/ProjectList'
 import FloorPlan from './floorplan/FloorPlan'
 import Login from './login/Login'
 import UserList from './UserList/UserList'
@@ -33,6 +34,11 @@ const Routes = () => {
                             component={FloorPlan}
                             exact
                             path="/floorplan"
+                        />
+                        <Route
+                            component={Project}
+                            exact
+                            path="/projects"
                         />
                         <Route
                             component={UserList}

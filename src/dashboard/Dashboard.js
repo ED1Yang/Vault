@@ -16,9 +16,10 @@ import Paper from '@material-ui/core/Paper';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
-import { mainListItems, secondaryListItems } from './ListItems';
 import Link from '@material-ui/core/Link';
 //components
+// import { mainListItems, secondaryListItems } from './ListItems';
+import { mainListItems} from './ListItems';
 import Chart from './Chart';
 import Deposits from './Deposits';
 import Tasks from './Tasks';
@@ -165,6 +166,10 @@ export default function Dashboard(props) {
     }
   }
 
+  // const displaySideBar=()=>{
+  //   return '';
+  // }
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -202,14 +207,15 @@ export default function Dashboard(props) {
             <ChevronLeftIcon />
           </IconButton>
         </div>
+
         <Divider />
         <List>{mainListItems}</List>
         <Divider />
-        <List>{secondaryListItems}</List>
+        {/* <List>{secondaryListItems}</List> */}
       </Drawer>
       <main className={classes.content}>
         <div className={classes.appBarSpacer} />
-        <Container maxWidth="lg" className={classes.container}>
+        <Container maxWidth="xl" className={classes.container}>
           {displayContent()}
         </Container>
         <Copyright />

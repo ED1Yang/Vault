@@ -1,10 +1,40 @@
+# VAULT PROJECT
+---
 # Introduction 
 TODO: Give a short introduction of your project. Let this section explain the objectives or the motivation behind this project. 
 
+    users:
+    -admin
+    -employer
+    -client
+
 # Getting Started
-TODO: Guide users through getting your code up and running on their own system. In this section you can talk about:
 1.	Installation process
+
 2.	Software dependencies
+
+These dependencies are used at the moment:
+
+    -login
+    -map
+    npm install
+    npm install -s @material-ui/core
+    npm install -s react-popup
+    npm install -s pannellum-react
+    npm i react-full-screen
+
+    -dashboard
+    npm install @material-ui/core -s
+    npm install @material-ui/icons -s
+    npm i recharts -s
+
+    -router
+    npm install react-router-dom
+
+    -userlist
+    npm i react-perfect-scrollbar
+    npm install --save moment react-moment
+
 3.	Latest releases
 4.	API references
 

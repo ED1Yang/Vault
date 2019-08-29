@@ -16,7 +16,8 @@ import '../assets/css/popup.css';
 import '../assets/css/floorplan.css';
 //images
 import floorPlan from '../assets/images/Ground_floor.png';
-
+//util
+import Url from './util/Url';
 
 const useStyles = makeStyles(theme => ({
   fab: {
@@ -98,7 +99,7 @@ class JobMap extends React.Component {
               formData.append('longitude', y)
               formData.append('info', promptValue)
               formData.append('user_id', '2')
-              fetch('http://localhost/api/client',
+              fetch(Url.addNewPoint,
                 { method: 'POST', body: formData }
               )
                 .then(res => res.json())

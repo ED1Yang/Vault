@@ -1,5 +1,6 @@
 import React from 'react';
 import Icons from './Icons';
+import Url from '../util/Url';
 
 class ShowPoints extends React.Component {
 
@@ -8,7 +9,7 @@ class ShowPoints extends React.Component {
     this.state = {
       points: [],
     };
-    fetch('http://localhost/api/client/2')
+    fetch(Url.getClientPoints)
       .then((r) => r.json()
         .then((data) => {
           this.setState({ points: data });
@@ -16,7 +17,7 @@ class ShowPoints extends React.Component {
   }
   
   getData() {
-    fetch('http://localhost/api/client/2')
+    fetch(Url.getClientPoints)
       .then((r) => r.json()
         .then((data) => {
           this.setState({ points: data });

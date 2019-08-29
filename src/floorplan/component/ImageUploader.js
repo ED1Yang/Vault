@@ -1,5 +1,6 @@
 import React from 'react';
 import Viewer from './Viewer';
+import Url from '../util/Url';
 import '../../assets/css/uploadimg.css';
 
 class ImageUpload extends React.Component {
@@ -14,7 +15,7 @@ class ImageUpload extends React.Component {
       let formData = new FormData();
       formData.append('id', this.state.taskId)
       formData.append('image', this.state.file)
-      fetch('http://localhost/api/emp',
+      fetch(Url.uploadImage,
         { method: 'POST', body: formData }
       )
         .then(res => res.json())

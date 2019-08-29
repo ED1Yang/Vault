@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const UsersToolbar = props => {
+const ProjectsToolbar = props => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -46,21 +46,21 @@ const UsersToolbar = props => {
           color="primary"
           variant="contained"
         >
-          Add user
+          Add project
         </Button>
       </div>
       <div className={classes.row}>
         <SearchInput
           className={classes.searchInput}
-          placeholder="Search user"
+          placeholder="Search project"
         />
       </div>
     </div>
   );
 };
 
-UsersToolbar.propTypes = {
+ProjectsToolbar.propTypes = {
   className: PropTypes.string
 };
 
-export default UsersToolbar;
+export default ProjectsToolbar;

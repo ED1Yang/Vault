@@ -1,8 +1,9 @@
 import React from 'react';
 import { Pannellum } from "pannellum-react";
 import Fullscreen from "react-full-screen";
-// import myImage1 from "../image/test1.png";
-// import myImage2 from "../image/test2.png";
+import '../../assets/css/viewer.css'
+import myImage2 from "../../assets/images/test2.png";
+import Url from '../util/Url';
 
 const style = {
   position: 'absolute',
@@ -18,14 +19,31 @@ export default class ImageDemo extends React.Component {
   constructor(props) {
     super(props);
     this.panImage = React.createRef()
-    this.img = this.props.img;
+    
     this.state={
+      img: this.props.img,
+      taskId: this.props.taskId,
+      points:'',
       isFull: false,
     }
   }
 
+  hanldeClickImage = (evt, args) => {
+    console.log(args.name);
+    this.setState({
+      img: myImage2
+    });
+  };
+
+  hanldeToolTip = (hotSpotDiv , args) => {
+    hotSpotDiv.classList.add('custom-tooltip');
+    let span = document.createElement('span');
+    span.innerHTML = args.message;
+    hotSpotDiv.appendChild(span);
+    };
+
   getData() {
-    fetch('http://localhost/api/client/2')
+    fetch(Url.getClientPoints)
       .then((r) => r.json()
         .then((data) => {
           this.setState({ points: data, isFull: this.state.isFull });
@@ -41,10 +59,20 @@ export default class ImageDemo extends React.Component {
   //   let user_hfov=this.panImage.current.getViewer().getHfov();
   // }
 
+  hanldeToolTip = (hotSpotDiv , args) => {
+    hotSpotDiv.classList.add('custom-tooltip');
+    let span = document.createElement('span');
+    span.innerHTML = args.message;
+    hotSpotDiv.appendChild(span)
+    span.style.width = span.scrollWidth - 20 + 'px';
+    span.style.marginLeft = -(span.scrollWidth - hotSpotDiv.offsetWidth) / 2 + 'px';
+    span.style.marginTop = -span.scrollHeight - 12 + 'px';
+  };
+
   render() {
     return (
       <div>
-        <h1>360 Photo Viewer</h1>
+        {/* <h1>360 Photo Viewer</h1> */}
         
         <button onClick={this.goFull}>
           Go Fullscreen
@@ -58,12 +86,10 @@ export default class ImageDemo extends React.Component {
           ref={this.panImage}
           width="100%"
           height={this.state.isFull ? "100%" : "600px"}
-          image={this.img}
+          image={this.state.img}
           pitch={6}
           yaw={60}
           hfov={100}
-          author='me'
-          title='hello World'
           autoLoad
           showFullscreenCtrl={false}
         >
@@ -71,8 +97,12 @@ export default class ImageDemo extends React.Component {
           type="custom"
           pitch={31}
           yaw={150}
-          handleClick={(evt , args) => console.log(args.name)}
-          handleClickArg={{ "name":"test" }}/>
+          handleClick={(evt , args) => this.hanldeClickImage(evt , args)}
+          handleClickArg={{ "name":"myImage2" }}
+          tooltip={(hotSpotDiv , args) => this.hanldeToolTip(hotSpotDiv , args)}
+          tooltipArg={{'message':'Next Image'}}
+          cssClass="custom-hotspot"
+          />
           {/* <Pannellum.Hotspot
             type="info"
             pitch={11}
