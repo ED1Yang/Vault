@@ -15,7 +15,7 @@ export default [
     imageUrl: product_1,
     totalDownloads: '999',
     updatedAt: '03/09/2019',
-    link:,
+    link:'/floorplan',
   },
   {
     id: uuid(),

@@ -3,11 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { IconButton, Grid, Typography } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-// import Link from '@material-ui/core/Link';
-import { Link as RouterLink } from 'react-router-dom';
-
-
-
+//components
 import ProjectsToolbar from './components/ProjectsToolbar'
 import ProjectCard from './components/ProjectCard';
 import Dashboard from '../dashboard/Dashboard'
@@ -50,10 +46,7 @@ const ProjectList = () => {
               md={6}
               xs={12}
             >
-              {/* <Link color="inherit" href={project.link}> */}
-                <ProjectCard 
-                  project={project} onClick={console.}/>
-              {/* </Link> */}
+                <ProjectCard project={project} />
             </Grid>
           ))}
         </Grid>

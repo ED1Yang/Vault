@@ -12,6 +12,10 @@ import {
 } from '@material-ui/core';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import GetAppIcon from '@material-ui/icons/GetApp';
+//
+// import { Link as RouterLink } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
+
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -50,20 +54,24 @@ const ProjectCard = props => {
       className={clsx(classes.root, className)}
     >
       <CardContent>
-        <div className={classes.imageContainer}>
-          <img
-            alt="Project"
-            className={classes.image}
-            src={project.imageUrl}
-          />
-        </div>
-        <Typography
-          align="center"
-          gutterBottom
-          variant="h4"
-        >
-          {project.title}
-        </Typography>
+        {/* Div for test */}
+        <Link href={project.link} variant="body2">
+          <div className={classes.imageContainer}>
+            <img
+              alt="Project"
+              className={classes.image}
+              src={project.imageUrl}
+
+            />
+          </div>
+          <Typography
+            align="center"
+            gutterBottom
+            variant="h4"
+          >
+            {project.title}
+          </Typography>
+        </Link>
         <Typography
           align="center"
           variant="body1"
