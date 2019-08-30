@@ -74,7 +74,5 @@ class ShowPoints extends React.Component {
   render() {
     return this.displayPoints();
   }
-
-
 }
 export default ShowPoints;

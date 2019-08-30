@@ -10,7 +10,7 @@ import Prompt from './component/Prompt';
 import Icons from './component/Icons';
 import AntSwitch from './component/AntSwitch';
 import ShowPoints from './component/ShowPoints';
-import Dashboard from '../dashboard/Dashboard'
+import Main from '../main/Main'
 //css
 import '../assets/css/popup.css';
 import '../assets/css/floorplan.css';
@@ -154,7 +154,7 @@ class JobMap extends React.Component {
     </div>
     <Popup parent={this} />
   </div>
-    return <Dashboard value={contents} />
+    return <Main value={contents} />
   }
 }
 export default JobMap;

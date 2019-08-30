@@ -29,7 +29,6 @@ export default class ImageDemo extends React.Component {
   }
 
   hanldeClickImage = (evt, args) => {
-    console.log(args.name);
     this.setState({
       img: myImage2
     });

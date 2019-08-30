@@ -6,7 +6,7 @@ import Project from './projectlist/ProjectList'
 import FloorPlan from './floorplan/FloorPlan'
 import Login from './login/Login'
 import UserList from './UserList/UserList'
-import NotFound from './dashboard/NotFound'
+import NotFound from './main/NotFound'
 
 
 const Routes = () => {

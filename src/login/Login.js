@@ -14,7 +14,8 @@ import { withStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
 import Container from '@material-ui/core/Container';
 //components:
-import Dashboard from '../dashboard/Dashboard'
+// import Dashboard from '../dashboard/Dashboard'
+import Main from '../main/Main'
 
 
 
@@ -157,7 +158,7 @@ const styles = (theme) => ({
     <Box mt={8}>
     </Box>
   </Container>
-    return <Dashboard value={contents}/>
+    return <Main value={contents}/>
   }
 }
 

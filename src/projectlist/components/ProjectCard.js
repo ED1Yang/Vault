@@ -11,7 +11,7 @@ import {
   Divider
 } from '@material-ui/core';
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import GetAppIcon from '@material-ui/icons/GetApp';
+import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 //
 // import { Link as RouterLink } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
@@ -101,12 +101,12 @@ const ProjectCard = props => {
             className={classes.statsItem}
             item
           >
-            <GetAppIcon className={classes.statsIcon} />
+            <PhotoCameraIcon className={classes.statsIcon} />
             <Typography
               display="inline"
               variant="body2"
             >
-              {project.totalDownloads} Downloads
+              {project.totalPhotos} Photos
             </Typography>
           </Grid>
         </Grid>

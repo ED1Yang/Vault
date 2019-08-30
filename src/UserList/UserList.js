@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import UsersTable from './components/UsersTable'
 import UsersToolbar from './components/UsersToolbar'
 import mockData from './data';
-import Dashboard from '../dashboard/Dashboard'
+import Main from '../main/Main'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -26,7 +26,7 @@ const UserList = () => {
       </div>
     </div>
 
-  return <Dashboard value={contents} />
+  return <Main value={contents} />
 };
 
 export default UserList;

@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import Modal from '@material-ui/core/Modal';
-import { Icon } from '@material-ui/core';
+import Point from '@material-ui/icons/FiberManualRecordTwoTone'
 import Viewer from './Viewer';
 import ImageUploader from './ImageUploader';
 
@@ -96,9 +96,7 @@ const useStyles = makeStyles(theme => ({
             <p> Photo Info: {info}</p>
           </div>
         </Modal>
-        <Icon className={classes.iconHover} onClick={handleOpen}>
-          fiber_manual_record
-        </Icon>
+        <Point className={classes.iconHover} onClick={handleOpen}/>
       </div>
     );
   }

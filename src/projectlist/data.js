@@ -13,7 +13,7 @@ export default [
     description:
       'asBUILT is one of the largest and most experienced independent, specialist BIM consultancies in Australasia.',
     imageUrl: product_1,
-    totalDownloads: '999',
+    totalPhotos: '999',
     updatedAt: '03/09/2019',
     link:'/floorplan',
   },
@@ -23,7 +23,7 @@ export default [
     description:
       'Medium is an online publishing platform developed by Evan Williams, and launched in August 2012.',
     imageUrl: product_2,
-    totalDownloads: '625',
+    totalPhotos: '625',
     createdAt: '31/08/2019',
     link:'#',
   },
@@ -33,7 +33,7 @@ export default [
     description:
       'Slack is a cloud-based set of team collaboration tools and services, founded by Stewart Butterfield.',
     imageUrl: product_3,
-    totalDownloads: '857',
+    totalPhotos: '857',
     createdAt: '03/08/2019',
     link:'#',
   },
@@ -43,7 +43,7 @@ export default [
     description:
       'Lyft is an on-demand transportation company based in San Francisco, California.',
     imageUrl: product_4,
-    totalDownloads: '406',
+    totalPhotos: '406',
     createdAt: '04/08/2019',
     link:'#',
   },
@@ -53,7 +53,7 @@ export default [
     description:
       'GitHub is a popular web-based hosting service for version control of code using Git.',
     imageUrl: product_5,
-    totalDownloads: '835',
+    totalPhotos: '835',
     createdAt: '04/08/2019',
     link:'#',
   },
@@ -62,7 +62,7 @@ export default [
     title: 'Squarespace',
     description:'Squarespace provides software as a service for website building and hosting.',
     imageUrl: product_6,
-    totalDownloads: '835',
+    totalPhotos: '835',
     createdAt: '04/08/2019',
     link:'#',
   }

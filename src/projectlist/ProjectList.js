@@ -6,7 +6,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 //components
 import ProjectsToolbar from './components/ProjectsToolbar'
 import ProjectCard from './components/ProjectCard';
-import Dashboard from '../dashboard/Dashboard'
+import Main from '../main/Main'
 
 import mockData from './data';
 
@@ -62,7 +62,7 @@ const ProjectList = () => {
       </div>
     </div>
 
-  return <Dashboard value={contents} />
+  return <Main value={contents} />
 };
 
 export default ProjectList;
