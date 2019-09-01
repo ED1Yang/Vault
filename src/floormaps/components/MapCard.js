@@ -43,7 +43,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ProjectCard = props => {
+const MapCard = props => {
   const { className, project, ...rest } = props;
 
   const classes = useStyles();
@@ -115,9 +115,9 @@ const ProjectCard = props => {
   );
 };
 
-ProjectCard.propTypes = {
+MapCard.propTypes = {
   className: PropTypes.string,
   project: PropTypes.object.isRequired
 };
 
-export default ProjectCard;
+export default MapCard;

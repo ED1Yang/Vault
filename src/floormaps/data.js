@@ -10,6 +10,6 @@ export default [
     imageUrl: floorPlan,
     totalPhotos: '50',
     updatedAt: '03/09/2019',
-    link:'floorplans/asbuilt-ground-floor',
+    link:'/floorplans/asbuilt-ground-floor',
   }
 ];

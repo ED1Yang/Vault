@@ -61,7 +61,7 @@ class ImageUpload extends React.Component {
               type="submit"
               onClick={(e)=>this._handleSubmit(e)}>Upload Image</button>
           </form>
-            {imagePreviewUrl === null ? false : true && <Viewer img={imagePreviewUrl}/>}
+            {imagePreviewUrl === null ? false : true && <Viewer img={imagePreviewUrl} source="uploader"/>}
         </div>
       )
     }

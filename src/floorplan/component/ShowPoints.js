@@ -9,11 +9,7 @@ class ShowPoints extends React.Component {
     this.state = {
       points: [],
     };
-    fetch(Url.getClientPoints)
-      .then((r) => r.json()
-        .then((data) => {
-          this.setState({ points: data });
-        })).catch(e => console.log('error:', e));
+    this.getData();
   }
   
   getData() {
@@ -74,5 +70,7 @@ class ShowPoints extends React.Component {
   render() {
     return this.displayPoints();
   }
+
+
 }
 export default ShowPoints;
