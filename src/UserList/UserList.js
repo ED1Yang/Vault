@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 //components
 import UsersTable from './components/UsersTable'
-import UsersToolbar from './components/UsersToolbar'
+// import UsersToolbar from './components/UsersToolbar'
+import TopToolbar from '../components/TopToolbar'
 import mockData from './data';
 import Main from '../main/Main'
 
@@ -20,7 +21,7 @@ const UserList = () => {
   const [users] = useState(mockData);
   const contents = 
      <div className={classes.root}>
-      <UsersToolbar />
+      <TopToolbar title='user'/>
       <div className={classes.content}>
         <UsersTable users={users} />
       </div>

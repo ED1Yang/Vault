@@ -5,7 +5,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 //components
 import TopToolbar from '../components/TopToolbar'
-import ProjectCard from './components/ProjectCard';
+import MapCard from './components/MapCard';
 import Main from '../main/Main'
 
 import mockData from './data';
@@ -25,14 +25,14 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ProjectList = () => {
+const MapList = () => {
   const classes = useStyles();
 
   const [projects] = useState(mockData);
 
   const contents =
     <div className={classes.root}>
-      <TopToolbar title='project' />
+      <TopToolbar title='floormap' />
       <div className={classes.content}>
         <Grid
           container
@@ -46,7 +46,7 @@ const ProjectList = () => {
               md={6}
               xs={12}
             >
-                <ProjectCard project={project} />
+                <MapCard project={project} />
             </Grid>
           ))}
         </Grid>
@@ -65,4 +65,4 @@ const ProjectList = () => {
   return <Main value={contents} />
 };
 
-export default ProjectList;
+export default MapList;

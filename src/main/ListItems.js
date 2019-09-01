@@ -48,7 +48,7 @@ export const mainListItems = (
     <ListItem
       button
       component={RouterLink}
-      to="/floorplan"
+      to="/floorplans"
       >
       <ListItemIcon>
         <Icon>layers</Icon>
@@ -72,82 +72,88 @@ export const mainListItems = (
   </div>
 );
 
-export const empListItems = (
-  <div>
-  <ListItem
-      button
-      component={RouterLink}
-      to="/dashboard"
-      >
-      <ListItemIcon>
-        <Icon>dashboard</Icon>
-      </ListItemIcon>
-      <ListItemText primary="Dashboard" />
-    </ListItem>
+// other entries
 
-    <ListItem
-      button
-      component={RouterLink}
-      to="/floorplan"
-      >
-      <ListItemIcon>
-        <Icon>layers</Icon>
-      </ListItemIcon>
-      <ListItemText primary="Floor plans" />
+// export const empListItems = (
+//   <div>
+//   <ListItem
+//       button
+//       component={RouterLink}
+//       to="/dashboard"
+//       >
+//       <ListItemIcon>
+//         <Icon>dashboard</Icon>
+//       </ListItemIcon>
+//       <ListItemText primary="Dashboard" />
+//     </ListItem>
 
-    </ListItem>
+//     <ListItem
+//       button
+//       component={RouterLink}
+//       to="/floorplans"
+//       >
+//       <ListItemIcon>
+//         <Icon>layers</Icon>
+//       </ListItemIcon>
+//       <ListItemText primary="Floor plans" />
 
-    <ListItem
-      button
-      component={RouterLink}
-      to="/login"
-      >
-      <ListItemIcon>
-        <Icon>account_box</Icon>
-      </ListItemIcon>
-      <ListItemText primary="Account" />
-    </ListItem>
+//     </ListItem>
 
-  </div>
-);
+//     <ListItem
+//       button
+//       component={RouterLink}
+//       to="/login"
+//       >
+//       <ListItemIcon>
+//         <Icon>account_box</Icon>
+//       </ListItemIcon>
+//       <ListItemText primary="Account" />
+//     </ListItem>
 
-export const clientListItems = (
-  <div>
-  <ListItem
-      button
-      component={RouterLink}
-      to="/dashboard"
-      >
-      <ListItemIcon>
-        <Icon>dashboard</Icon>
-      </ListItemIcon>
-      <ListItemText primary="Dashboard" />
-    </ListItem>
+//   </div>
+// );
 
-    <ListItem
-      button
-      component={RouterLink}
-      to="/floorplan"
-      >
-      <ListItemIcon>
-        <Icon>layers</Icon>
-      </ListItemIcon>
-      <ListItemText primary="Floor plans" />
-    </ListItem>
+// export const clientListItems = (
+//   <div>
+//   <ListItem
+//       button
+//       component={RouterLink}
+//       to="/dashboard"
+//       >
+//       <ListItemIcon>
+//         <Icon>dashboard</Icon>
+//       </ListItemIcon>
+//       <ListItemText primary="Dashboard" />
+//     </ListItem>
 
-    <ListItem
-      button
-      component={RouterLink}
-      to="/login"
-      >
-      <ListItemIcon>
-        <Icon>account_box</Icon>
-      </ListItemIcon>
-      <ListItemText primary="Account" />
-    </ListItem>
+//     <ListItem
+//       button
+//       component={RouterLink}
+//       to="/floorplan"
+//       >
+//       <ListItemIcon>
+//         <Icon>layers</Icon>
+//       </ListItemIcon>
+//       <ListItemText primary="Floor plans" />
+//     </ListItem>
 
-  </div>
-);
+//     <ListItem
+//       button
+//       component={RouterLink}
+//       to="/login"
+//       >
+//       <ListItemIcon>
+//         <Icon>account_box</Icon>
+//       </ListItemIcon>
+//       <ListItemText primary="Account" />
+//     </ListItem>
+
+//   </div>
+// );
+
+
+//secondary lists
+
 
 // export const secondaryListItems = (
 //   <div>

@@ -3,6 +3,7 @@ import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 //pages
 import Dashboard from './dashboard/Dashboard'
 import Project from './projectlist/ProjectList'
+import FloorMaps from './floormaps/MapList'
 import FloorPlan from './floorplan/FloorPlan'
 import Login from './login/Login'
 import UserList from './UserList/UserList'
@@ -31,9 +32,14 @@ const Routes = () => {
                             path="/login"
                         />
                         <Route
+                            component={FloorMaps}
+                            exact
+                            path="/floorplans"
+                        />
+                        <Route
                             component={FloorPlan}
                             exact
-                            path="/floorplan"
+                            path="/floorplans/asbuilt-ground-floor"
                         />
                         <Route
                             component={Project}
