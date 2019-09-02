@@ -1,6 +1,7 @@
 import React from 'react';
 import Viewer from './Viewer';
 import Url from '../util/Url';
+// import '../../assets/css/viewer.css';
 import '../../assets/css/uploadimg.css';
 
 class ImageUpload extends React.Component {
@@ -52,8 +53,8 @@ class ImageUpload extends React.Component {
     render() {
       let {imagePreviewUrl} = this.state;
       return (
-        <div>
-          <form onSubmit={(e)=>this._handleSubmit(e)}>
+        <div className='submitForm'>
+          <form className="form" onSubmit={(e)=>this._handleSubmit(e)}>
             <input className="fileInput" 
               type="file" accept="image/png, image/jpeg, image/jpg"
               onChange={(e)=>this._handleImageChange(e)} multiple/>

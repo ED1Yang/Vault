@@ -39,7 +39,8 @@ class ShowPoints extends React.Component {
   getPointColor(status) {
     return (
       status === 'New' ? 'green' : 
-        status === 'Closed' ? 'grey' : 'blue'
+        status === 'Closed' ? 'grey' : 
+          status==='Working'? 'blue' : 'pink'
     )
   }
 

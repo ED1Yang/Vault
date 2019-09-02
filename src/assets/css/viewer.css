@@ -1,15 +1,92 @@
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    position: fixed;
+    cursor: default;
+    width: 100%;
+    height: 100%;
+}
+
+.modals {
+    height:100%;
+}
+
+.pnlm-container{
+    position:absolute;
+}
+
+.makeStyles-paper-314 {
+    height:100%;
+}
+
+.viewer {
+    height:100%;
+}
+
+.fullscreen {
+    height:100%;
+}
+
+
+.photo-info {
+    background-color:  rgba(255, 255, 255, 0.5);
+    position: absolute;
+    right:0;
+    bottom:0;
+}
+
+#controlbar {
+    position: absolute;
+    left:10px;
+    top: 10px;
+}
+
+#map{
+    position: absolute;
+    left:10px;
+    bottom: 10px;
+}
+
+#rotate-img{
+    padding:2px 0px 0px 0px;
+    width:14px;
+    height: 14px;
+}
+
+.ab-controls {
+    margin-top: 0;
+    top:0;
+    color:black;
+    padding: 3px 5px;
+    width: 26px;
+    height: 26px;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.7);
+    /* display: inline-block; */
+    cursor: pointer;
+}
+
+.ab-controls:hover {
+    background: rgb(255, 255, 255)
+}
+
 .custom-hotspot {
     height:50px;
     width:50px;
     border-radius:46px;
     background-color:transparent;
     border:5px solid #dcdcdc;
-}
-.custom-hotspot:hover{
+   }
+   .custom-hotspot:hover{
     background-color:rgba(255,255,255,.2)
-}
-
-div.custom-tooltip span {
+   }
+    
+   div.custom-tooltip span {
     visibility: hidden;
     position: absolute;
     border-radius: 3px;
@@ -21,11 +98,11 @@ div.custom-tooltip span {
     padding: 10px 20px;
     margin-left: -220px;
     cursor: default;
-}
-div.custom-tooltip:hover span{
+   }
+   div.custom-tooltip:hover span{
     visibility: visible;
-}
-div.custom-tooltip:hover span:after {
+   }
+   div.custom-tooltip:hover span:after {
     content: '';
     position: absolute;
     width: 0;
@@ -36,4 +113,6 @@ div.custom-tooltip:hover span:after {
     bottom: -20px;
     left: -10px;
     margin: 0 50%;
-}
+   }
+
+   
