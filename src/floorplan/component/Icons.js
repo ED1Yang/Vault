@@ -93,10 +93,10 @@ export default function Icons(props) {
             </p>
             <p> Photo Info: {info}</p>
           </div>
-
-        </div>
-      </Modal>
-      <Point className={classes.iconHover} onClick={handleOpen} />
-    </div>
-  );
-}
+          </div>
+        </Modal>
+        {parent.state.show ? <Point className={classes.iconHover} onClick={handleOpen}/> : <Point className={classes.iconHover}/>}
+        
+      </div>
+    );
+  }

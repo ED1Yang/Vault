@@ -8,6 +8,7 @@ class ShowPoints extends React.Component {
     super(props);
     this.state = {
       points: [],
+      show: true,
     };
     this.getData();
   }

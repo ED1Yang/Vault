@@ -4,8 +4,9 @@ import Fullscreen from "react-full-screen";
 import '../../assets/css/viewer.css';
 import Url from '../util/Url';
 
-
 import '../../assets/css/viewer.css'
+
+import floorPlan from '../../assets/images/Ground_floor.png';
 
 export default class Viewer extends React.Component {
   constructor(props) {
@@ -62,8 +63,13 @@ export default class Viewer extends React.Component {
     span.style.marginLeft = -(span.scrollWidth - hotSpotDiv.offsetWidth) / 2 + 'px';
     span.style.marginTop = -span.scrollHeight - 12 + 'px';
   };
-  handleMouseUp = (e) => {
-    console.log('add: ' + this.panImage.current.getViewer().mouseEventToCoords(e));
+  handleMouseUp = (e) =>{
+    let elements = document.getElementsByClassName('pnlm-about-msg');
+    while(elements.length > 0){
+      elements[0].parentNode.removeChild(elements[0]);
+    }
+    if(e.button === 2)
+      alert('pitch: ' + this.panImage.current.getViewer().mouseEventToCoords(e)[0] + ', yaw: ' + this.panImage.current.getViewer().mouseEventToCoords(e)[1])
   }
 
   handlePanUp=()=>{
@@ -122,7 +128,7 @@ export default class Viewer extends React.Component {
             <div id="music-toggle" className="ab-controls pnlm-zoom-controls pnlm-controls"><span role="img" aria-label="pin">&#128205;</span></div>
           </div>
           <div id="map">
-            <div id="floorplan" className="ab-controls pnlm-zoom-controls pnlm-controls">&#128446;</div>
+            <div id="floorplan" className="ab-controls pnlm-zoom-controls pnlm-controls"><img alt="thumbnail_floorplan" src={floorPlan}></img></div>
           </div>
         </Fullscreen>
         <br />

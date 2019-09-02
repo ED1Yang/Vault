@@ -37,6 +37,7 @@ class JobMap extends React.Component {
       y: "",
       isEditMode: false,
       points: [],
+      show: false,
     };
   }
   onRef=(ref)=>{
