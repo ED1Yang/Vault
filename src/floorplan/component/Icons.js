@@ -57,10 +57,10 @@ export default function Icons(props) {
   let info = props.value.info;
   const img = () => {
     if (props.value.img === '') {
-      return <ImageUploader taskId={taskId} parent={parent} />
+      return <ImageUploader taskId={taskId} parent={parent} x = {x} y = {y} info = {info}/>
     }
     else {
-      return <Viewer taskId={taskId} img={props.value.img} />
+      return <Viewer taskId={taskId}/>
     }
   }
 
@@ -86,17 +86,11 @@ export default function Icons(props) {
       >
         <div style={modalStyle} className={classes.paper}>
           {img()}
-          <div className="photo-info">
-            <h2 id="simple-modal-title">Current point position: </h2>
-            <p id="simple-modal-description">
-              x: {x} y: {y}
-            </p>
-            <p> Photo Info: {info}</p>
-          </div>
           </div>
         </Modal>
-        {parent.state.show ? <Point className={classes.iconHover} onClick={handleOpen}/> : <Point className={classes.iconHover}/>}
-        
+        {/* {parent.state.show ? <Point className={classes.iconHover} onClick={handleOpen}/> : <Point className={classes.iconHover}/>} */}
+        {/* 0903: for test purpose~~~ */}
+        <Point className={classes.iconHover} onClick={handleOpen}/>
       </div>
     );
   }

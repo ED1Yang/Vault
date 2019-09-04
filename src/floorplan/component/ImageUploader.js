@@ -12,21 +12,24 @@ class ImageUpload extends React.Component {
   
     _handleSubmit(e) {
       e.preventDefault();
-      let feedback = '';
-      let formData = new FormData();
-      formData.append('id', this.state.taskId)
-      formData.append('image', this.state.file)
-      fetch(Url.uploadImage,
-        { method: 'POST', body: formData }
-      )
-        .then(res => res.json())
-        .then(data => {
-          feedback = data.Message;
-          alert(feedback);
-          this.state.parent.getData();
-          this.state.parent.displayPoints();
-        })
-        .catch(e => console.log('error:', e))
+      if(this.state.imagePreviewUrl !== null){
+        let feedback = '';
+        let formData = new FormData();
+        formData.append('id', this.state.taskId)
+        formData.append('image', this.state.file)
+        fetch(Url.uploadImage,
+          { method: 'POST', body: formData }
+        )
+          .then(res => res.json())
+          .then(data => {
+            feedback = data.Message;
+            alert(feedback);
+            this.state.parent.getData();
+            this.state.parent.displayPoints();
+          })
+          .catch(e => console.log('error:', e))
+        }else
+          alert('please add a image file.');
     }
   
     _handleImageChange(e) {
@@ -62,7 +65,14 @@ class ImageUpload extends React.Component {
               type="submit"
               onClick={(e)=>this._handleSubmit(e)}>Upload Image</button>
           </form>
-            {imagePreviewUrl === null ? false : true && <Viewer img={imagePreviewUrl} source="uploader"/>}
+            {imagePreviewUrl !== null && <Viewer img={imagePreviewUrl} source="uploader"  x = {this.props.x} y = {this.props.y} info = {this.props.info}/>}
+            {imagePreviewUrl === null && <div className="photo-info">
+            <h2 id="simple-modal-title">Current point position: </h2>
+            <p id="simple-modal-description">
+              x: {this.props.x} y: {this.props.y}
+            </p>
+            <p> Photo Info: {this.props.info}</p>
+          </div>}
         </div>
       )
     }

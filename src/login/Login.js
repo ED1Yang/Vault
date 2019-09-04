@@ -142,13 +142,15 @@ const styles = (theme) => ({
         </Button>
         <Grid container>
           <Grid item xs>
-            <Link href="#" variant="body2">
+            <Link 
+            href="https://account.live.com/ResetPassword.aspx?wreply=https://login.live.com/login.srf%3fwa%3dwsignin1.0%26rpsnv%3d13%26ct%3d1567458793%26rver%3d7.0.6738.0%26wp%3dMBI_SSL%26wreply%3dhttps%253A%252F%252Faccount.microsoft.com%252Fauth%252Fcomplete-signin%253Fru%253Dhttps%25253A%25252F%25252Faccount.microsoft.com%25252F%25253Flang%25253Den-hk%252526refd%25253Daccount.microsoft.com%252526refp%25253Dsignedout-index%26lc%3d1033%26id%3d292666%26lw%3d1%26fl%3deasi2%26ru%3dhttps%253A%252F%252Faccount.microsoft.com%252Faccount%253Flang%253Den-hk%26contextid%3dA2972AFC5DBE6202%26bk%3d1567458796&id=292666&uiflavor=web&uaid=ef692eaf981f49344185e34a7d10c778&mkt=EN-US&lc=1033&bk=1567458796&mn=" 
+            variant="body2">
               Forgot password?
             </Link>
           </Grid>
           <Grid item>
             {"Don't have an account? "}
-            <Link href="#" variant="body2">
+            <Link href="https://signup.live.com" variant="body2">
               Sign Up
             </Link>
           </Grid>

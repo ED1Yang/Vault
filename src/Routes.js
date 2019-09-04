@@ -8,6 +8,10 @@ import FloorPlan from './floorplan/FloorPlan'
 import Login from './login/Login'
 import UserList from './UserList/UserList'
 import NotFound from './main/NotFound'
+import Thumbnail from './floorplan/thumbnail/Thumbnail';
+
+//test
+// import Thumbnail from './floorplan/Thumbnail'
 
 
 const Routes = () => {
@@ -50,6 +54,11 @@ const Routes = () => {
                             component={UserList}
                             exact
                             path="/clients"
+                        />
+                        <Route
+                            component={Thumbnail}
+                            exact
+                            path="/thumbnail"
                         />
                         <Route
                             component={NotFound}

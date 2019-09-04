@@ -6,20 +6,20 @@ import Url from '../util/Url';
 
 import '../../assets/css/viewer.css'
 
-import floorPlan from '../../assets/images/Ground_floor.png';
+import Thumbnail from '../thumbnail/Thumbnail'
 
 export default class Viewer extends React.Component {
   constructor(props) {
     super(props);
-    this.panImage = React.createRef()
-    this.state = { 
+    this.panImage = React.createRef();
+    this.state = {
       isFull: false,
-      rotate:0,
-     }
+      rotate: 0,
+    }
     if (this.props.source !== "uploader")
       this.getData(this.props.taskId);
     else
-      this.state = { img: this.props.img }
+      this.state = { img: this.props.img, x: this.props.x, y: this.props.y, info: this.props.info }
   }
 
   getData(id) {
@@ -42,14 +42,14 @@ export default class Viewer extends React.Component {
               tooltipArg={{ 'message': item.Message }}
               cssClass="custom-hotspot"
             />);
-            this.setState({ taskId: data.ID, img: data.Img, hotspots: points });
+            this.setState({ taskId: data.ID, img: data.Img, hotspots: points, x: data.X, y: data.Y, info: data.Info });
           } else {
-            this.setState({ taskId: data.ID, img: data.Img, hotspots: [] });
+            this.setState({ taskId: data.ID, img: data.Img, hotspots: [], x: data.X, y: data.Y, info: data.Info });
           }
         })).catch(e => console.log('error: ' + e));
   }
   goFull = () => {
-    this.state.isFull? this.setState({ isFull: false }):this.setState({ isFull: true });
+    this.state.isFull ? this.setState({ isFull: false }) : this.setState({ isFull: true });
   }
   hanldeClickImage = (evt, args) => {
     this.getData(args.id);
@@ -63,50 +63,58 @@ export default class Viewer extends React.Component {
     span.style.marginLeft = -(span.scrollWidth - hotSpotDiv.offsetWidth) / 2 + 'px';
     span.style.marginTop = -span.scrollHeight - 12 + 'px';
   };
-  handleMouseUp = (e) =>{
+  handleMouseUp = (e) => {
     let elements = document.getElementsByClassName('pnlm-about-msg');
-    while(elements.length > 0){
+    while (elements.length > 0) {
       elements[0].parentNode.removeChild(elements[0]);
     }
-    if(e.button === 2)
+    if (e.button === 2)
       alert('pitch: ' + this.panImage.current.getViewer().mouseEventToCoords(e)[0] + ', yaw: ' + this.panImage.current.getViewer().mouseEventToCoords(e)[1])
   }
 
-  handlePanUp=()=>{
-    this.panImage.current.getViewer().setPitch(this.panImage.current.getViewer().getPitch()+10);
+  handlePanUp = () => {
+    this.panImage.current.getViewer().setPitch(this.panImage.current.getViewer().getPitch() + 10);
   }
 
-  handlePanDown=()=>{
-    this.panImage.current.getViewer().setPitch(this.panImage.current.getViewer().getPitch()-10);
+  handlePanDown = () => {
+    this.panImage.current.getViewer().setPitch(this.panImage.current.getViewer().getPitch() - 10);
   }
 
-  handlePanLeft=()=>{
-    this.panImage.current.getViewer().setYaw(this.panImage.current.getViewer().getYaw()-10);
+  handlePanLeft = () => {
+    this.panImage.current.getViewer().setYaw(this.panImage.current.getViewer().getYaw() - 10);
   }
 
-  handlePanRight=()=>{
-    this.panImage.current.getViewer().setYaw(this.panImage.current.getViewer().getYaw()+10);
+  handlePanRight = () => {
+    this.panImage.current.getViewer().setYaw(this.panImage.current.getViewer().getYaw() + 10);
   }
 
-  handleZoomIn=()=>{
-    this.panImage.current.getViewer().setHfov(this.panImage.current.getViewer().getHfov()-10);
+  handleZoomIn = () => {
+    this.panImage.current.getViewer().setHfov(this.panImage.current.getViewer().getHfov() - 10);
   }
 
-  handleZoomOut=()=>{
-    this.panImage.current.getViewer().setHfov(this.panImage.current.getViewer().getHfov()+10);
+  handleZoomOut = () => {
+    this.panImage.current.getViewer().setHfov(this.panImage.current.getViewer().getHfov() + 10);
   }
 
   render() {
+    // const style = {
+    //   width: '50%',
+    //   height: '50%',
+    // }
+
+    // const style1 = {
+    //   width: '50px',
+    //   height: '50px',
+    // }
     return (
       <div className="viewer">
         <Fullscreen
           enabled={this.state.isFull}
           onChange={isFull => this.setState({ isFull })}>
-          
           <Pannellum
             ref={this.panImage}
             width="100%"
-            height={this.state.isFull ? "100%" : "100%"}
+            height="100%"
             image={this.state.img}
             pitch={6}
             yaw={60}
@@ -127,8 +135,15 @@ export default class Viewer extends React.Component {
             <div id="fullscreen" className="ab-controls pnlm-zoom-controls pnlm-controls" onClick={this.goFull}>&#x2922;</div>
             <div id="music-toggle" className="ab-controls pnlm-zoom-controls pnlm-controls"><span role="img" aria-label="pin">&#128205;</span></div>
           </div>
-          <div id="map">
-            <div id="floorplan" className="ab-controls pnlm-zoom-controls pnlm-controls"><img alt="thumbnail_floorplan" src={floorPlan}></img></div>
+          <div id="thumbnail_div">
+            <Thumbnail />
+          </div>
+          <div className="photo-info">
+            <h2 id="simple-modal-title">Current point position: </h2>
+            <p id="simple-modal-description">
+              x: {this.state.x} y: {this.state.y}
+            </p>
+            <p> Photo Info: {this.state.info}</p>
           </div>
         </Fullscreen>
         <br />
