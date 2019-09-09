@@ -1,47 +1,36 @@
 import React, { Component } from 'react';
-import Routes from './Routes'
+import { Router } from 'react-router-dom';
+import { createBrowserHistory } from 'history';
+import { Chart } from 'react-chartjs-2';
+import { ThemeProvider } from '@material-ui/styles';
+import validate from 'validate.js';
 
-import './assets/css/startPage.css'
+import { chartjs } from './helpers';
+import theme from './theme';
+import 'react-perfect-scrollbar/dist/css/styles.css';
+import './assets/scss/index.scss';
+import validators from './common/validators';
+import Routes from './Routes';
+
+const browserHistory = createBrowserHistory();
+
+Chart.helpers.extend(Chart.elements.Rectangle.prototype, {
+  draw: chartjs.draw
+});
+
+validate.validators = {
+  ...validate.validators,
+  ...validators
+};
 
 export default class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      userIsDefined: false,
-      user:'',
-    }
-    this.handleAdminOnClick=this.handleAdminOnClick.bind(this);
-    this.handleEmpOnClick=this.handleEmpOnClick.bind(this);
-    this.handleClientOnClick=this.handleClientOnClick.bind(this);
-  }
-  handleAdminOnClick() {
-    console.log('onclick function');
-    this.setState({userIsDefined:true,user:'admin'});
-  }
-
-  handleEmpOnClick() {
-    console.log('onclick function');
-    this.setState({userIsDefined:true,user:'emp'});
-  }
-
-  handleClientOnClick() {
-    console.log('onclick function');
-    this.setState({userIsDefined:true,user:'client'});
-  }
-
   render() {
-    if (this.state.userIsDefined) {
-      return <Routes value={this.state.user}/>
-    } else {
-      return (
-        <div className="startpage">
-          <h1>Please select your role:</h1>
-          <button className="button" onClick={this.handleAdminOnClick}>Admin</button>
-          <button className="button" onClick={this.handleEmpOnClick}>Employee</button>
-          <button className="button" onClick={this.handleClientOnClick}>Client</button>
-          {/* <Route /> */}
-        </div>
-      );
-    }
+    return (
+      <ThemeProvider theme={theme}>
+        <Router history={browserHistory}>
+          <Routes />
+        </Router>
+      </ThemeProvider>
+    );
   }
 }
