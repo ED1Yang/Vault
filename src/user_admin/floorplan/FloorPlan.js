@@ -23,6 +23,8 @@ import Url from '../../components/Url';
 const useStyles = makeStyles(theme => ({
   fab: {
     margin: theme.spacing(1),
+    // fontSize:'10px',
+    // width:'10px',
   },
   container: {
     display: 'grid',
@@ -55,18 +57,23 @@ class FloorPlan extends React.Component {
       points: [],
       show: false,
       // 9/12 is 0.75. two grids: 9 + 3.
-      rate:0.75,
+      rate: 0.75,
+      loaded: false,
     };
+  }
+
+  componentDidMount(){
+    // trigger setRate() when screen scale changed.
+    window.addEventListener("resize", this.setRate.bind(this));
+    this.setRate();
   }
 
   setRate() {
     let photo = document.getElementById('main_map');
-    // problem need to be fixed here 0910:::
-    //end point.
-    if(photo.naturalWidth===null){
-    let changeRate=photo.width/photo.naturalWidth;
-    this.setState({rate: changeRate,});
-    }
+
+    let changeRate = photo.width / photo.naturalWidth;
+    console.log('rate: ' + changeRate);
+    this.setState({ loaded: true, rate: changeRate, });
   }
 
   onRef = (ref) => {
@@ -153,46 +160,50 @@ class FloorPlan extends React.Component {
       Popup.alert('feedback: ' + value);
     });
   }
+
   render() {
-    this.setRate();
     const contents = <div className="container">
       <Grid container spacing={3}>
         <Grid item xs={9}>
           <div className='main_div'>
-              <img
-                id='main_map'
-                alt='map'
-                src={floorPlan}
-                onLoad={() => this.setRate()}
-                onClick={this.setPosition}
-              />
-            <ShowPoints onRef={this.onRef} rate={this.state.rate}/>
+            <img
+              id='main_map'
+              alt='map'
+              src={floorPlan}
+              onLoad={() => this.setRate()}
+              onClick={this.setPosition}
+              onChange={() => this.setRate()}
+            />
+            <ShowPoints onRef={this.onRef} rate={this.state.rate} />
             {this.insertMarker()}
           </div>
 
-          
+
         </Grid>
 
         <Grid item xs={3}>
-          <p>World</p>
+          <p>Control Panel</p>
           <div className='panel'>
-      <Typography component="div">
-        <Grid component="label" container alignItems="center" spacing={1}>
-          <Grid item>Review</Grid>
-          <Grid item>
-            <AntSwitch
-              onChange={this.handleModeChange}
-              value={this.state.isEditMode}
-            />
-          </Grid>
-          <Grid item>Edit</Grid>
-        </Grid>
-      </Typography>
-      {this.state.isEditMode && this.state.x !== "" && <div>
-      <Fab color="primary" aria-label="add" className={useStyles.fab} onClick={this.addNewPoint}><AddIcon /></Fab>
-      <h1>{this.state.x} {this.state.y}</h1></div>}
-    </div>
-    <Popup parent={this} />
+            <Typography component="div">
+              <Grid component="label" container alignItems="center" spacing={1}>
+                <Grid item>Edit Mode</Grid>
+                <Grid item>
+                  <AntSwitch
+                    onChange={this.handleModeChange}
+                    value={this.state.isEditMode}
+                  />
+                </Grid>
+                {/* <Grid item>Edit</Grid> */}
+              </Grid>
+            </Typography>
+            {this.state.isEditMode && this.state.x !== "" &&
+              <div>
+                <Fab color="primary" aria-label="add" className={useStyles.fab} onClick={this.addNewPoint}><AddIcon /></Fab>
+                <p>Relative coordinates: {this.state.x} {this.state.y}</p>
+              </div>
+            }
+          </div>
+          <Popup parent={this} />
         </Grid>
       </Grid>
     </div>
