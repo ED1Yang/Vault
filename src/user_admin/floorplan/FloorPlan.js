@@ -1,10 +1,13 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
+// import Fab from '@material-ui/core/Fab';
+// import AddIcon from '@material-ui/icons/Add';
 import Popup from 'react-popup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
+
+import AddCircle from "@material-ui/icons/AddCircle";
+import Button from "@material-ui/core/Button";
 
 //components
 import Prompt from './component/Prompt';
@@ -20,28 +23,28 @@ import floorPlan from '../../assets/images/Ground_floor.png';
 //util
 import Url from '../../components/Url';
 
-const useStyles = makeStyles(theme => ({
-  fab: {
-    margin: theme.spacing(1),
-    // fontSize:'10px',
-    // width:'10px',
-  },
-  container: {
-    display: 'grid',
-    gridTemplateColumns: 'repeat(12, 1fr)',
-    gridGap: theme.spacing(3),
-  },
-  paper: {
-    padding: theme.spacing(1),
-    textAlign: 'center',
-    color: theme.palette.text.secondary,
-    whiteSpace: 'nowrap',
-    marginBottom: theme.spacing(1),
-  },
-  divider: {
-    margin: theme.spacing(2, 0),
-  },
-}));
+// const useStyles = makeStyles(theme => ({
+//   fab: {
+//     margin: theme.spacing(1),
+//     // fontSize:'10px',
+//     // width:'10px',
+//   },
+//   container: {
+//     display: 'grid',
+//     gridTemplateColumns: 'repeat(12, 1fr)',
+//     gridGap: theme.spacing(3),
+//   },
+//   paper: {
+//     padding: theme.spacing(1),
+//     textAlign: 'center',
+//     color: theme.palette.text.secondary,
+//     whiteSpace: 'nowrap',
+//     marginBottom: theme.spacing(1),
+//   },
+//   divider: {
+//     margin: theme.spacing(2, 0),
+//   },
+// }));
 
 class FloorPlan extends React.Component {
   constructor(props) {
@@ -72,7 +75,6 @@ class FloorPlan extends React.Component {
     let photo = document.getElementById('main_map');
 
     let changeRate = photo.width / photo.naturalWidth;
-    console.log('rate: ' + changeRate);
     this.setState({ loaded: true, rate: changeRate, });
   }
 
@@ -123,10 +125,16 @@ class FloorPlan extends React.Component {
         promptValue = value;
       };
       this.create({
-        title: 'Confirmation window',
+        title: 'Add new task',
         content: <Prompt onChange={promptChange} placeholder={placeholder} value={defaultValue} />,
         buttons: {
-          left: ['cancel'],
+          left: [{
+            text: 'Cancel',
+            className: 'danger',
+            action: function () {
+                Popup.close();
+            }
+        }],
           right: [{
             text: 'Submit',
             key: '⌘+s',
@@ -156,7 +164,7 @@ class FloorPlan extends React.Component {
       });
     });
     /** Call the plugin */
-    Popup.plugins().prompt('', 'extra information', function (value) {
+    Popup.plugins().prompt('', 'Task information', function (value) {
       Popup.alert('feedback: ' + value);
     });
   }
@@ -164,7 +172,7 @@ class FloorPlan extends React.Component {
   render() {
     const contents = <div className="container">
       <Grid container spacing={3}>
-        <Grid item xs={9}>
+        <Grid item xs={10}>
           <div className='main_div'>
             <img
               id='main_map'
@@ -181,7 +189,7 @@ class FloorPlan extends React.Component {
 
         </Grid>
 
-        <Grid item xs={3}>
+        <Grid item xs={2}>
           <p>Control Panel</p>
           <div className='panel'>
             <Typography component="div">
@@ -198,7 +206,14 @@ class FloorPlan extends React.Component {
             </Typography>
             {this.state.isEditMode && this.state.x !== "" &&
               <div>
-                <Fab color="primary" aria-label="add" className={useStyles.fab} onClick={this.addNewPoint}><AddIcon /></Fab>
+              <Button
+                  color="primary"
+                  onClick={this.addNewPoint}
+                >
+                  <AddCircle />
+                  <p>&nbsp;Add new task</p>
+                </Button>
+                {/* <Fab color="primary" aria-label="add" className={useStyles.fab} onClick={this.addNewPoint}><AddIcon /></Fab> */}
                 <p>Relative coordinates: {this.state.x} {this.state.y}</p>
               </div>
             }

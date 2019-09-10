@@ -37,7 +37,7 @@ function Copyright() {
         </Link>{' '}
       {new Date().getFullYear()}
       <br />
-      {'Built with Love'}
+      {'Built with ❤️'}
     </Typography>
   );
 }

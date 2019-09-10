@@ -185,21 +185,6 @@ export default class Viewer extends React.Component {
 
   changePhotoInfo = () => {
     if(this.state.editPhoto){
-      // let formData = new FormData();
-      // formData.append('imgid', this.state.taskId)
-      // formData.append('pitch', this.panImage.current.getViewer().getPitch())
-      // formData.append('yaw', this.panImage.current.getViewer().getYaw())
-      // formData.append('hfov', this.panImage.current.getViewer().getHfov())
-      // fetch(Url.changePhotoInfo,
-      //   { method: 'POST', body: formData }
-      // )
-      //   .then(res => res.json())
-      //   .then(data => {
-      //     this.setState({editPhoto: false})
-      //     this.getData(this.state.taskId);
-      //     alert(data.Message);
-      //   })
-      //   .catch(e => console.log('error:', e))
       console.log('Pitch: ' + this.panImage.current.getViewer().getPitch() + ' Yaw: ' + this.panImage.current.getViewer().getYaw() + ' Hfov: ' + this.panImage.current.getViewer().getHfov())
     }else{
       this.setState({editPhoto: true})
@@ -248,7 +233,8 @@ export default class Viewer extends React.Component {
                 x: {this.state.x} y: {this.state.y}
               </p>
               <p> Photo Info: {this.state.info}</p>
-              {this.props.source !== "uploader" && (this.state.editPhoto ? <div><button onClick={this.changePhotoInfo}>sumbit</button><button onClick={cancel=>{this.setState({editPhoto: false})}}>cancel</button></div> : <button onClick={this.changePhotoInfo}>change inital configuration</button>)}
+              {/* delete false */}
+              {false && this.props.source !== "uploader" && (this.state.editPhoto ? <div><button onClick={this.changePhotoInfo}>sumbit</button><button onClick={cancel=>{this.setState({editPhoto: false})}}>cancel</button></div> : <button onClick={this.changePhotoInfo}>change inital configuration</button>)}
             </div>
             {this.state.editHotSpot && this.state.rightClick && <div id='next-scene'>
               {this.state.nextScene === '' ? <span role="img" aria-label="pin">&#128306;</span> : <span role="img" aria-label="pin">&#128307;</span>}

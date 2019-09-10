@@ -1,10 +1,14 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+// import { makeStyles } from '@material-ui/core/styles';
+// import Fab from '@material-ui/core/Fab';
+// import AddIcon from '@material-ui/icons/Add';
 import Popup from 'react-popup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Fab from '@material-ui/core/Fab';
-import AddIcon from '@material-ui/icons/Add';
+
+import AddCircle from "@material-ui/icons/AddCircle";
+import Button from "@material-ui/core/Button";
+
 //components
 import Prompt from './component/Prompt';
 import Icons from './component/Icons';
@@ -19,13 +23,30 @@ import floorPlan from '../../assets/images/Ground_floor.png';
 //util
 import Url from '../../components/Url';
 
-const useStyles = makeStyles(theme => ({
-  fab: {
-    margin: theme.spacing(1),
-  },
-}));
+// const useStyles = makeStyles(theme => ({
+//   fab: {
+//     margin: theme.spacing(1),
+//     // fontSize:'10px',
+//     // width:'10px',
+//   },
+//   container: {
+//     display: 'grid',
+//     gridTemplateColumns: 'repeat(12, 1fr)',
+//     gridGap: theme.spacing(3),
+//   },
+//   paper: {
+//     padding: theme.spacing(1),
+//     textAlign: 'center',
+//     color: theme.palette.text.secondary,
+//     whiteSpace: 'nowrap',
+//     marginBottom: theme.spacing(1),
+//   },
+//   divider: {
+//     margin: theme.spacing(2, 0),
+//   },
+// }));
 
-class JobMap extends React.Component {
+class FloorPlan extends React.Component {
   constructor(props) {
     super(props);
     this.setPosition = this.setPosition.bind(this);
@@ -38,9 +59,26 @@ class JobMap extends React.Component {
       isEditMode: false,
       points: [],
       show: false,
+      // 9/12 is 0.75. two grids: 9 + 3.
+      rate: 0.75,
+      loaded: false,
     };
   }
-  onRef=(ref)=>{
+
+  componentDidMount(){
+    // trigger setRate() when screen scale changed.
+    window.addEventListener("resize", this.setRate.bind(this));
+    this.setRate();
+  }
+
+  setRate() {
+    let photo = document.getElementById('main_map');
+
+    let changeRate = photo.width / photo.naturalWidth;
+    this.setState({ loaded: true, rate: changeRate, });
+  }
+
+  onRef = (ref) => {
     this.showPoints = ref;
   }
 
@@ -72,9 +110,10 @@ class JobMap extends React.Component {
       this.setState({ isEditMode: true })
     }
     else {
-      this.setState({ isEditMode: false, x: '', y: ''})
+      this.setState({ isEditMode: false, x: '', y: '' })
     }
   }
+
   addNewPoint() {
     let x = this.state.x;
     let y = this.state.y;
@@ -86,10 +125,16 @@ class JobMap extends React.Component {
         promptValue = value;
       };
       this.create({
-        title: 'Confirmation window',
+        title: 'Add new task',
         content: <Prompt onChange={promptChange} placeholder={placeholder} value={defaultValue} />,
         buttons: {
-          left: ['cancel'],
+          left: [{
+            text: 'Cancel',
+            className: 'danger',
+            action: function () {
+                Popup.close();
+            }
+        }],
           right: [{
             text: 'Submit',
             key: '⌘+s',
@@ -119,43 +164,65 @@ class JobMap extends React.Component {
       });
     });
     /** Call the plugin */
-    Popup.plugins().prompt('', 'extra information', function (value) {
+    Popup.plugins().prompt('', 'Task information', function (value) {
       Popup.alert('feedback: ' + value);
     });
   }
+
   render() {
-    const contents= <div className="container">
-    <div className='main_div'>
-      <div className='map'>
-        <img
-          alt='map'
-          src={floorPlan}
-          onClick={this.setPosition}
-        />
-      </div>
-      <ShowPoints onRef={this.onRef}/>
-      {this.insertMarker()}
-    </div>
-    <div className='panel'>
-      <Typography component="div">
-        <Grid component="label" container alignItems="center" spacing={1}>
-          <Grid item>Review</Grid>
-          <Grid item>
-            <AntSwitch
-              onChange={this.handleModeChange}
-              value={this.state.isEditMode}
+    const contents = <div className="container">
+      <Grid container spacing={3}>
+        <Grid item xs={10}>
+          <div className='main_div'>
+            <img
+              id='main_map'
+              alt='map'
+              src={floorPlan}
+              onLoad={() => this.setRate()}
+              onClick={this.setPosition}
+              onChange={() => this.setRate()}
             />
-          </Grid>
-          <Grid item>Edit</Grid>
+            <ShowPoints onRef={this.onRef} rate={this.state.rate} />
+            {this.insertMarker()}
+          </div>
+
+
         </Grid>
-      </Typography>
-      {this.state.isEditMode && this.state.x !== "" && <div>
-      <Fab color="primary" aria-label="add" className={useStyles.fab} onClick={this.addNewPoint}><AddIcon /></Fab>
-      <h1>{this.state.x} {this.state.y}</h1></div>}
+
+        <Grid item xs={2}>
+          <p>Control Panel</p>
+          <div className='panel'>
+            <Typography component="div">
+              <Grid component="label" container alignItems="center" spacing={1}>
+                <Grid item>Edit Mode</Grid>
+                <Grid item>
+                  <AntSwitch
+                    onChange={this.handleModeChange}
+                    value={this.state.isEditMode}
+                  />
+                </Grid>
+                {/* <Grid item>Edit</Grid> */}
+              </Grid>
+            </Typography>
+            {this.state.isEditMode && this.state.x !== "" &&
+              <div>
+              <Button
+                  color="primary"
+                  onClick={this.addNewPoint}
+                >
+                  <AddCircle />
+                  <p>&nbsp;Add new task</p>
+                </Button>
+                {/* <Fab color="primary" aria-label="add" className={useStyles.fab} onClick={this.addNewPoint}><AddIcon /></Fab> */}
+                <p>Relative coordinates: {this.state.x} {this.state.y}</p>
+              </div>
+            }
+          </div>
+          <Popup parent={this} />
+        </Grid>
+      </Grid>
     </div>
-    <Popup parent={this} />
-  </div>
     return <Main value={contents} />
   }
 }
-export default JobMap;
+export default FloorPlan;
