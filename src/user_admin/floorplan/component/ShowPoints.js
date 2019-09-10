@@ -1,9 +1,8 @@
 import React from 'react';
 import Icons from './Icons';
-import Url from '../util/Url';
+import Url from '../../../components/Url';
 
 class ShowPoints extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -12,7 +11,7 @@ class ShowPoints extends React.Component {
     };
     this.getData();
   }
-  
+
   getData() {
     fetch(Url.getClientPoints)
       .then((r) => r.json()
@@ -22,7 +21,7 @@ class ShowPoints extends React.Component {
   }
 
   componentDidMount() {
-    this.props.onRef&&this.props.onRef(this);
+    this.props.onRef && this.props.onRef(this);
     this.displayPoints();
   }
 
@@ -39,9 +38,9 @@ class ShowPoints extends React.Component {
 
   getPointColor(status) {
     return (
-      status === 'New' ? 'green' : 
-        status === 'Closed' ? 'grey' : 
-          status==='Working'? 'blue' : 'pink'
+      status === 'New' ? 'green' :
+        status === 'Closed' ? 'grey' :
+          status === 'Working' ? 'blue' : 'pink'
     )
   }
 
@@ -50,20 +49,22 @@ class ShowPoints extends React.Component {
     let pointStyle = {
       color: color,
       // set center of the point to the coordinates
-      left: x - 12 + 'px',
-      top: y - 12 + 'px',
+      left: (x - 12) * this.props.rate + 'px',
+      top: (y - 12) * this.props.rate + 'px',
     }
     return (
       <div className='currentPoints' style={pointStyle} key={key}>
         <Icons
           value={{
             taskId: key,
+            status: status,
             x: x,
             y: y,
             img: img,
             info: info,
           }}
           parent={this}
+          rate={this.props.rate}
         />
       </div>
     )

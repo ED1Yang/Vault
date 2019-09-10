@@ -1,36 +1,51 @@
 import React, { Component } from 'react';
-import { Router } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
-import { Chart } from 'react-chartjs-2';
-import { ThemeProvider } from '@material-ui/styles';
-import validate from 'validate.js';
+import Cookies from 'universal-cookie';
 
-import { chartjs } from './helpers';
-import theme from './theme';
-import 'react-perfect-scrollbar/dist/css/styles.css';
-import './assets/scss/index.scss';
-import validators from './common/validators';
-import Routes from './Routes';
+import Routes from './Routes'
 
-const browserHistory = createBrowserHistory();
+import './assets/css/startPage.css'
 
-Chart.helpers.extend(Chart.elements.Rectangle.prototype, {
-  draw: chartjs.draw
-});
-
-validate.validators = {
-  ...validate.validators,
-  ...validators
-};
+const cookies = new Cookies();
 
 export default class App extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userIsDefined: false,
+      user:'',
+    }
+    this.handleAdminOnClick=this.handleAdminOnClick.bind(this);
+    this.handleEmpOnClick=this.handleEmpOnClick.bind(this);
+    this.handleClientOnClick=this.handleClientOnClick.bind(this);
+  }
+  handleAdminOnClick() {
+    this.setState({userIsDefined:true,user:'admin'});
+    cookies.set('userType','admin',{path:'/'});
+  }
+
+  handleEmpOnClick() {
+    this.setState({userIsDefined:true,user:'emp'});
+    cookies.set('userType','emp',{path:'/'});
+  }
+
+  handleClientOnClick() {
+    this.setState({userIsDefined:true,user:'client'});
+    cookies.set('userType','client',{path:'/'});
+  }
+
   render() {
-    return (
-      <ThemeProvider theme={theme}>
-        <Router history={browserHistory}>
-          <Routes />
-        </Router>
-      </ThemeProvider>
-    );
+    if (cookies.get('userType')!== undefined) {
+      return <Routes value={cookies.get('userType')}/>
+    } else {
+      return (
+        <div className="startpage">
+          <h1>Please select your role:</h1>
+          <button className="button" onClick={this.handleAdminOnClick}>Admin</button>
+          <button className="button" onClick={this.handleEmpOnClick}>Employee</button>
+          <button className="button" onClick={this.handleClientOnClick}>Client</button>
+          {/* <Route /> */}
+        </div>
+      );
+    }
   }
 }

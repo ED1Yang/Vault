@@ -15,7 +15,7 @@ export default [
     imageUrl: product_1,
     totalPhotos: '999',
     updatedAt: '03/09/2019',
-    link:'/floorplans/',
+    link:'/employee/floorplans/',
   },
   {
     id: uuid(),

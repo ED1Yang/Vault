@@ -5,7 +5,7 @@ import Fullscreen from "react-full-screen";
 import '../../../assets/css/viewer.css'
 
 import Thumbnail from '../thumbnail/Thumbnail'
-import Url from '../util/Url';
+import Url from '../../../components/Url';
 
 export default class Viewer extends React.Component {
   constructor(props) {

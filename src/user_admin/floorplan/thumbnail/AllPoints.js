@@ -1,6 +1,6 @@
 import React from 'react';
 import Point from './Point';
-import Url from '../util/Url';
+import Url from '../../../components/Url';
 
 class AllPoints extends React.Component {
 
@@ -49,14 +49,12 @@ class AllPoints extends React.Component {
     if (this.props.currentImg === img) {
       pointStyle = {
         color: 'pink',
-        // set center of the point to the coordinates
         left: (x - 12) * this.props.rate + 'px',
         top: (y - 12) * this.props.rate + 'px',
       }
     } else {
       pointStyle = {
         color: color,
-        // set center of the point to the coordinates
         left: (x - 12) * this.props.rate + 'px',
         top: (y - 12) * this.props.rate + 'px',
       }

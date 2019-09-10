@@ -1,6 +1,6 @@
 import React from 'react';
 import Point from './Point';
-import Url from '../util/Url';
+import Url from '../../../components/Url';
 
 class AllPoints extends React.Component {
 

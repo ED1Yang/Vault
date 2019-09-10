@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
+
 //components
 import Prompt from './component/Prompt';
 import Icons from './component/Icons';
@@ -17,15 +18,30 @@ import '../../assets/css/floorplan.css';
 //images
 import floorPlan from '../../assets/images/Ground_floor.png';
 //util
-import Url from './util/Url';
+import Url from '../../components/Url';
 
 const useStyles = makeStyles(theme => ({
   fab: {
     margin: theme.spacing(1),
   },
+  container: {
+    display: 'grid',
+    gridTemplateColumns: 'repeat(12, 1fr)',
+    gridGap: theme.spacing(3),
+  },
+  paper: {
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+    whiteSpace: 'nowrap',
+    marginBottom: theme.spacing(1),
+  },
+  divider: {
+    margin: theme.spacing(2, 0),
+  },
 }));
 
-class JobMap extends React.Component {
+class FloorPlan extends React.Component {
   constructor(props) {
     super(props);
     this.setPosition = this.setPosition.bind(this);
@@ -38,9 +54,22 @@ class JobMap extends React.Component {
       isEditMode: false,
       points: [],
       show: false,
+      // 9/12 is 0.75. two grids: 9 + 3.
+      rate:0.75,
     };
   }
-  onRef=(ref)=>{
+
+  setRate() {
+    let photo = document.getElementById('main_map');
+    // problem need to be fixed here 0910:::
+    //end point.
+    if(photo.naturalWidth===null){
+    let changeRate=photo.width/photo.naturalWidth;
+    this.setState({rate: changeRate,});
+    }
+  }
+
+  onRef = (ref) => {
     this.showPoints = ref;
   }
 
@@ -72,9 +101,10 @@ class JobMap extends React.Component {
       this.setState({ isEditMode: true })
     }
     else {
-      this.setState({ isEditMode: false, x: '', y: ''})
+      this.setState({ isEditMode: false, x: '', y: '' })
     }
   }
+
   addNewPoint() {
     let x = this.state.x;
     let y = this.state.y;
@@ -124,19 +154,28 @@ class JobMap extends React.Component {
     });
   }
   render() {
-    const contents= <div className="container">
-    <div className='main_div'>
-      <div className='map'>
-        <img
-          alt='map'
-          src={floorPlan}
-          onClick={this.setPosition}
-        />
-      </div>
-      <ShowPoints onRef={this.onRef}/>
-      {this.insertMarker()}
-    </div>
-    <div className='panel'>
+    this.setRate();
+    const contents = <div className="container">
+      <Grid container spacing={3}>
+        <Grid item xs={9}>
+          <div className='main_div'>
+              <img
+                id='main_map'
+                alt='map'
+                src={floorPlan}
+                onLoad={() => this.setRate()}
+                onClick={this.setPosition}
+              />
+            <ShowPoints onRef={this.onRef} rate={this.state.rate}/>
+            {this.insertMarker()}
+          </div>
+
+          
+        </Grid>
+
+        <Grid item xs={3}>
+          <p>World</p>
+          <div className='panel'>
       <Typography component="div">
         <Grid component="label" container alignItems="center" spacing={1}>
           <Grid item>Review</Grid>
@@ -154,8 +193,10 @@ class JobMap extends React.Component {
       <h1>{this.state.x} {this.state.y}</h1></div>}
     </div>
     <Popup parent={this} />
-  </div>
+        </Grid>
+      </Grid>
+    </div>
     return <Main value={contents} />
   }
 }
-export default JobMap;
+export default FloorPlan;

@@ -6,6 +6,11 @@ import Point from '@material-ui/icons/FiberManualRecordTwoTone'
 import Viewer from './Viewer';
 import ImageUploader from './ImageUploader';
 
+import IconButton from "@material-ui/core/IconButton";
+import Close from "@material-ui/icons/Close";
+
+
+
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
@@ -52,15 +57,17 @@ function centerModal() {
 export default function Icons(props) {
   let parent = props.parent;
   let taskId = props.value.taskId;
+
+  // let status = props.value.status;
   let x = props.value.x;
   let y = props.value.y;
   let info = props.value.info;
-  const img = () => {
+  const Content = () => {
     if (props.value.img === '') {
-      return <ImageUploader taskId={taskId} parent={parent} x = {x} y = {y} info = {info}/>
+      return <ImageUploader taskId={taskId} parent={parent} x={x} y={y} info={info} />
     }
     else {
-      return <Viewer taskId={taskId}/>
+      return <Viewer taskId={taskId} />
     }
   }
 
@@ -76,6 +83,20 @@ export default function Icons(props) {
     setOpen(false);
   };
 
+  const closeButtonStyle = {
+    position: 'absolute',
+    right: '0',
+    top: '0',
+    margin: '10px',
+    color: "#999999",
+    cursor: "pointer",
+    opacity: ".9",
+  }
+
+  const pointStyle={
+    fontSize: 24 * props.rate + 'px',
+  }
+
   return (
     <div className={classes.root}>
       <Modal className='modals'
@@ -85,12 +106,23 @@ export default function Icons(props) {
         onClose={handleClose}
       >
         <div style={modalStyle} className={classes.paper}>
-          {img()}
-          </div>
-        </Modal>
-        {parent.state.show ? <Point className={classes.iconHover} onClick={handleOpen}/> : <Point className={classes.iconHover}/>}
-        {/* 0903: for test purpose~~~ */}
-        {/* <Point className={classes.iconHover} onClick={handleOpen}/> */}
-      </div>
-    );
-  }
+
+          <Content />
+          {/* close button */}
+          <IconButton
+            style={closeButtonStyle}
+            key="close"
+            aria-label="Close"
+            color="inherit"
+            onClick={handleClose}
+          >
+            <Close />
+          </IconButton>
+        </div>
+      </Modal>
+      {/* {parent.state.show ? <Point className={classes.iconHover} onClick={handleOpen}/> : <Point className={classes.iconHover}/>} */}
+      {/* 0903: for test purpose~~~ */}
+      <Point className={classes.iconHover} onClick={handleOpen} style={pointStyle}/>
+    </div>
+  );
+}

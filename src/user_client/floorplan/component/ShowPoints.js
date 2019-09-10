@@ -1,6 +1,6 @@
 import React from 'react';
 import Icons from './Icons';
-import Url from '../util/Url';
+import Url from '../../../components/Url';
 
 class ShowPoints extends React.Component {
 

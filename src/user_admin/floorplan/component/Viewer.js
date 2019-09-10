@@ -5,7 +5,7 @@ import Fullscreen from "react-full-screen";
 import '../../../assets/css/viewer.css'
 
 import Thumbnail from '../thumbnail/Thumbnail'
-import Url from '../util/Url';
+import Url from '../../../components/Url';
 
 export default class Viewer extends React.Component {
   constructor(props) {
@@ -185,21 +185,6 @@ export default class Viewer extends React.Component {
 
   changePhotoInfo = () => {
     if(this.state.editPhoto){
-      // let formData = new FormData();
-      // formData.append('imgid', this.state.taskId)
-      // formData.append('pitch', this.panImage.current.getViewer().getPitch())
-      // formData.append('yaw', this.panImage.current.getViewer().getYaw())
-      // formData.append('hfov', this.panImage.current.getViewer().getHfov())
-      // fetch(Url.changePhotoInfo,
-      //   { method: 'POST', body: formData }
-      // )
-      //   .then(res => res.json())
-      //   .then(data => {
-      //     this.setState({editPhoto: false})
-      //     this.getData(this.state.taskId);
-      //     alert(data.Message);
-      //   })
-      //   .catch(e => console.log('error:', e))
       console.log('Pitch: ' + this.panImage.current.getViewer().getPitch() + ' Yaw: ' + this.panImage.current.getViewer().getYaw() + ' Hfov: ' + this.panImage.current.getViewer().getHfov())
     }else{
       this.setState({editPhoto: true})

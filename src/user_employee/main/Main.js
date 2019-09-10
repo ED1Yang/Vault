@@ -1,5 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
+import { withRouter } from "react-router";
+import Cookies from 'universal-cookie';
+//materials
 import { makeStyles } from '@material-ui/core/styles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Drawer from '@material-ui/core/Drawer';
@@ -9,6 +12,7 @@ import List from '@material-ui/core/List';
 import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
+import InputIcon from '@material-ui/icons/Input';
 import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
@@ -16,13 +20,13 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Link from '@material-ui/core/Link';
 //components
-// import { mainListItems, secondaryListItems } from './ListItems';
-import { mainListItems} from './ListItems';
+import { mainListItems } from './ListItems';
 //images
 import logo from '../../assets/images/logo.png'
 
-const drawerWidth = 240;
 
+const drawerWidth = 240;
+const cookies = new Cookies();
 
 function Copyright() {
   return (
@@ -112,9 +116,12 @@ const useStyles = makeStyles(theme => ({
     overflow: 'auto',
     flexDirection: 'column',
   },
+  signOutButton: {
+    marginLeft: theme.spacing(1)
+  }
 }));
 
-export default function Main(props) {
+function Main(props) {
   const classes = useStyles();
   const [open, setOpen] = React.useState(true);
   const handleDrawerOpen = () => {
@@ -132,6 +139,15 @@ export default function Main(props) {
     }
   }
 
+  const handleSignOut = () => {
+    console.log('clicked!!!');
+    //remove cookie.
+    console.log(cookies.get('userType'));
+    cookies.remove('userType', { path: '/' });
+    props.history.push('/');
+    window.location.reload();
+  }
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -147,13 +163,20 @@ export default function Main(props) {
             <MenuIcon />
           </IconButton>
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
-            <img alt ='asBUILT-logo' src={logo} width='40'/>
+            <img alt='asBUILT-logo' src={logo} width='40' />
           </Typography>
           Employee
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
+          </IconButton>
+          <IconButton
+            className={classes.signOutButton}
+            color="inherit"
+            onClick={handleSignOut}
+          >
+            <InputIcon />
           </IconButton>
         </Toolbar>
       </AppBar>
@@ -169,7 +192,6 @@ export default function Main(props) {
             <ChevronLeftIcon />
           </IconButton>
         </div>
-
         <Divider />
         <List>{mainListItems}</List>
         <Divider />
@@ -185,3 +207,8 @@ export default function Main(props) {
     </div>
   );
 }
+
+const MainWithRouter = withRouter(Main);
+
+
+export default MainWithRouter;

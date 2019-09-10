@@ -1,6 +1,6 @@
 import React from 'react';
 import Viewer from './Viewer';
-import Url from '../util/Url';
+import Url from '../../../components/Url';
 import '../../../assets/css/uploadimg.css';
 
 class ImageUpload extends React.Component {

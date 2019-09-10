@@ -17,7 +17,7 @@ import '../../assets/css/floorplan.css';
 //images
 import floorPlan from '../../assets/images/Ground_floor.png';
 //util
-import Url from './util/Url';
+import Url from '../../components/Url';
 
 const useStyles = makeStyles(theme => ({
   fab: {
