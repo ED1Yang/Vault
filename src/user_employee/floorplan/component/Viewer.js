@@ -224,16 +224,16 @@ export default class Viewer extends React.Component {
             </div>}
           </div>
           <div id="thumbnail_div">
-            <Thumbnail changeViewerImage={this.changeImage} currentImg={this.state.img} rightClick={this.state.rightClick} addScenToNewHotspot={this.addScenToNewHotspot}/>
+            <Thumbnail floorID={this.props.floorID} floorplan={this.props.floorplan} changeViewerImage={this.changeImage} currentImg={this.state.img} rightClick={this.state.rightClick} addScenToNewHotspot={this.addScenToNewHotspot}/>
           </div>
           <div className="photo-info">
             <div>
-              <h2 id="simple-modal-title">Current point position: </h2>
+              <h2 id="simple-modal-title">Task Information: </h2>
               <p id="simple-modal-description">
                 x: {this.state.x} y: {this.state.y}
               </p>
-              <p> Photo Info: {this.state.info}</p>
-              {/* delete false */}
+              <p> {this.state.info}</p>
+              {/* delete false && */}
               {false && this.props.source !== "uploader" && (this.state.editPhoto ? <div><button onClick={this.changePhotoInfo}>sumbit</button><button onClick={cancel=>{this.setState({editPhoto: false})}}>cancel</button></div> : <button onClick={this.changePhotoInfo}>change inital configuration</button>)}
             </div>
             {this.state.editHotSpot && this.state.rightClick && <div id='next-scene'>

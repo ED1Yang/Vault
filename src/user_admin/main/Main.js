@@ -144,6 +144,8 @@ function Main(props) {
     //remove cookie.
     console.log(cookies.get('userType'));
     cookies.remove('userType', { path: '/' });
+    cookies.remove('userID', { path: '/' });
+    cookies.remove('name', { path: '/' });
     props.history.push('/');
     window.location.reload();
   }
@@ -165,7 +167,7 @@ function Main(props) {
           <Typography component="h1" variant="h6" color="inherit" noWrap className={classes.title}>
             <img alt='asBUILT-logo' src={logo} width='40' />
           </Typography>
-          Admin
+          {cookies.get('name')}
           <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />

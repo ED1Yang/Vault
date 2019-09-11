@@ -24,7 +24,7 @@ export default function Deposits() {
         on {'Day '+new Date().getDate()}
       </Typography>
       <div>
-        <Link color="primary" href="javascript:;">
+        <Link color="primary" href="#">
           View details
         </Link>
       </div>

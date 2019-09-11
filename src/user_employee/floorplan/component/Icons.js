@@ -64,10 +64,10 @@ export default function Icons(props) {
   let info = props.value.info;
   const Content = () => {
     if (props.value.img === '') {
-      return <ImageUploader taskId={taskId} parent={parent} x={x} y={y} info={info} />
+      return <ImageUploader taskId={taskId} parent={parent} x = {x} y = {y} info = {info} floorID={props.floorID} floorplan={props.floorplan}/>
     }
     else {
-      return <Viewer taskId={taskId} />
+      return <Viewer taskId={taskId} floorID={props.floorID} floorplan={props.floorplan}/>
     }
   }
 
@@ -93,8 +93,15 @@ export default function Icons(props) {
     opacity: ".9",
   }
 
-  const pointStyle={
-    fontSize: 24 * props.rate + 'px',
+  let pointStyle={};
+  if(props.rate===undefined){
+    pointStyle={
+      fontSize: 24 * props.value.rate + 'px',
+    }
+  }else{
+    pointStyle={
+      fontSize: 24 * props.rate + 'px',
+    }
   }
 
   return (

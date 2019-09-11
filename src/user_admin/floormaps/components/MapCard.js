@@ -5,16 +5,12 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
   CardContent,
-  CardActions,
   Typography,
-  Grid,
-  Divider
 } from '@material-ui/core';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
+
 //
 // import { Link as RouterLink } from 'react-router-dom';
-import Link from '@material-ui/core/Link';
+import { Link } from 'react-router-dom';
 
 
 const useStyles = makeStyles(theme => ({
@@ -44,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const MapCard = props => {
-  const { className, project, ...rest } = props;
+  const { className, map, ...rest } = props;
 
   const classes = useStyles();
 
@@ -55,12 +51,12 @@ const MapCard = props => {
     >
       <CardContent>
         {/* Div for test */}
-        <Link href={project.link} variant="body2">
+        <Link to={{ pathname:'/admin/floorplans/asbuilt-ground-floor' , state:{ floorID: map.FloorID, floorplan: map.Floorplan}}}>
           <div className={classes.imageContainer}>
             <img
-              alt="Project"
+              alt="Map"
               className={classes.image}
-              src={project.imageUrl}
+              src={map.Floorplan}
 
             />
           </div>
@@ -69,55 +65,23 @@ const MapCard = props => {
             gutterBottom
             variant="h4"
           >
-            {project.title}
+            {map.Floornumber}
           </Typography>
         </Link>
         <Typography
           align="center"
           variant="body1"
         >
-          {project.description}
+          {map.Floordesc}
         </Typography>
       </CardContent>
-      <Divider />
-      <CardActions>
-        <Grid
-          container
-          justify="space-between"
-        >
-          <Grid
-            className={classes.statsItem}
-            item
-          >
-            <AccessTimeIcon className={classes.statsIcon} />
-            <Typography
-              display="inline"
-              variant="body2"
-            >
-              Updated 2hr ago
-            </Typography>
-          </Grid>
-          <Grid
-            className={classes.statsItem}
-            item
-          >
-            <PhotoCameraIcon className={classes.statsIcon} />
-            <Typography
-              display="inline"
-              variant="body2"
-            >
-              {project.totalPhotos} Photos
-            </Typography>
-          </Grid>
-        </Grid>
-      </CardActions>
     </Card>
   );
 };
 
 MapCard.propTypes = {
   className: PropTypes.string,
-  project: PropTypes.object.isRequired
+  map: PropTypes.object.isRequired
 };
 
 export default MapCard;

@@ -1,7 +1,9 @@
 import React from 'react';
 import Icons from './Icons';
 import Url from '../../../components/Url';
+import Cookie from 'universal-cookie';
 
+const cookie = new Cookie();
 class ShowPoints extends React.Component {
   constructor(props) {
     super(props);
@@ -13,10 +15,13 @@ class ShowPoints extends React.Component {
   }
 
   getData() {
-    fetch(Url.getClientPoints)
+    fetch(Url.getClientPoints + cookie.get('userID') + '/' + this.props.floorID)
       .then((r) => r.json()
         .then((data) => {
-          this.setState({ points: data });
+          if(data.Message === 'null')
+            this.setState({ points: [] });
+          else
+            this.setState({ points: data });
         }));
   }
 
@@ -31,16 +36,23 @@ class ShowPoints extends React.Component {
     }
     else {
       return this.state.points.map((point) => {
-        return this.showOnePoint(point.ID, point.Status, point.Lat, point.Lon, point.Img, point.Info);
+        if (point.Status === 'Closed')
+          return this.showOnePoint(point.ID, point.Status, point.Lat, point.Lon, point.Img, point.Info);
+        else
+          return null;
       })
     }
   }
 
   getPointColor(status) {
     return (
-      status === 'New' ? 'green' :
-        status === 'Closed' ? 'grey' :
-          status === 'Working' ? 'blue' : 'pink'
+      status === 'New' ? 'yellow' :
+        status === 'Assigned' ? 'pink' :
+          status === 'Uploaded' ? 'blue' : 
+            status === 'Done' ? 'green' :
+              status === 'Denied' ? 'black' :
+                status === 'Requested' ? 'orange' :
+                  status === 'Reject' ? 'brown' : 'grey'
     )
   }
 
@@ -64,6 +76,8 @@ class ShowPoints extends React.Component {
             info: info,
           }}
           parent={this}
+          floorID={this.props.floorID}
+          floorplan={this.props.floorplan}
           rate={this.props.rate}
         />
       </div>

@@ -45,7 +45,7 @@ export const mainListItems = (
     </ListItem>
 
 
-    <ListItem
+    {/* <ListItem
       button
       component={RouterLink}
       to="/client/floorplans"
@@ -67,7 +67,7 @@ export const mainListItems = (
         <Icon>account_box</Icon>
       </ListItemIcon>
       <ListItemText primary="Account" />
-    </ListItem>
+    </ListItem> */}
 
   </div>
 );

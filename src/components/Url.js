@@ -2,12 +2,21 @@ const host="http://localhost";
 
 class Url{
     
-    static getClientPoints= host +'/api/client/2/1';
+    static getClientPoints= host +'/api/client/';
+    static getAdminPoints= host +'/api/proj/job/admin/';
+    static getEmpPoints= host +'/api/emp/';
     static addNewPoint = host + '/api/client';
+    static addNewPointEmp = host + '/api/job/emp';
     static uploadImage = host + '/api/emp';
-    static getHotspots = host + '/api/emp/img/';
-    static getProjects = host + '/api/temp/client/proj/2';
-    static addNewHotSpot = host + '/api/emp/img';
-    static changePhotoInfo = host + '/api/emp/img';
+    static getHotspots = host + '/api/img/emp/';
+    static addNewHotSpot = host + '/api/img/emp/';
+    static changePhotoInfo = host + '/api/img/emp/';
+    static login = host + '/api/login';
+    static getClientProjects = host + '/api/proj/client/';
+    static getClientMaps = host + '/api/proj/floor/client/';
+    static getAdminProjects = host + '/api/proj/admin/';
+    static getAdminMaps = host + '/api/proj/floor/admin/';
+    static getEmpProjects = host + '/api/proj/emp/';
+    static getEmpMaps = host + '/api/proj/floor/emp/';
 }
 export default Url;

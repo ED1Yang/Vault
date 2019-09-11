@@ -5,17 +5,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import {
   Card,
   CardContent,
-  CardActions,
   Typography,
-  Grid,
-  Divider
 } from '@material-ui/core';
-import AccessTimeIcon from '@material-ui/icons/AccessTime';
-import PhotoCameraIcon from '@material-ui/icons/PhotoCamera';
 //
 // import { Link as RouterLink } from 'react-router-dom';
-import Link from '@material-ui/core/Link';
-
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -55,12 +49,12 @@ const ProjectCard = props => {
     >
       <CardContent>
         {/* Div for test */}
-        <Link href={project.link} variant="body2">
+        <Link to={{ pathname:'/employee/floorplans/' , state:{ id: project.Projid }}}>
           <div className={classes.imageContainer}>
             <img
               alt="Project"
               className={classes.image}
-              src={project.imageUrl}
+              src={project.Projlogo}
 
             />
           </div>
@@ -69,48 +63,16 @@ const ProjectCard = props => {
             gutterBottom
             variant="h4"
           >
-            {project.title}
+            {project.Projname}
           </Typography>
         </Link>
         <Typography
           align="center"
           variant="body1"
         >
-          {project.description}
+          {project.Projdesc}
         </Typography>
       </CardContent>
-      <Divider />
-      <CardActions>
-        <Grid
-          container
-          justify="space-between"
-        >
-          <Grid
-            className={classes.statsItem}
-            item
-          >
-            <AccessTimeIcon className={classes.statsIcon} />
-            <Typography
-              display="inline"
-              variant="body2"
-            >
-              Updated 2hr ago
-            </Typography>
-          </Grid>
-          <Grid
-            className={classes.statsItem}
-            item
-          >
-            <PhotoCameraIcon className={classes.statsIcon} />
-            <Typography
-              display="inline"
-              variant="body2"
-            >
-              {project.totalPhotos} Photos
-            </Typography>
-          </Grid>
-        </Grid>
-      </CardActions>
     </Card>
   );
 };

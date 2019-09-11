@@ -30,8 +30,6 @@ const useStyles = makeStyles(theme => ({
 
 const UsersToolbar = props => {
 
-  console.log(props.title);
-
   const { className, ...rest } = props;
   const classes = useStyles();
 

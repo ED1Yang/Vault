@@ -57,7 +57,7 @@ export default function Orders() {
         </TableBody>
       </Table>
       <div className={classes.seeMore}>
-        <Link color="primary" href="#">
+        <Link color="primary" href="javascript:;">
           See more tasks
         </Link>
       </div>

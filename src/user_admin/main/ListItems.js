@@ -45,10 +45,10 @@ export const mainListItems = (
     </ListItem>
 
 
-    <ListItem
+    {/* <ListItem
       button
       component={RouterLink}
-      to="/admin/floorplans"
+      to="/client/floorplans"
       >
       <ListItemIcon>
         <Icon>layers</Icon>
@@ -61,13 +61,13 @@ export const mainListItems = (
     <ListItem
       button
       component={RouterLink}
-      to="/admin/login"
+      to="/client/login"
       >
       <ListItemIcon>
         <Icon>account_box</Icon>
       </ListItemIcon>
       <ListItemText primary="Account" />
-    </ListItem>
+    </ListItem> */}
 
   </div>
 );

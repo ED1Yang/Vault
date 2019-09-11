@@ -6,7 +6,6 @@ import adminDashboard from './user_admin/dashboard/Dashboard'
 import adminProject from './user_admin/projectlist/ProjectList'
 import adminFloorMaps from './user_admin/floormaps/MapList'
 import adminFloorPlan from './user_admin/floorplan/FloorPlan'
-import adminLogin from './user_admin/login/Login'
 import adminUserList from './user_admin/UserList/UserList'
 
 
@@ -15,7 +14,6 @@ import employeeDashboard from './user_employee/dashboard/Dashboard'
 import employeeProject from './user_employee/projectlist/ProjectList'
 import employeeFloorMaps from './user_employee/floormaps/MapList'
 import employeeFloorPlan from './user_employee/floorplan/FloorPlan'
-import employeeLogin from './user_employee/login/Login'
 import employeeUserList from './user_employee/UserList/UserList'
 
 //client:
@@ -23,7 +21,6 @@ import clientDashboard from './user_client/dashboard/Dashboard'
 import clientProject from './user_client/projectlist/ProjectList'
 import clientFloorMaps from './user_client/floormaps/MapList'
 import clientFloorPlan from './user_client/floorplan/FloorPlan'
-import clientLogin from './user_client/login/Login'
 import clientUserList from './user_client/UserList/UserList'
 
 //404
@@ -48,11 +45,6 @@ class Routes extends React.Component {
                                 component={adminDashboard}
                                 exact
                                 path="/admin/dashboard"
-                            />
-                            <Route
-                                component={adminLogin}
-                                exact
-                                path="/admin/login"
                             />
                             <Route
                                 component={adminFloorMaps}
@@ -105,11 +97,6 @@ class Routes extends React.Component {
                                 path="/employee/dashboard"
                             />
                             <Route
-                                component={employeeLogin}
-                                exact
-                                path="/employee/login"
-                            />
-                            <Route
                                 component={employeeFloorMaps}
                                 exact
                                 path="/employee/floorplans"
@@ -160,11 +147,6 @@ class Routes extends React.Component {
                                 path="/client/dashboard"
                             />
                             <Route
-                                component={clientLogin}
-                                exact
-                                path="/client/login"
-                            />
-                            <Route
                                 component={clientFloorMaps}
                                 exact
                                 path="/client/floorplans"
@@ -197,8 +179,6 @@ class Routes extends React.Component {
                 </div>
             </BrowserRouter>
         );
-
-        console.log(this.props.value);
 
         let webRoute = (
             <BrowserRouter>

@@ -1,8 +1,6 @@
 import React from 'react';
 //components
 import AllPoints from './AllPoints';
-//images
-import floorPlan from '../../../assets/images/Ground_floor.png';
 
 class Thumbnail extends React.Component {
   constructor(props) {
@@ -57,17 +55,12 @@ class Thumbnail extends React.Component {
         <img
           id='thumbnail_map'
           alt='map'
-          src={floorPlan}
+          src={this.props.floorplan}
           onLoad={() => this.getPhotoInfo()}
           style={photoStyle}
         />
         <div className="map_points">
-          <AllPoints
-            changeThumbnailImage={this.changeImage}
-            rate={this.state.rate}
-            currentImg={this.props.currentImg}
-            addScenToNewHotspot={this.addScenToNewHotspot}
-            rightClick={this.props.rightClick} />
+          <AllPoints floorID={this.props.floorID} changeThumbnailImage={this.changeImage} rate={this.state.rate} currentImg={this.props.currentImg} addScenToNewHotspot={this.addScenToNewHotspot} rightClick={this.props.rightClick}/>
         </div>
 
       </div>

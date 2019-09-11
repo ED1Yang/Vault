@@ -1,8 +1,6 @@
 import React from 'react';
 //components
 import AllPoints from './AllPoints';
-//images
-import floorPlan from '../../../assets/images/Ground_floor.png';
 
 class Thumbnail extends React.Component {
   constructor(props) {
@@ -26,22 +24,22 @@ class Thumbnail extends React.Component {
   }
 
   hoverHandler(e) {
-    const hoverNum=this.state.rate_big/this.state.rate_small;
-    this.setState({ rate: this.state.rate_big, width:this.state.width*hoverNum,height:this.state.height*hoverNum, });
+    const hoverNum = this.state.rate_big / this.state.rate_small;
+    this.setState({ rate: this.state.rate_big, width: this.state.width * hoverNum, height: this.state.height * hoverNum, });
   }
 
   hoverOutHandler() {
-    const hoverOutNum=this.state.rate_small/this.state.rate_big;
-    this.setState({ rate: this.state.rate_small, width:this.state.width*hoverOutNum,height:this.state.height*hoverOutNum, });
+    const hoverOutNum = this.state.rate_small / this.state.rate_big;
+    this.setState({ rate: this.state.rate_small, width: this.state.width * hoverOutNum, height: this.state.height * hoverOutNum, });
   }
 
   getPhotoInfo() {
     let photo = document.getElementById('thumbnail_map');
-    this.setState({ rate:this.state.rate_small, width: photo.width*this.state.rate_small, height: photo.height*this.state.rate_small});
+    this.setState({ rate: this.state.rate_small, width: photo.width * this.state.rate_small, height: photo.height * this.state.rate_small });
   }
 
-  addScenToNewHotspot(id){
-      this.props.addScenToNewHotspot(id);
+  addScenToNewHotspot(id) {
+    this.props.addScenToNewHotspot(id);
   }
 
   render() {
@@ -57,12 +55,12 @@ class Thumbnail extends React.Component {
         <img
           id='thumbnail_map'
           alt='map'
-          src={floorPlan}
+          src={this.props.floorplan}
           onLoad={() => this.getPhotoInfo()}
           style={photoStyle}
         />
         <div className="map_points">
-          <AllPoints changeThumbnailImage={this.changeImage} rate={this.state.rate} currentImg={this.props.currentImg} addScenToNewHotspot={this.addScenToNewHotspot} rightClick={this.props.rightClick}/>
+          <AllPoints floorID={this.props.floorID} changeThumbnailImage={this.changeImage} rate={this.state.rate} currentImg={this.props.currentImg} addScenToNewHotspot={this.addScenToNewHotspot} rightClick={this.props.rightClick}/>
         </div>
 
       </div>

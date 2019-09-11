@@ -18,10 +18,9 @@ import Main from '../main/Main'
 //css
 import '../../assets/css/popup.css';
 import '../../assets/css/floorplan.css';
-//images
-import floorPlan from '../../assets/images/Ground_floor.png';
 //util
 import Url from '../../components/Url';
+import Cookies from 'universal-cookie';
 
 // const useStyles = makeStyles(theme => ({
 //   fab: {
@@ -46,6 +45,8 @@ import Url from '../../components/Url';
 //   },
 // }));
 
+const cookie = new Cookies();
+
 class FloorPlan extends React.Component {
   constructor(props) {
     super(props);
@@ -59,8 +60,8 @@ class FloorPlan extends React.Component {
       isEditMode: false,
       points: [],
       show: false,
-      // 9/12 is 0.75. two grids: 9 + 3.
-      rate: 0.75,
+      // 10/12 is 0.83. two grids: 10 + 2.
+      rate: 0,
       loaded: false,
     };
   }
@@ -73,9 +74,11 @@ class FloorPlan extends React.Component {
 
   setRate() {
     let photo = document.getElementById('main_map');
-
-    let changeRate = photo.width / photo.naturalWidth;
-    this.setState({ loaded: true, rate: changeRate, });
+    if(this.state.loaded&&photo){
+    this.setState({ rate: photo.width / photo.naturalWidth, });
+    }else{
+      this.setState({ loaded: true,});
+    }
   }
 
   onRef = (ref) => {
@@ -84,7 +87,8 @@ class FloorPlan extends React.Component {
 
   setPosition(e) {
     if (this.state.isEditMode)
-      this.setState({ x: e.nativeEvent.offsetX, y: e.nativeEvent.offsetY });
+      console.log('x: '+Math.round(e.nativeEvent.offsetX/this.state.rate)+' y: '+Math.round(e.nativeEvent.offsetY/this.state.rate))
+      this.setState({ x: Math.round(e.nativeEvent.offsetX/this.state.rate), y: Math.round(e.nativeEvent.offsetY/this.state.rate)});
   }
 
   insertMarker() {
@@ -92,15 +96,17 @@ class FloorPlan extends React.Component {
       const markerStyle = {
         color: 'goldenrod',
         // set center of the point to the coordinates
-        left: this.state.x - 12 + 'px',
-        top: this.state.y - 12 + 'px',
+        left: (this.state.x - 12)*this.state.rate + 'px',
+        top: (this.state.y - 12)*this.state.rate + 'px',
       }
       return <div className='marker' style={markerStyle}>
         <Icons value={{
           x: this.state.x,
           y: this.state.y,
           img: '',
+          rate:this.state.rate,
         }} parent={this} />
+        
       </div>
     }
   }
@@ -144,7 +150,8 @@ class FloorPlan extends React.Component {
               formData.append('latitude', x)
               formData.append('longitude', y)
               formData.append('info', promptValue)
-              formData.append('user_id', '2')
+              formData.append('user_id', cookie.get('userID'))
+              formData.append('floor_id', this.props.parent.props.location.state.floorID)
               fetch(Url.addNewPoint,
                 { method: 'POST', body: formData }
               )
@@ -177,12 +184,11 @@ class FloorPlan extends React.Component {
             <img
               id='main_map'
               alt='map'
-              src={floorPlan}
+              src={this.props.location.state.floorplan}
               onLoad={() => this.setRate()}
               onClick={this.setPosition}
-              onChange={() => this.setRate()}
             />
-            <ShowPoints onRef={this.onRef} rate={this.state.rate} />
+            <ShowPoints rate={this.state.rate} onRef={this.onRef} floorID={this.props.location.state.floorID} floorplan={this.props.location.state.floorplan}/>
             {this.insertMarker()}
           </div>
 
