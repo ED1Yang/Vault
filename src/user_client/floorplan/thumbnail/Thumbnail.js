@@ -10,8 +10,8 @@ class Thumbnail extends React.Component {
       rate_big: 0.5,
       isLoaded: false,
       rate: '',
-      width: '',
-      height: '',
+      width: this.props.photoInfo.naturalWidth,
+      height: this.props.photoInfo.naturalHeight,
     };
     this.changeImage = this.changeImage.bind(this);
     this.addScenToNewHotspot = this.addScenToNewHotspot.bind(this);
@@ -24,22 +24,22 @@ class Thumbnail extends React.Component {
   }
 
   hoverHandler(e) {
-    const hoverNum=this.state.rate_big/this.state.rate_small;
-    this.setState({ rate: this.state.rate_big, width:this.state.width*hoverNum,height:this.state.height*hoverNum, });
+    const hoverNum = this.state.rate_big / this.state.rate_small;
+    this.setState({ rate: this.state.rate_big, width: this.state.width * hoverNum, height: this.state.height * hoverNum, });
   }
 
   hoverOutHandler() {
-    const hoverOutNum=this.state.rate_small/this.state.rate_big;
-    this.setState({ rate: this.state.rate_small, width:this.state.width*hoverOutNum,height:this.state.height*hoverOutNum, });
+    const hoverOutNum = this.state.rate_small / this.state.rate_big;
+    this.setState({ rate: this.state.rate_small, width: this.state.width * hoverOutNum, height: this.state.height * hoverOutNum, });
   }
 
   getPhotoInfo() {
     let photo = document.getElementById('thumbnail_map');
-    this.setState({ rate:this.state.rate_small, width: photo.width*this.state.rate_small, height: photo.height*this.state.rate_small});
+    this.setState({ rate: this.state.rate_small, width: photo.width * this.state.rate_small, height: photo.height * this.state.rate_small });
   }
 
-  addScenToNewHotspot(id){
-      this.props.addScenToNewHotspot(id);
+  addScenToNewHotspot(id) {
+    this.props.addScenToNewHotspot(id);
   }
 
   render() {

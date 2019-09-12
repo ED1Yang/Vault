@@ -5,7 +5,6 @@ import '../../../assets/css/popup.css';
 class Prompt extends React.Component {
     constructor(props) {
         super(props);
-
         this.state = {
             value: ''
         };

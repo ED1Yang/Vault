@@ -9,7 +9,7 @@ class Url{
     static addNewPointEmp = host + '/api/job/emp';
     static uploadImage = host + '/api/emp';
     static getHotspots = host + '/api/img/emp/';
-    static addNewHotSpot = host + '/api/img/emp/';
+    static addNewHotSpot = host + '/api/img/emp';
     static changePhotoInfo = host + '/api/img/emp/';
     static login = host + '/api/login';
     static getClientProjects = host + '/api/proj/client/';
@@ -18,5 +18,6 @@ class Url{
     static getAdminMaps = host + '/api/proj/floor/admin/';
     static getEmpProjects = host + '/api/proj/emp/';
     static getEmpMaps = host + '/api/proj/floor/emp/';
+    static setStatus = host + '/api/admin/'
 }
 export default Url;

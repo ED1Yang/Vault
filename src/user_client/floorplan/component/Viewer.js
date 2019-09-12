@@ -33,12 +33,19 @@ export default class Viewer extends React.Component {
   }
 
   componentDidMount() {
+    // document.addEventListener('touchstart', this.handler, {passive: true});
+    // document.addEventListener('mousewheel', this.handler, {passive: true});
+    // document.addEventListener('touchmove', this.handler, {passive: true}); 
     document.addEventListener('contextmenu', this._handleContextMenu);
   };
 
   componentWillUnmount() {
     document.removeEventListener('contextmenu', this._handleContextMenu);
   }
+
+  // handler = (e) =>{
+  //   console.log(e.type);
+  // }
 
   _handleContextMenu = (event) => {
     event.preventDefault();
@@ -218,13 +225,13 @@ export default class Viewer extends React.Component {
             <div id="zoom-in" className="ab-controls pnlm-zoom-controls pnlm-controls" onClick={this.handleZoomIn}>&#43;</div>
             <div id="zoom-out" className="ab-controls pnlm-zoom-controls pnlm-controls" onClick={this.handleZoomOut}>&#45;</div>
             <div id="fullscreen" className="ab-controls pnlm-zoom-controls pnlm-controls" onClick={this.goFull}>&#x2922;</div>
-            {/* {this.props.source !== "uploader" && <div id="hotspots" className="ab-controls pnlm-zoom-controls pnlm-controls" onClick={this.editHotSpots}>
+            {this.props.source !== "uploader" && <div id="hotspots" className="ab-controls pnlm-zoom-controls pnlm-controls" onClick={this.editHotSpots}>
               <span role="img" aria-label="pin">&#128205;</span>
               {this.state.editHotSpot ? 'on' : 'off'}
-            </div>} */}
+            </div>}
           </div>
-          <div id="thumbnail_div">
-            <Thumbnail floorID={this.props.floorID} floorplan={this.props.floorplan} changeViewerImage={this.changeImage} currentImg={this.state.img} rightClick={this.state.rightClick} addScenToNewHotspot={this.addScenToNewHotspot}/>
+          <div className="thumbnail_div">
+            <Thumbnail photoInfo={this.props.photoInfo} floorID={this.props.floorID} floorplan={this.props.floorplan} changeViewerImage={this.changeImage} currentImg={this.state.img} rightClick={this.state.rightClick} addScenToNewHotspot={this.addScenToNewHotspot}/>
           </div>
           <div className="photo-info">
             <div>

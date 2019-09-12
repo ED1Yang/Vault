@@ -60,8 +60,8 @@ class FloorPlan extends React.Component {
       isEditMode: false,
       points: [],
       show: false,
-      // 9/12 is 0.75. two grids: 9 + 3.
-      rate: 0.75,
+      // 10/12 is 0.83. two grids: 10 + 2.
+      rate: 0,
       loaded: false,
     };
   }
@@ -72,9 +72,17 @@ class FloorPlan extends React.Component {
     this.setRate();
   }
 
+  componentWillUnmount(){
+    window.removeEventListener("resize", this.setRate.bind(this));
+    this.setState = (state,callback)=>{
+      return;
+    };
+  }
+  
   setRate() {
-    if(this.state.loaded){
-      this.setState({ rate: document.getElementById('main_map').width / document.getElementById('main_map').naturalWidth, });
+    let photo = document.getElementById('main_map');
+    if(this.state.loaded&&photo){
+      this.setState({ rate: photo.width / photo.naturalWidth, photoInfo:{naturalWidth: photo.naturalWidth, naturalHeight: photo.naturalHeight}});
     }else{
       this.setState({ loaded: true,});
     }
@@ -151,7 +159,7 @@ class FloorPlan extends React.Component {
               formData.append('info', promptValue)
               formData.append('user_id', cookie.get('userID'))
               formData.append('floor_id', this.props.parent.props.location.state.floorID)
-              fetch(Url.addNewPointEmp,
+              fetch(Url.addNewPoint,
                 { method: 'POST', body: formData }
               )
                 .then(res => res.json())
@@ -187,7 +195,7 @@ class FloorPlan extends React.Component {
               onLoad={() => this.setRate()}
               onClick={this.setPosition}
             />
-            <ShowPoints rate={this.state.rate} onRef={this.onRef} floorID={this.props.location.state.floorID} floorplan={this.props.location.state.floorplan}/>
+            <ShowPoints photoInfo={this.state.photoInfo} rate={this.state.rate} onRef={this.onRef} floorID={this.props.location.state.floorID} floorplan={this.props.location.state.floorplan}/>
             {this.insertMarker()}
           </div>
 

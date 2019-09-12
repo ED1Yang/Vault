@@ -2,6 +2,7 @@ import React from 'react';
 import Point from './Point';
 import Url from '../../../components/Url';
 import Cookie from 'universal-cookie';
+import PointsColor from '../../../components/PointsColor';
 
 const cookie = new Cookie();
 class AllPoints extends React.Component {
@@ -28,7 +29,7 @@ class AllPoints extends React.Component {
 
   displayPoints = () => {
     return this.state.points.map((point) => {
-      if (point.Status === 'Closed')
+      if (point.Status !== 'New')
         return this.showOnePoint(point.ID, point.Status, point.Lat, point.Lon, point.Img, point.Info);
       else
         return null;
@@ -36,15 +37,7 @@ class AllPoints extends React.Component {
   }
 
   getPointColor(status) {
-    return (
-      status === 'New' ? 'yellow' :
-        status === 'Assigned' ? 'pink' :
-          status === 'Uploaded' ? 'blue' : 
-            status === 'Done' ? 'green' :
-              status === 'Denied' ? 'black' :
-                status === 'Requested' ? 'orange' :
-                  status === 'Reject' ? 'brown' : 'grey'
-    )
+    return PointsColor.setColor(status);
   }
 
   changeImage(id) {
@@ -57,15 +50,13 @@ class AllPoints extends React.Component {
     let pointStyle = {};
     if (this.props.currentImg === img) {
       pointStyle = {
-        color: 'pink',
-        // set center of the point to the coordinates
+        color: 'red',
         left: (x - 12) * this.props.rate + 'px',
         top: (y - 12) * this.props.rate + 'px',
       }
     } else {
       pointStyle = {
         color: color,
-        // set center of the point to the coordinates
         left: (x - 12) * this.props.rate + 'px',
         top: (y - 12) * this.props.rate + 'px',
       }

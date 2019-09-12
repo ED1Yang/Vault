@@ -22,29 +22,6 @@ import '../../assets/css/floorplan.css';
 import Url from '../../components/Url';
 import Cookies from 'universal-cookie';
 
-// const useStyles = makeStyles(theme => ({
-//   fab: {
-//     margin: theme.spacing(1),
-//     // fontSize:'10px',
-//     // width:'10px',
-//   },
-//   container: {
-//     display: 'grid',
-//     gridTemplateColumns: 'repeat(12, 1fr)',
-//     gridGap: theme.spacing(3),
-//   },
-//   paper: {
-//     padding: theme.spacing(1),
-//     textAlign: 'center',
-//     color: theme.palette.text.secondary,
-//     whiteSpace: 'nowrap',
-//     marginBottom: theme.spacing(1),
-//   },
-//   divider: {
-//     margin: theme.spacing(2, 0),
-//   },
-// }));
-
 const cookie = new Cookies();
 
 class FloorPlan extends React.Component {
@@ -60,23 +37,32 @@ class FloorPlan extends React.Component {
       isEditMode: false,
       points: [],
       show: false,
-      // 9/12 is 0.75. two grids: 9 + 3.
-      rate: 0.75,
+      // 10/12 is 0.83. two grids: 10 + 2.
+      rate: 0,
       loaded: false,
     };
   }
 
   componentDidMount(){
     // trigger setRate() when screen scale changed.
+
     window.addEventListener("resize", this.setRate.bind(this));
     this.setRate();
   }
-
+  
+  componentWillUnmount(){
+    window.removeEventListener("resize", this.setRate.bind(this));
+    this.setState = (state,callback)=>{
+      return;
+    };
+  }
   setRate() {
     let photo = document.getElementById('main_map');
-
-    let changeRate = photo.width / photo.naturalWidth;
-    this.setState({ loaded: true, rate: changeRate, });
+    if(this.state.loaded&&photo){
+      this.setState({ rate: photo.width / photo.naturalWidth, photoInfo:{naturalWidth: photo.naturalWidth, naturalHeight: photo.naturalHeight}});
+    }else{
+      this.setState({ loaded: true,});
+    }
   }
 
   onRef = (ref) => {
@@ -186,7 +172,7 @@ class FloorPlan extends React.Component {
               onLoad={() => this.setRate()}
               onClick={this.setPosition}
             />
-            <ShowPoints rate={this.state.rate} onRef={this.onRef} floorID={this.props.location.state.floorID} floorplan={this.props.location.state.floorplan}/>
+            <ShowPoints photoInfo={this.state.photoInfo} rate={this.state.rate} onRef={this.onRef} floorID={this.props.location.state.floorID} floorplan={this.props.location.state.floorplan}/>
             {this.insertMarker()}
           </div>
 

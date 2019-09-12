@@ -33,12 +33,19 @@ export default class Viewer extends React.Component {
   }
 
   componentDidMount() {
+    // document.addEventListener('touchstart', this.handler, {passive: true});
+    // document.addEventListener('mousewheel', this.handler, {passive: true});
+    // document.addEventListener('touchmove', this.handler, {passive: true}); 
     document.addEventListener('contextmenu', this._handleContextMenu);
   };
 
   componentWillUnmount() {
     document.removeEventListener('contextmenu', this._handleContextMenu);
   }
+
+  // handler = (e) =>{
+  //   console.log(e.type);
+  // }
 
   _handleContextMenu = (event) => {
     event.preventDefault();
@@ -223,8 +230,8 @@ export default class Viewer extends React.Component {
               {this.state.editHotSpot ? 'on' : 'off'}
             </div>}
           </div>
-          <div id="thumbnail_div">
-            <Thumbnail floorID={this.props.floorID} floorplan={this.props.floorplan} changeViewerImage={this.changeImage} currentImg={this.state.img} rightClick={this.state.rightClick} addScenToNewHotspot={this.addScenToNewHotspot}/>
+          <div className="thumbnail_div">
+            <Thumbnail photoInfo={this.props.photoInfo} floorID={this.props.floorID} floorplan={this.props.floorplan} changeViewerImage={this.changeImage} currentImg={this.state.img} rightClick={this.state.rightClick} addScenToNewHotspot={this.addScenToNewHotspot}/>
           </div>
           <div className="photo-info">
             <div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
-import Point from '@material-ui/icons/FiberManualRecordTwoTone'
+import Point from '@material-ui/icons/FiberManualRecord'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -19,7 +19,6 @@ const useStyles = makeStyles(theme => ({
     },
   },
 }));
-
 
 export default function Icons(props) {
 

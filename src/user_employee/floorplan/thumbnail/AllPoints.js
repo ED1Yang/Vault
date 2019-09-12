@@ -2,6 +2,7 @@ import React from 'react';
 import Point from './Point';
 import Url from '../../../components/Url';
 import Cookie from 'universal-cookie';
+import PointsColor from '../../../components/PointsColor';
 
 const cookie = new Cookie();
 class AllPoints extends React.Component {
@@ -36,15 +37,7 @@ class AllPoints extends React.Component {
   }
 
   getPointColor(status) {
-    return (
-      status === 'New' ? 'yellow' :
-        status === 'Assigned' ? 'pink' :
-          status === 'Uploaded' ? 'blue' : 
-            status === 'Done' ? 'green' :
-              status === 'Denied' ? 'black' :
-                status === 'Requested' ? 'orange' :
-                  status === 'Reject' ? 'brown' : 'grey'
-    )
+    return PointsColor.setColor(status);
   }
 
   changeImage(id) {
@@ -57,7 +50,7 @@ class AllPoints extends React.Component {
     let pointStyle = {};
     if (this.props.currentImg === img) {
       pointStyle = {
-        color: 'pink',
+        color: 'red',
         left: (x - 12) * this.props.rate + 'px',
         top: (y - 12) * this.props.rate + 'px',
       }

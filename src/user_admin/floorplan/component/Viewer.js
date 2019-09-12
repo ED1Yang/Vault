@@ -1,11 +1,15 @@
 import React from 'react';
 import { Pannellum } from "pannellum-react";
 import Fullscreen from "react-full-screen";
+import CheckIcon from '@material-ui/icons/Check';
+import CloseIcon from '@material-ui/icons/Close';
+import IconButton from "@material-ui/core/IconButton";
 
 import '../../../assets/css/viewer.css'
 
 import Thumbnail from '../thumbnail/Thumbnail'
 import Url from '../../../components/Url';
+
 
 export default class Viewer extends React.Component {
   constructor(props) {
@@ -26,10 +30,12 @@ export default class Viewer extends React.Component {
     }
     this.changeImage = this.changeImage.bind(this);
     this.addScenToNewHotspot = this.addScenToNewHotspot.bind(this);
+    this.approveTask = this.approveTask.bind(this);
+    this.denyTask = this.denyTask.bind(this);
     if (this.props.source !== "uploader")
       this.getData(this.props.taskId);
     else
-      this.state = { img: this.props.img, x: this.props.x, y: this.props.y, info: this.props.info }
+      this.state = { img: this.props.img, x: this.props.x, y: this.props.y, info: this.props.info}
   }
 
   componentDidMount() {
@@ -70,11 +76,9 @@ export default class Viewer extends React.Component {
               tooltipArg={{ 'message': item.Message }}
               cssClass="custom-hotspot"
             />);
-            this.setState({ taskId: data.ID, img: data.Img, hotspots: points, x: data.X, y: data.Y, info: data.Info});
-            // this.setState({ taskId: data.ID, img: data.Img, hotspots: points, x: data.X, y: data.Y, info: data.Info, imgPitch: parseFloat(data.pitch), imgYaw: parseFloat(data.yaw), imgHfov: parseFloat(data.hfov)});
+            this.setState({ taskId: data.ID, img: data.Img, hotspots: points, x: data.X, y: data.Y, info: data.Info, status: data.Status});
           } else {
-            this.setState({ taskId: data.ID, img: data.Img, hotspots: [], x: data.X, y: data.Y, info: data.Info});
-            // this.setState({ taskId: data.ID, img: data.Img, hotspots: [], x: data.X, y: data.Y, info: data.Info, imgPitch: parseFloat(data.pitch), imgYaw: parseFloat(data.yaw), imgHfov: parseFloat(data.hfov)});
+            this.setState({ taskId: data.ID, img: data.Img, hotspots: [], x: data.X, y: data.Y, info: data.Info, status: data.Status });
           }
         })).catch(e => console.log('error: ' + e));
   }
@@ -144,8 +148,8 @@ export default class Viewer extends React.Component {
   handleZoomOut = () => {
     this.panImage.current.getViewer().setHfov(this.panImage.current.getViewer().getHfov() + 10);
   }
-  addScenToNewHotspot(id){
-    this.setState({nextScene: id})
+  addScenToNewHotspot(id) {
+    this.setState({ nextScene: id })
   }
   editHotSpots = () => {
     if (this.state.editHotSpot) {
@@ -158,7 +162,7 @@ export default class Viewer extends React.Component {
 
   submitHandler = () => {
     let tooltipText = document.getElementById('next-scene-input').value;
-    if(this.state.nextScene !== '' && tooltipText !== ''){
+    if (this.state.nextScene !== '' && tooltipText !== '') {
       let formData = new FormData();
       formData.append('imgid', this.state.taskId)
       formData.append('destid', this.state.nextScene)
@@ -174,25 +178,63 @@ export default class Viewer extends React.Component {
             rightClick: false,
             nextScene: '',
             newPitch: '',
-            newYam: '',});
-            this.getData(this.state.taskId);
-            alert(data.Message);
+            newYam: '',
+          });
+          this.getData(this.state.taskId);
+          alert(data.Message);
         })
         .catch(e => console.log('error:', e))
-    }else
+    } else
       alert('Please add the next scene and text.');
   }
 
   changePhotoInfo = () => {
-    if(this.state.editPhoto){
+    if (this.state.editPhoto) {
       console.log('Pitch: ' + this.panImage.current.getViewer().getPitch() + ' Yaw: ' + this.panImage.current.getViewer().getYaw() + ' Hfov: ' + this.panImage.current.getViewer().getHfov())
-    }else{
-      this.setState({editPhoto: true})
+    } else {
+      this.setState({ editPhoto: true })
     }
   }
+
+  approveTask() {
+    fetch(Url.setStatus + this.state.taskId + '/Uploaded',
+      { method: 'PUT', }
+    )
+      .then(res => res.json())
+      .catch(e => console.log('error:', e));
+    alert("The task is done.");
+    //floorplan render
+
+    this.props.getdata();
+    this.props.displaypoints();
+
+  }
+
+  denyTask() {
+    fetch(Url.setStatus + this.state.taskId + '/Denied',
+      { method: 'PUT', }
+    )
+      .then(res => res.json())
+      .catch(e => console.log('error:', e));
+    alert("The task is denied.");
+    this.props.getdata();
+    this.props.displaypoints();
+  }
+
+  thumbnailRender(){
+
+  }
+
   render() {
+    const checkstyle = {
+      color: 'green',
+    }
+    const closestyle = {
+      color: 'red',
+    }
     return (
       <div className="viewer">
+        {console.log('1')}
         <Fullscreen
           enabled={this.state.isFull}
           onChange={isFull => this.setState({ isFull })}>
@@ -223,9 +265,32 @@ export default class Viewer extends React.Component {
               {this.state.editHotSpot ? 'on' : 'off'}
             </div>}
           </div>
-          <div id="thumbnail_div">
-            <Thumbnail floorID={this.props.floorID} floorplan={this.props.floorplan} changeViewerImage={this.changeImage} currentImg={this.state.img} rightClick={this.state.rightClick} addScenToNewHotspot={this.addScenToNewHotspot}/>
+          <div className="thumbnail_div">
+            <Thumbnail
+              photoInfo={this.props.photoInfo}
+              floorID={this.props.floorID}
+              floorplan={this.props.floorplan}
+              changeViewerImage={this.changeImage}
+              currentImg={this.state.img}
+              rightClick={this.state.rightClick}
+              addScenToNewHotspot={this.addScenToNewHotspot} />
           </div>
+          {this.state.status==='Uploaded'?
+          <div className="image_check">
+            <IconButton
+              style={checkstyle}
+              onClick={this.approveTask}
+            >
+              <CheckIcon />
+            </IconButton>
+            <IconButton
+              style={closestyle}
+              onClick={this.denyTask}
+            >
+              <CloseIcon />
+            </IconButton>
+          </div> :
+          <div></div>}
           <div className="photo-info">
             <div>
               <h2 id="simple-modal-title">Task Information: </h2>
@@ -234,7 +299,12 @@ export default class Viewer extends React.Component {
               </p>
               <p> {this.state.info}</p>
               {/* delete false && */}
-              {false && this.props.source !== "uploader" && (this.state.editPhoto ? <div><button onClick={this.changePhotoInfo}>sumbit</button><button onClick={cancel=>{this.setState({editPhoto: false})}}>cancel</button></div> : <button onClick={this.changePhotoInfo}>change inital configuration</button>)}
+              {false && this.props.source !== "uploader" && (this.state.editPhoto ?
+                <div>
+                  <button onClick={this.changePhotoInfo}>sumbit</button>
+                  <button onClick={cancel => { this.setState({ editPhoto: false }) }}>cancel</button>
+                </div> :
+                <button onClick={this.changePhotoInfo}>change inital configuration</button>)}
             </div>
             {this.state.editHotSpot && this.state.rightClick && <div id='next-scene'>
               {this.state.nextScene === '' ? <span role="img" aria-label="pin">&#128306;</span> : <span role="img" aria-label="pin">&#128307;</span>}

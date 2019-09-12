@@ -22,28 +22,6 @@ import '../../assets/css/floorplan.css';
 import Url from '../../components/Url';
 import Cookies from 'universal-cookie';
 
-// const useStyles = makeStyles(theme => ({
-//   fab: {
-//     margin: theme.spacing(1),
-//     // fontSize:'10px',
-//     // width:'10px',
-//   },
-//   container: {
-//     display: 'grid',
-//     gridTemplateColumns: 'repeat(12, 1fr)',
-//     gridGap: theme.spacing(3),
-//   },
-//   paper: {
-//     padding: theme.spacing(1),
-//     textAlign: 'center',
-//     color: theme.palette.text.secondary,
-//     whiteSpace: 'nowrap',
-//     marginBottom: theme.spacing(1),
-//   },
-//   divider: {
-//     margin: theme.spacing(2, 0),
-//   },
-// }));
 
 const cookie = new Cookies();
 
@@ -54,6 +32,7 @@ class FloorPlan extends React.Component {
     this.insertMarker = this.insertMarker.bind(this);
     this.addNewPoint = this.addNewPoint.bind(this);
     this.handleModeChange = this.handleModeChange.bind(this);
+    this.setRate = this.setRate.bind(this);
     this.state = {
       x: "",
       y: "",
@@ -66,16 +45,23 @@ class FloorPlan extends React.Component {
     };
   }
 
-  componentDidMount(){
+  componentDidMount() {
     // trigger setRate() when screen scale changed.
-    window.addEventListener("resize", this.setRate.bind(this));
+    window.addEventListener("resize", this.setRate);
     this.setRate();
   }
 
+  componentWillUnmount(){
+    window.removeEventListener("resize", this.setRate);
+    this.setState = (state,callback)=>{
+      return;
+    };
+  }
+  
   setRate() {
     let photo = document.getElementById('main_map');
     if(this.state.loaded&&photo){
-    this.setState({ rate: photo.width / photo.naturalWidth, });
+      this.setState({ rate: photo.width / photo.naturalWidth, photoInfo:{naturalWidth: photo.naturalWidth, naturalHeight: photo.naturalHeight}});
     }else{
       this.setState({ loaded: true,});
     }
@@ -87,8 +73,7 @@ class FloorPlan extends React.Component {
 
   setPosition(e) {
     if (this.state.isEditMode)
-      console.log('x: '+Math.round(e.nativeEvent.offsetX/this.state.rate)+' y: '+Math.round(e.nativeEvent.offsetY/this.state.rate))
-      this.setState({ x: Math.round(e.nativeEvent.offsetX/this.state.rate), y: Math.round(e.nativeEvent.offsetY/this.state.rate)});
+      this.setState({ x: Math.round(e.nativeEvent.offsetX / this.state.rate), y: Math.round(e.nativeEvent.offsetY / this.state.rate) });
   }
 
   insertMarker() {
@@ -96,17 +81,19 @@ class FloorPlan extends React.Component {
       const markerStyle = {
         color: 'goldenrod',
         // set center of the point to the coordinates
-        left: (this.state.x - 12)*this.state.rate + 'px',
-        top: (this.state.y - 12)*this.state.rate + 'px',
+        left: (this.state.x - 12) * this.state.rate + 'px',
+        top: (this.state.y - 12) * this.state.rate + 'px',
       }
       return <div className='marker' style={markerStyle}>
-        <Icons value={{
-          x: this.state.x,
-          y: this.state.y,
-          img: '',
-          rate:this.state.rate,
-        }} parent={this} />
-        
+        <Icons
+          value={{
+            x: this.state.x,
+            y: this.state.y,
+            img: '',
+            rate: this.state.rate,
+          }}
+          parent={this} />
+
       </div>
     }
   }
@@ -138,9 +125,9 @@ class FloorPlan extends React.Component {
             text: 'Cancel',
             className: 'danger',
             action: function () {
-                Popup.close();
+              Popup.close();
             }
-        }],
+          }],
           right: [{
             text: 'Submit',
             key: '⌘+s',
@@ -188,7 +175,7 @@ class FloorPlan extends React.Component {
               onLoad={() => this.setRate()}
               onClick={this.setPosition}
             />
-            <ShowPoints rate={this.state.rate} onRef={this.onRef} floorID={this.props.location.state.floorID} floorplan={this.props.location.state.floorplan}/>
+            <ShowPoints photoInfo={this.state.photoInfo} rate={this.state.rate} onRef={this.onRef} floorID={this.props.location.state.floorID} floorplan={this.props.location.state.floorplan}/>
             {this.insertMarker()}
           </div>
 
@@ -212,7 +199,7 @@ class FloorPlan extends React.Component {
             </Typography>
             {this.state.isEditMode && this.state.x !== "" &&
               <div>
-              <Button
+                <Button
                   color="primary"
                   onClick={this.addNewPoint}
                 >
@@ -228,7 +215,7 @@ class FloorPlan extends React.Component {
         </Grid>
       </Grid>
     </div>
-    return <Main value={contents} />
+    return <Main value={contents}/>
   }
 }
 export default FloorPlan;

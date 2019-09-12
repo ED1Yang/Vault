@@ -2,6 +2,7 @@ import React from 'react';
 import Icons from './Icons';
 import Url from '../../../components/Url';
 import Cookie from 'universal-cookie';
+import PointsColor from '../../../components/PointsColor';
 
 const cookie = new Cookie();
 class ShowPoints extends React.Component {
@@ -36,24 +37,13 @@ class ShowPoints extends React.Component {
     }
     else {
       return this.state.points.map((point) => {
-        if (point.Status === 'Closed')
-          return this.showOnePoint(point.ID, point.Status, point.Lat, point.Lon, point.Img, point.Info);
-        else
-          return null;
+        return this.showOnePoint(point.ID, point.Status, point.Lat, point.Lon, point.Img, point.Info);
       })
     }
   }
 
   getPointColor(status) {
-    return (
-      status === 'New' ? 'yellow' :
-        status === 'Assigned' ? 'pink' :
-          status === 'Uploaded' ? 'blue' : 
-            status === 'Done' ? 'green' :
-              status === 'Denied' ? 'black' :
-                status === 'Requested' ? 'orange' :
-                  status === 'Reject' ? 'brown' : 'grey'
-    )
+    return PointsColor.setColor(status);
   }
 
   showOnePoint(key, status, x, y, img, info) {
@@ -79,6 +69,7 @@ class ShowPoints extends React.Component {
           floorID={this.props.floorID}
           floorplan={this.props.floorplan}
           rate={this.props.rate}
+          photoInfo={this.props.photoInfo}
         />
       </div>
     )

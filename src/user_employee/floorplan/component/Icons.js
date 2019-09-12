@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import Modal from '@material-ui/core/Modal';
-import Point from '@material-ui/icons/FiberManualRecordTwoTone'
+import Point from '@material-ui/icons/FiberManualRecord'
 import Viewer from './Viewer';
 import ImageUploader from './ImageUploader';
 
@@ -62,14 +62,6 @@ export default function Icons(props) {
   let x = props.value.x;
   let y = props.value.y;
   let info = props.value.info;
-  const Content = () => {
-    if (props.value.img === '') {
-      return <ImageUploader taskId={taskId} parent={parent} x = {x} y = {y} info = {info} floorID={props.floorID} floorplan={props.floorplan}/>
-    }
-    else {
-      return <Viewer taskId={taskId} floorID={props.floorID} floorplan={props.floorplan}/>
-    }
-  }
 
   const classes = useStyles();
   const [modalStyle] = React.useState(centerModal);
@@ -113,8 +105,7 @@ export default function Icons(props) {
         onClose={handleClose}
       >
         <div style={modalStyle} className={classes.paper}>
-
-          <Content />
+        {props.value.img === '' ? <ImageUploader taskId={taskId} parent={parent} x = {x} y = {y} info = {info} floorID={props.floorID} floorplan={props.floorplan} photoInfo={props.photoInfo}/> : <Viewer taskId={taskId} floorID={props.floorID} floorplan={props.floorplan} photoInfo={props.photoInfo}/>}
           {/* close button */}
           <IconButton
             style={closeButtonStyle}

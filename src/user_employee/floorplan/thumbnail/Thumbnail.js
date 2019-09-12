@@ -10,8 +10,8 @@ class Thumbnail extends React.Component {
       rate_big: 0.5,
       isLoaded: false,
       rate: '',
-      width: '',
-      height: '',
+      width: this.props.photoInfo.naturalWidth,
+      height: this.props.photoInfo.naturalHeight,
     };
     this.changeImage = this.changeImage.bind(this);
     this.addScenToNewHotspot = this.addScenToNewHotspot.bind(this);
