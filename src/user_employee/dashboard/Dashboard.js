@@ -25,7 +25,6 @@ export default function Dashboard(props) {
   const classes = useStyles();
 
   const fixedHeightPaper = clsx(classes.paper, classes.fixedHeight);
-  // const bgcolor={'background-color':'white'}
 
   const defaultDashboard =
     <Grid container spacing={3}>

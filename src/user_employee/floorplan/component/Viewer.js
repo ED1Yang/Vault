@@ -26,6 +26,7 @@ export default class Viewer extends React.Component {
     }
     this.changeImage = this.changeImage.bind(this);
     this.addScenToNewHotspot = this.addScenToNewHotspot.bind(this);
+    this.exitHandler = this.exitHandler.bind(this);
     if (this.props.source !== "uploader")
       this.getData(this.props.taskId);
     else
@@ -33,19 +34,27 @@ export default class Viewer extends React.Component {
   }
 
   componentDidMount() {
-    // document.addEventListener('touchstart', this.handler, {passive: true});
-    // document.addEventListener('mousewheel', this.handler, {passive: true});
-    // document.addEventListener('touchmove', this.handler, {passive: true}); 
     document.addEventListener('contextmenu', this._handleContextMenu);
+    document.addEventListener('fullscreenchange', this.exitHandler);
+    document.addEventListener('webkitfullscreenchange', this.exitHandler);
+    document.addEventListener('mozfullscreenchange', this.exitHandler);
+    document.addEventListener('MSFullscreenChange', this.exitHandler);
   };
 
   componentWillUnmount() {
     document.removeEventListener('contextmenu', this._handleContextMenu);
+    document.removeEventListener('fullscreenchange', this.exitHandler);
+    document.removeEventListener('webkitfullscreenchange', this.exitHandler);
+    document.removeEventListener('mozfullscreenchange', this.exitHandler);
+    document.removeEventListener('MSFullscreenChange', this.exitHandler);
   }
 
-  // handler = (e) =>{
-  //   console.log(e.type);
-  // }
+  exitHandler() {
+    if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
+      window.addEventListener("resize", this.props.setRate);
+    }
+    this.props.setRate();
+  }
 
   _handleContextMenu = (event) => {
     event.preventDefault();
@@ -78,15 +87,15 @@ export default class Viewer extends React.Component {
               cssClass="custom-hotspot"
             />);
             this.setState({ taskId: data.ID, img: data.Img, hotspots: points, x: data.X, y: data.Y, info: data.Info});
-            // this.setState({ taskId: data.ID, img: data.Img, hotspots: points, x: data.X, y: data.Y, info: data.Info, imgPitch: parseFloat(data.pitch), imgYaw: parseFloat(data.yaw), imgHfov: parseFloat(data.hfov)});
           } else {
             this.setState({ taskId: data.ID, img: data.Img, hotspots: [], x: data.X, y: data.Y, info: data.Info});
-            // this.setState({ taskId: data.ID, img: data.Img, hotspots: [], x: data.X, y: data.Y, info: data.Info, imgPitch: parseFloat(data.pitch), imgYaw: parseFloat(data.yaw), imgHfov: parseFloat(data.hfov)});
           }
         })).catch(e => console.log('error: ' + e));
   }
 
   goFull = () => {
+    if (!this.state.isFull)
+      window.removeEventListener("resize", this.props.setRate);
     this.state.isFull ? this.setState({ isFull: false }) : this.setState({ isFull: true });
   }
 
@@ -254,7 +263,6 @@ export default class Viewer extends React.Component {
             </div>}
           </div>
         </Fullscreen>
-        {/* <button onClick={() => console.log('Pitch: ' + this.panImage.current.getViewer().getPitch() + ' Yaw: ' + this.panImage.current.getViewer().getYaw() + ' Hfov: ' + this.panImage.current.getViewer().getHfov())}>get 360 info</button> */}
       </div>
     );
   }

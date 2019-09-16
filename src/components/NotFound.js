@@ -3,8 +3,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import { Grid, Typography } from '@material-ui/core';
 
 import notfound from '../assets/images/page_not_found.svg'
-
-// 0906: now the 404 page has a admin label
 import Main from '../user_admin/main/Main'
 
 const useStyles = makeStyles(theme => ({

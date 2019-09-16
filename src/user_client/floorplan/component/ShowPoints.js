@@ -11,12 +11,13 @@ class ShowPoints extends React.Component {
     this.state = {
       points: [],
       show: true,
+      floorID: this.props.floorID,
     };
     this.getData();
   }
 
   getData() {
-    fetch(Url.getClientPoints + cookie.get('userID') + '/' + this.props.floorID)
+    fetch(Url.getClientPoints + cookie.get('userID') + '/' + this.state.floorID)
       .then((r) => r.json()
         .then((data) => {
           if(data.Message === 'null')
@@ -36,8 +37,8 @@ class ShowPoints extends React.Component {
       return;
     }
     else {
-      return this.state.points.map((point) => {
-        return this.showOnePoint(point.ID, point.Status, point.Lat, point.Lon, point.Img, point.Info);
+      return this.state.points.map((point) => {      
+          return this.showOnePoint(point.ID, point.Status, point.Lat, point.Lon, point.Img, point.Info);
       })
     }
   }
@@ -70,6 +71,9 @@ class ShowPoints extends React.Component {
           floorplan={this.props.floorplan}
           rate={this.props.rate}
           photoInfo={this.props.photoInfo}
+          getdata={this.getData}
+          displaypoints={this.displayPoints}
+          setRate={this.props.setRate}
         />
       </div>
     )

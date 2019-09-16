@@ -7,9 +7,6 @@ import {
   CardContent,
   Typography,
 } from '@material-ui/core';
-
-//
-// import { Link as RouterLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 
@@ -50,7 +47,6 @@ const MapCard = props => {
       className={clsx(classes.root, className)}
     >
       <CardContent>
-        {/* Div for test */}
         <Link to={{ pathname:'/admin/floorplans/asbuilt-ground-floor' , state:{ floorID: map.FloorID, floorplan: map.Floorplan}}}>
           <div className={classes.imageContainer}>
             <img

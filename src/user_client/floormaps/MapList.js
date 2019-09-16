@@ -8,21 +8,6 @@ import ProjectCard from './components/MapCard';
 import Main from '../main/Main'
 import Url from '../../components/Url';
 
-// const useStyles = makeStyles(theme => ({
-//   root: {
-//     padding: theme.spacing(3)
-//   },
-//   content: {
-//     marginTop: theme.spacing(2)
-//   },
-//   pagination: {
-//     marginTop: theme.spacing(3),
-//     display: 'flex',
-//     alignItems: 'center',
-//     justifyContent: 'flex-end'
-//   }
-// }));
-
 class MapList extends React.Component{
   constructor(props){
     super(props);

@@ -3,13 +3,14 @@ import { Pannellum } from "pannellum-react";
 import Fullscreen from "react-full-screen";
 import CheckIcon from '@material-ui/icons/Check';
 import CloseIcon from '@material-ui/icons/Close';
+import Refresh from '@material-ui/icons/Refresh';
+
 import IconButton from "@material-ui/core/IconButton";
 
 import '../../../assets/css/viewer.css'
 
 import Thumbnail from '../thumbnail/Thumbnail'
 import Url from '../../../components/Url';
-
 
 export default class Viewer extends React.Component {
   constructor(props) {
@@ -27,28 +28,54 @@ export default class Viewer extends React.Component {
       imgPitch: 6,
       imgYaw: 60,
       imgHfov: 100,
+      nextStatus: 'Done',
     }
     this.changeImage = this.changeImage.bind(this);
     this.addScenToNewHotspot = this.addScenToNewHotspot.bind(this);
     this.approveTask = this.approveTask.bind(this);
     this.denyTask = this.denyTask.bind(this);
+    this.deleteTask = this.deleteTask.bind(this);
+    this.reassignTask=this.reassignTask.bind(this);
+    this.exitHandler = this.exitHandler.bind(this);
+    //for testing
+    this.setStatus = this.setStatus.bind(this);
+    this.handleChange = this.handleChange.bind(this);
     if (this.props.source !== "uploader")
       this.getData(this.props.taskId);
     else
-      this.state = { img: this.props.img, x: this.props.x, y: this.props.y, info: this.props.info}
+      this.state = { img: this.props.img, x: this.props.x, y: this.props.y, info: this.props.info }
   }
 
   componentDidMount() {
     document.addEventListener('contextmenu', this._handleContextMenu);
+    document.addEventListener('fullscreenchange', this.exitHandler);
+    document.addEventListener('webkitfullscreenchange', this.exitHandler);
+    document.addEventListener('mozfullscreenchange', this.exitHandler);
+    document.addEventListener('MSFullscreenChange', this.exitHandler);
   };
 
   componentWillUnmount() {
     document.removeEventListener('contextmenu', this._handleContextMenu);
+    document.removeEventListener('fullscreenchange', this.exitHandler);
+    document.removeEventListener('webkitfullscreenchange', this.exitHandler);
+    document.removeEventListener('mozfullscreenchange', this.exitHandler);
+    document.removeEventListener('MSFullscreenChange', this.exitHandler);
+  }
+
+  exitHandler() {
+    if (!document.fullscreenElement && !document.webkitIsFullScreen && !document.mozFullScreen && !document.msFullscreenElement) {
+      window.addEventListener("resize", this.props.setRate);
+    }
+    this.props.setRate();
   }
 
   _handleContextMenu = (event) => {
     event.preventDefault();
   };
+
+  handleChange(event) {
+    this.setState({ nextStatus: event.target.value });
+  }
 
 
   changeImage(id) {
@@ -76,7 +103,7 @@ export default class Viewer extends React.Component {
               tooltipArg={{ 'message': item.Message }}
               cssClass="custom-hotspot"
             />);
-            this.setState({ taskId: data.ID, img: data.Img, hotspots: points, x: data.X, y: data.Y, info: data.Info, status: data.Status});
+            this.setState({ taskId: data.ID, img: data.Img, hotspots: points, x: data.X, y: data.Y, info: data.Info, status: data.Status });
           } else {
             this.setState({ taskId: data.ID, img: data.Img, hotspots: [], x: data.X, y: data.Y, info: data.Info, status: data.Status });
           }
@@ -84,6 +111,8 @@ export default class Viewer extends React.Component {
   }
 
   goFull = () => {
+    if (!this.state.isFull)
+      window.removeEventListener("resize", this.props.setRate);
     this.state.isFull ? this.setState({ isFull: false }) : this.setState({ isFull: true });
   }
 
@@ -197,16 +226,16 @@ export default class Viewer extends React.Component {
   }
 
   approveTask() {
-    fetch(Url.setStatus + this.state.taskId + '/Uploaded',
+    fetch(Url.setStatus + this.state.taskId + '/Done',
       { method: 'PUT', }
     )
       .then(res => res.json())
       .catch(e => console.log('error:', e));
     alert("The task is done.");
     //floorplan render
-
     this.props.getdata();
     this.props.displaypoints();
+    this.getData(this.state.taskId);
 
   }
 
@@ -219,10 +248,48 @@ export default class Viewer extends React.Component {
     alert("The task is denied.");
     this.props.getdata();
     this.props.displaypoints();
+    this.getData(this.state.taskId);
   }
 
-  thumbnailRender(){
+  deleteTask() {
+    if (window.confirm('Are you sure you wish to delete this task?')) {
+      fetch(Url.setStatus + this.state.taskId + '/Deleted',
+        { method: 'PUT', }
+      )
+        .then(res => res.json())
+        .catch(e => console.log('error:', e));
+      alert("The task is Deleted.");
+      this.props.getdata();
+      this.props.displaypoints();
+      this.getData(this.state.taskId);
+    }
+  }
 
+  reassignTask(){
+    fetch(Url.setStatus + this.state.taskId + '/New',
+        { method: 'PUT', }
+      )
+        .then(res => res.json())
+        .catch(e => console.log('error:', e));
+      alert("Completed. Please reassign the job now.");
+      this.props.getdata();
+      this.props.displaypoints();
+      this.getData(this.state.taskId);
+  }
+
+
+  setStatus() {
+    if (this.state.nextStatus !== '') {
+      fetch(Url.setStatus + this.state.taskId + '/' + this.state.nextStatus,
+        { method: 'PUT', }
+      )
+        .then(res => res.json())
+        .catch(e => console.log('error:', e));
+      this.props.getdata();
+      this.props.displaypoints();
+      this.getData(this.state.taskId);
+    } else
+      alert('Please add a status.');
   }
 
   render() {
@@ -232,9 +299,11 @@ export default class Viewer extends React.Component {
     const closestyle = {
       color: 'red',
     }
+    const reassign_style = {
+      color: 'goldenrod',
+    }
     return (
       <div className="viewer">
-        {console.log('1')}
         <Fullscreen
           enabled={this.state.isFull}
           onChange={isFull => this.setState({ isFull })}>
@@ -275,22 +344,68 @@ export default class Viewer extends React.Component {
               rightClick={this.state.rightClick}
               addScenToNewHotspot={this.addScenToNewHotspot} />
           </div>
-          {this.state.status==='Uploaded'?
-          <div className="image_check">
-            <IconButton
-              style={checkstyle}
-              onClick={this.approveTask}
-            >
-              <CheckIcon />
-            </IconButton>
-            <IconButton
-              style={closestyle}
-              onClick={this.denyTask}
-            >
-              <CloseIcon />
-            </IconButton>
-          </div> :
-          <div></div>}
+          {/* Uploaded photo approval */}
+          {this.state.status === 'Uploaded' ?
+            <div className="image_check">
+              <IconButton
+                style={checkstyle}
+                onClick={this.approveTask}
+              >
+                <CheckIcon />
+              </IconButton>
+              <IconButton
+                style={closestyle}
+                onClick={this.denyTask}
+              >
+                <CloseIcon />
+              </IconButton>
+            </div> :
+            <div></div>}
+
+          {/* Denied task */}
+          {this.state.status === 'Denied' ?
+            <div className="image_check">
+              <IconButton
+                style={closestyle}
+                onClick={this.deleteTask}
+              >
+                <CloseIcon />
+              </IconButton>
+              <IconButton
+                style={reassign_style}
+                onClick={this.reassignTask}
+              >
+                <Refresh />
+              </IconButton>
+            </div> :
+            <div></div>}
+
+          {/* Delete task */}
+          {this.state.status === 'Done' ?
+            <div className="image_check">
+              <IconButton
+                style={closestyle}
+                onClick={this.deleteTask}
+              >
+                <CloseIcon />
+              </IconButton>
+            </div> :
+            <div></div>}
+
+          <div className="admin_test">
+            <select value={this.state.nextStatus} onChange={this.handleChange}>
+              <option value="New">New</option>
+              <option value="Requested">Requested</option>
+              <option value="Assigned">Assigned</option>
+              <option value="Uploaded">Uploaded</option>
+              <option value="Done">Done</option>
+              <option value="Denied">Denied</option>
+              <option value="Reject">Reject</option>
+              <option value="Deleted">Deleted</option>
+            </select>
+            <button id='next_status_submit' onClick={this.setStatus}>Change Status</button>
+          </div>
+
           <div className="photo-info">
             <div>
               <h2 id="simple-modal-title">Task Information: </h2>
@@ -317,7 +432,6 @@ export default class Viewer extends React.Component {
             </div>}
           </div>
         </Fullscreen>
-        {/* <button onClick={() => console.log('Pitch: ' + this.panImage.current.getViewer().getPitch() + ' Yaw: ' + this.panImage.current.getViewer().getYaw() + ' Hfov: ' + this.panImage.current.getViewer().getHfov())}>get 360 info</button> */}
       </div>
     );
   }

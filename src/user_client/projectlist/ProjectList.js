@@ -2,6 +2,8 @@ import React from 'react';
 import { IconButton, Grid, Typography } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 //components
 import TopToolbar from '../../components/TopToolbar'
 import ProjectCard from './components/ProjectCard';
@@ -9,22 +11,17 @@ import Main from '../main/Main'
 import Url from '../../components/Url';
 import Cookies from 'universal-cookie';
 
-// const useStyles = makeStyles(theme => ({
-//   root: {
-//     padding: theme.spacing(3)
-//   },
-//   content: {
-//     marginTop: theme.spacing(2)
-//   },
-//   pagination: {
-//     marginTop: theme.spacing(3),
-//     display: 'flex',
-//     alignItems: 'center',
-//     justifyContent: 'flex-end'
-//   }
-// }));
+const styles = theme => ({
+  root: {
+    padding: theme.spacing(3)
+  },
+  content: {
+    marginTop: theme.spacing(2)
+  }
+});
 
 const cookies = new Cookies();
+
 
 class ProjectList extends React.Component{
   constructor(props){
@@ -45,13 +42,14 @@ class ProjectList extends React.Component{
       .catch(e => console.log('error:', e))
   }
   render(){
+    const { classes } = this.props;
     if(this.state.loading || this.state.projects === [])
       return null;
     else{
       let contents =
-          <div>
+          <div className={classes.root}>
             <TopToolbar title='project' />
-            <div>
+            <div className={classes.content}>
               <Grid
                 container
                 spacing={3}
@@ -84,4 +82,8 @@ class ProjectList extends React.Component{
   }
 }
 
-export default ProjectList;
+ProjectList.propTypes = {
+  classes: PropTypes.object.isRequired,
+}
+
+export default withStyles(styles)(ProjectList);

@@ -4,10 +4,10 @@ import { red } from '@material-ui/core/colors';
 import Modal from '@material-ui/core/Modal';
 import Point from '@material-ui/icons/FiberManualRecord'
 import Viewer from './Viewer';
-import ImageUploader from './ImageUploader';
-
 import IconButton from "@material-ui/core/IconButton";
 import Close from "@material-ui/icons/Close";
+import Popup from 'react-popup';
+import Url from '../../../components/Url';
 
 
 
@@ -17,8 +17,10 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     alignItems: 'flex-end',
   },
-  icon: {
-    margin: theme.spacing(2),
+  modal: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   iconHover: {
     cursor: "pointer",
@@ -31,9 +33,7 @@ const useStyles = makeStyles(theme => ({
     width: '85%',
     height: '80%',
     backgroundColor: theme.palette.background.paper,
-    // border: '2px solid #000',
     boxShadow: theme.shadows[5],
-    // padding: theme.spacing(2, 4, 4),
     padding: theme.spacing(0),
     //customized:
     'text-align': 'center',
@@ -55,10 +55,7 @@ function centerModal() {
 }
 
 export default function Icons(props) {
-  let parent = props.parent;
   let taskId = props.value.taskId;
-
-  // let status = props.value.status;
   let x = props.value.x;
   let y = props.value.y;
   let info = props.value.info;
@@ -75,6 +72,49 @@ export default function Icons(props) {
     setOpen(false);
   };
 
+  function RequestedTask() {
+    Popup.create({
+      title: 'Requested task',
+      content: <div>
+        <p>{x}  {y}</p>
+        <p className="taskInfo">{info}</p>
+      </div>,
+      buttons: {
+        left: [{
+          text: 'Delete',
+          className: 'danger',
+          key: 'delete',
+          action: function () {
+            if (window.confirm('Are you sure you wish to delete this task?')) {
+              fetch(Url.setStatus + taskId + '/Deleted',
+                { method: 'PUT', }
+              )
+                .then(res => {
+                  res.json();
+                  Popup.alert('Task has been deleted');
+                  Popup.close();
+                  props.parent.getData();
+                  props.parent.displayPoints();
+                })
+                .catch(e => console.log('error:', e))
+            }
+          }
+        }
+        ],
+      }
+    });
+  }
+
+  function AssignedTask() {
+    Popup.create({
+      title: 'Requested task',
+      content: <div>
+        <p>{x}  {y}</p>
+        <p className="taskInfo">{info}</p>
+      </div>,
+    });
+  }
+
   const closeButtonStyle = {
     position: 'absolute',
     right: '0',
@@ -85,13 +125,13 @@ export default function Icons(props) {
     opacity: ".9",
   }
 
-  let pointStyle={};
-  if(props.rate===undefined){
-    pointStyle={
+  let pointStyle = {};
+  if (props.rate === undefined) {
+    pointStyle = {
       fontSize: 24 * props.value.rate + 'px',
     }
-  }else{
-    pointStyle={
+  } else {
+    pointStyle = {
       fontSize: 24 * props.rate + 'px',
     }
   }
@@ -105,7 +145,7 @@ export default function Icons(props) {
         onClose={handleClose}
       >
         <div style={modalStyle} className={classes.paper}>
-        {props.value.img === '' ? <ImageUploader taskId={taskId} parent={parent} x = {x} y = {y} info = {info} floorID={props.floorID} floorplan={props.floorplan} photoInfo={props.photoInfo}/> : <Viewer taskId={taskId} floorID={props.floorID} floorplan={props.floorplan} photoInfo={props.photoInfo}/>}
+          <Viewer setRate={props.setRate} taskId={taskId} floorID={props.floorID} floorplan={props.floorplan} photoInfo={props.photoInfo} />
           {/* close button */}
           <IconButton
             style={closeButtonStyle}
@@ -118,9 +158,10 @@ export default function Icons(props) {
           </IconButton>
         </div>
       </Modal>
-      {/* {parent.state.show ? <Point className={classes.iconHover} onClick={handleOpen}/> : <Point className={classes.iconHover}/>} */}
-      {/* 0903: for test purpose~~~ */}
-      <Point className={classes.iconHover} onClick={handleOpen} style={pointStyle}/>
+      {props.value.status === 'Requested' ? <Point className={classes.iconHover} onClick={RequestedTask} style={pointStyle} /> :
+        props.value.status === 'Assigned' ? <Point className={classes.iconHover} onClick={AssignedTask} style={pointStyle} /> :
+          <Point className={classes.iconHover} onClick={handleOpen} style={pointStyle} />
+      }
     </div>
   );
 }

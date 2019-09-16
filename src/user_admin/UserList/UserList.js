@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 //components
 import UsersTable from './components/UsersTable'
-// import UsersToolbar from './components/UsersToolbar'
 import TopToolbar from '../../components/TopToolbar'
 import mockData from './data';
 import Main from '../main/Main'

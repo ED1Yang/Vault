@@ -7,8 +7,6 @@ import {
   CardContent,
   Typography,
 } from '@material-ui/core';
-//
-// import { Link as RouterLink } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({

@@ -1,7 +1,4 @@
 import React from 'react';
-// import { makeStyles } from '@material-ui/core/styles';
-// import Fab from '@material-ui/core/Fab';
-// import AddIcon from '@material-ui/icons/Add';
 import Popup from 'react-popup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -137,7 +134,7 @@ class FloorPlan extends React.Component {
               formData.append('latitude', x)
               formData.append('longitude', y)
               formData.append('info', promptValue)
-              formData.append('user_id', cookie.get('userID'))
+              formData.append('manager_id', cookie.get('userID'))
               formData.append('floor_id', this.props.parent.props.location.state.floorID)
               fetch(Url.addNewPoint,
                 { method: 'POST', body: formData }
@@ -157,7 +154,6 @@ class FloorPlan extends React.Component {
         }
       });
     });
-    /** Call the plugin */
     Popup.plugins().prompt('', 'Task information', function (value) {
       Popup.alert('feedback: ' + value);
     });
@@ -166,6 +162,7 @@ class FloorPlan extends React.Component {
   render() {
     const contents = <div className="container">
       <Grid container spacing={3}>
+
         <Grid item xs={10}>
           <div className='main_div'>
             <img
@@ -175,11 +172,9 @@ class FloorPlan extends React.Component {
               onLoad={() => this.setRate()}
               onClick={this.setPosition}
             />
-            <ShowPoints photoInfo={this.state.photoInfo} rate={this.state.rate} onRef={this.onRef} floorID={this.props.location.state.floorID} floorplan={this.props.location.state.floorplan}/>
+            <ShowPoints setRate={this.setRate} photoInfo={this.state.photoInfo} rate={this.state.rate} onRef={this.onRef} floorID={this.props.location.state.floorID} floorplan={this.props.location.state.floorplan}/>
             {this.insertMarker()}
           </div>
-
-
         </Grid>
 
         <Grid item xs={2}>
@@ -194,7 +189,6 @@ class FloorPlan extends React.Component {
                     value={this.state.isEditMode}
                   />
                 </Grid>
-                {/* <Grid item>Edit</Grid> */}
               </Grid>
             </Typography>
             {this.state.isEditMode && this.state.x !== "" &&
@@ -206,13 +200,13 @@ class FloorPlan extends React.Component {
                   <AddCircle />
                   <p>&nbsp;Add new task</p>
                 </Button>
-                {/* <Fab color="primary" aria-label="add" className={useStyles.fab} onClick={this.addNewPoint}><AddIcon /></Fab> */}
                 <p>Relative coordinates: {this.state.x} {this.state.y}</p>
               </div>
             }
           </div>
-          <Popup parent={this} />
+          <Popup />
         </Grid>
+        
       </Grid>
     </div>
     return <Main value={contents}/>

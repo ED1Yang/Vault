@@ -11,12 +11,13 @@ class ShowPoints extends React.Component {
     this.state = {
       points: [],
       show: true,
+      floorID: this.props.floorID,
     };
     this.getData();
   }
 
   getData() {
-    fetch(Url.getEmpPoints + cookie.get('userID') + '/' + this.props.floorID)
+    fetch(Url.getEmpPoints + cookie.get('userID') + '/' + this.state.floorID)
       .then((r) => r.json()
         .then((data) => {
           if(data.Message === 'null')
@@ -70,6 +71,7 @@ class ShowPoints extends React.Component {
           floorplan={this.props.floorplan}
           rate={this.props.rate}
           photoInfo={this.props.photoInfo}
+          setRate={this.props.setRate}
         />
       </div>
     )

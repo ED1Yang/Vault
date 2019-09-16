@@ -76,6 +76,14 @@ body {
     user-select:none;
 }
 
+.admin_test {
+    position: absolute;
+    left: 50%;
+    margin-right: -50%;
+    transform: translate(-50%, -50%); 
+    top: 5%;
+}
+
 .image_check{
     position: absolute;
     left: 50%;
@@ -83,6 +91,8 @@ body {
     transform: translate(-50%, -50%);
     bottom: 0px;
 }
+
+
 
 .ab-controls {
     margin-top: 0;
@@ -93,7 +103,6 @@ body {
     height: 26px;
     text-align: center;
     background: rgba(255, 255, 255, 0.7);
-    /* display: inline-block; */
     cursor: pointer;
 }
 
@@ -145,4 +154,6 @@ body {
     left: -10px;
     margin: 0 50%;
    }
+
+
    

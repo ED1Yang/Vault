@@ -31,9 +31,7 @@ const useStyles = makeStyles(theme => ({
     width: '85%',
     height: '80%',
     backgroundColor: theme.palette.background.paper,
-    // border: '2px solid #000',
     boxShadow: theme.shadows[5],
-    // padding: theme.spacing(2, 4, 4),
     padding: theme.spacing(0),
     //customized:
     'text-align': 'center',
@@ -57,8 +55,6 @@ function centerModal() {
 export default function Icons(props) {
   let parent = props.parent;
   let taskId = props.value.taskId;
-
-  // let status = props.value.status;
   let x = props.value.x;
   let y = props.value.y;
   let info = props.value.info;
@@ -105,7 +101,7 @@ export default function Icons(props) {
         onClose={handleClose}
       >
         <div style={modalStyle} className={classes.paper}>
-        {props.value.img === '' ? <ImageUploader taskId={taskId} parent={parent} x = {x} y = {y} info = {info} floorID={props.floorID} floorplan={props.floorplan} photoInfo={props.photoInfo}/> : <Viewer taskId={taskId} floorID={props.floorID} floorplan={props.floorplan} photoInfo={props.photoInfo}/>}
+        {props.value.img === '' ? <ImageUploader setRate={props.setRate} taskId={taskId} parent={parent} x = {x} y = {y} info = {info} floorID={props.floorID} floorplan={props.floorplan} photoInfo={props.photoInfo}/> : <Viewer setRate={props.setRate} taskId={taskId} floorID={props.floorID} floorplan={props.floorplan} photoInfo={props.photoInfo}/>}
           {/* close button */}
           <IconButton
             style={closeButtonStyle}
@@ -118,8 +114,6 @@ export default function Icons(props) {
           </IconButton>
         </div>
       </Modal>
-      {/* {parent.state.show ? <Point className={classes.iconHover} onClick={handleOpen}/> : <Point className={classes.iconHover}/>} */}
-      {/* 0903: for test purpose~~~ */}
       <Point className={classes.iconHover} onClick={handleOpen} style={pointStyle}/>
     </div>
   );

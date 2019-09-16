@@ -14,14 +14,12 @@ import employeeDashboard from './user_employee/dashboard/Dashboard'
 import employeeProject from './user_employee/projectlist/ProjectList'
 import employeeFloorMaps from './user_employee/floormaps/MapList'
 import employeeFloorPlan from './user_employee/floorplan/FloorPlan'
-import employeeUserList from './user_employee/UserList/UserList'
 
 //client:
 import clientDashboard from './user_client/dashboard/Dashboard'
 import clientProject from './user_client/projectlist/ProjectList'
 import clientFloorMaps from './user_client/floormaps/MapList'
 import clientFloorPlan from './user_client/floorplan/FloorPlan'
-import clientUserList from './user_client/UserList/UserList'
 
 //404
 import NotFound from './components/NotFound'
@@ -111,11 +109,6 @@ class Routes extends React.Component {
                                 exact
                                 path="/employee/projects"
                             />
-                            <Route
-                                component={employeeUserList}
-                                exact
-                                path="/employee/clients"
-                            />
 
                             {/* 404 pager */}
                             <Route
@@ -160,11 +153,6 @@ class Routes extends React.Component {
                                 component={clientProject}
                                 exact
                                 path="/client/projects"
-                            />
-                            <Route
-                                component={clientUserList}
-                                exact
-                                path="/client/clients"
                             />
 
                             {/* 404 pager */}

@@ -64,7 +64,7 @@ class ImageUpload extends React.Component {
               type="submit"
               onClick={(e)=>this._handleSubmit(e)}>Upload Image</button>
           </form>
-            {imagePreviewUrl !== null && <Viewer img={imagePreviewUrl} source="uploader"  x = {this.props.x} y = {this.props.y} info = {this.props.info} floorID={this.props.floorID} floorplan={this.props.floorplan} photoInfo={this.props.photoInfo}/>}
+            {imagePreviewUrl !== null && <Viewer setRate={this.props.setRate} img={imagePreviewUrl} source="uploader"  x = {this.props.x} y = {this.props.y} info = {this.props.info} floorID={this.props.floorID} floorplan={this.props.floorplan} photoInfo={this.props.photoInfo}/>}
             {imagePreviewUrl === null && <div className="photo-info">
             <h2 id="simple-modal-title">Task Information: </h2>
             <p id="simple-modal-description">

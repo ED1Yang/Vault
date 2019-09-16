@@ -1,6 +1,6 @@
 
 .container {
-  display: flex; /* or inline-flex */
+  display: flex; 
 }
 
 .main_div {
@@ -48,7 +48,7 @@
   font-feature-settings: 'liga';
  }
 
- .approveTaskInfo{
+ .taskInfo{
    /* make the task info looks better */
    text-align:justify;
    text-justify:distribute-all-lines;/*ie6-8*/

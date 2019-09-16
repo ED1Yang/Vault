@@ -1,7 +1,4 @@
 import React from 'react';
-// import { makeStyles } from '@material-ui/core/styles';
-// import Fab from '@material-ui/core/Fab';
-// import AddIcon from '@material-ui/icons/Add';
 import Popup from 'react-popup';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -22,29 +19,6 @@ import '../../assets/css/floorplan.css';
 import Url from '../../components/Url';
 import Cookies from 'universal-cookie';
 
-// const useStyles = makeStyles(theme => ({
-//   fab: {
-//     margin: theme.spacing(1),
-//     // fontSize:'10px',
-//     // width:'10px',
-//   },
-//   container: {
-//     display: 'grid',
-//     gridTemplateColumns: 'repeat(12, 1fr)',
-//     gridGap: theme.spacing(3),
-//   },
-//   paper: {
-//     padding: theme.spacing(1),
-//     textAlign: 'center',
-//     color: theme.palette.text.secondary,
-//     whiteSpace: 'nowrap',
-//     marginBottom: theme.spacing(1),
-//   },
-//   divider: {
-//     margin: theme.spacing(2, 0),
-//   },
-// }));
-
 const cookie = new Cookies();
 
 class FloorPlan extends React.Component {
@@ -54,6 +28,7 @@ class FloorPlan extends React.Component {
     this.insertMarker = this.insertMarker.bind(this);
     this.addNewPoint = this.addNewPoint.bind(this);
     this.handleModeChange = this.handleModeChange.bind(this);
+    this.setRate = this.setRate.bind(this);
     this.state = {
       x: "",
       y: "",
@@ -68,12 +43,12 @@ class FloorPlan extends React.Component {
 
   componentDidMount(){
     // trigger setRate() when screen scale changed.
-    window.addEventListener("resize", this.setRate.bind(this));
+    window.addEventListener("resize", this.setRate);
     this.setRate();
   }
 
   componentWillUnmount(){
-    window.removeEventListener("resize", this.setRate.bind(this));
+    window.removeEventListener("resize", this.setRate);
     this.setState = (state,callback)=>{
       return;
     };
@@ -94,7 +69,6 @@ class FloorPlan extends React.Component {
 
   setPosition(e) {
     if (this.state.isEditMode)
-      console.log('x: '+Math.round(e.nativeEvent.offsetX/this.state.rate)+' y: '+Math.round(e.nativeEvent.offsetY/this.state.rate))
       this.setState({ x: Math.round(e.nativeEvent.offsetX/this.state.rate), y: Math.round(e.nativeEvent.offsetY/this.state.rate)});
   }
 
@@ -157,9 +131,9 @@ class FloorPlan extends React.Component {
               formData.append('latitude', x)
               formData.append('longitude', y)
               formData.append('info', promptValue)
-              formData.append('user_id', cookie.get('userID'))
+              formData.append('emp_id', cookie.get('userID'))
               formData.append('floor_id', this.props.parent.props.location.state.floorID)
-              fetch(Url.addNewPoint,
+              fetch(Url.addNewPointEmp,
                 { method: 'POST', body: formData }
               )
                 .then(res => res.json())
@@ -195,7 +169,7 @@ class FloorPlan extends React.Component {
               onLoad={() => this.setRate()}
               onClick={this.setPosition}
             />
-            <ShowPoints photoInfo={this.state.photoInfo} rate={this.state.rate} onRef={this.onRef} floorID={this.props.location.state.floorID} floorplan={this.props.location.state.floorplan}/>
+            <ShowPoints setRate={this.setRate} photoInfo={this.state.photoInfo} rate={this.state.rate} onRef={this.onRef} floorID={this.props.location.state.floorID} floorplan={this.props.location.state.floorplan}/>
             {this.insertMarker()}
           </div>
 
@@ -214,7 +188,6 @@ class FloorPlan extends React.Component {
                     value={this.state.isEditMode}
                   />
                 </Grid>
-                {/* <Grid item>Edit</Grid> */}
               </Grid>
             </Typography>
             {this.state.isEditMode && this.state.x !== "" &&
@@ -226,7 +199,6 @@ class FloorPlan extends React.Component {
                   <AddCircle />
                   <p>&nbsp;Add new task</p>
                 </Button>
-                {/* <Fab color="primary" aria-label="add" className={useStyles.fab} onClick={this.addNewPoint}><AddIcon /></Fab> */}
                 <p>Relative coordinates: {this.state.x} {this.state.y}</p>
               </div>
             }

@@ -16,7 +16,6 @@ import InputIcon from '@material-ui/icons/Input';
 import Badge from '@material-ui/core/Badge';
 import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
-// import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Link from '@material-ui/core/Link';
 //components
@@ -127,10 +126,6 @@ function Main(props) {
   const handleDrawerOpen = () => {
     setOpen(true);
   };
-  // const handleDrawerClose = () => {
-  //   setOpen(false);
-  // };
-  // const bgcolor={'background-color':'white'}
   const displayContent = () => {
     if (props.value === undefined) {
       return <p>no content</p>;
