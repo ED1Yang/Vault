@@ -26,6 +26,7 @@ class ShowPoints extends React.Component {
             this.setState({ points: [] });
           else
             this.setState({ points: data });
+          this.props.setPoints(this.state.points);
         }));
   }
 

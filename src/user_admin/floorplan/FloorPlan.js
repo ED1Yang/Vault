@@ -19,7 +19,8 @@ import EditIcon from '@material-ui/icons/Edit';
 //components
 import Icons from './component/Icons';
 import ShowPoints from './component/ShowPoints';
-import Main from '../main/Main'
+import Main from '../main/Main';
+import PointList from '../../components/PointList';
 //css
 import '../../assets/css/popup.css';
 import '../../assets/css/floorplan.css';
@@ -71,6 +72,7 @@ class FloorPlan extends React.Component {
     this.addNewPoint = this.addNewPoint.bind(this);
     this.handleModeChange = this.handleModeChange.bind(this);
     this.setRate = this.setRate.bind(this);
+    this.setPoints = this.setPoints.bind(this);
   }
 
   componentDidMount() {
@@ -86,6 +88,10 @@ class FloorPlan extends React.Component {
     };
   }
 
+  setPoints = (points) =>{
+    this.setState({points: points});
+  }
+  
   setRate() {
     let photo = document.getElementById('main_map');
     if (this.state.loaded && photo) {
@@ -205,7 +211,7 @@ render() {
             onLoad={() => this.setRate()}
             onClick={this.setPosition}
           />
-          <ShowPoints setRate={this.setRate} photoInfo={this.state.photoInfo} rate={this.state.rate} onRef={this.onRef} floorID={this.props.location.state.floorID} floorplan={this.props.location.state.floorplan} />
+          <ShowPoints setPoints={this.setPoints} setRate={this.setRate} photoInfo={this.state.photoInfo} rate={this.state.rate} onRef={this.onRef} floorID={this.props.location.state.floorID} floorplan={this.props.location.state.floorplan} />
           {this.insertMarker()}
         </div>
       </Grid>
@@ -237,6 +243,8 @@ render() {
               <p>Relative coordinates: {this.state.x} {this.state.y}</p>
             </div>
           }
+          {console.log(this.state.points.length)}
+          {this.state.points ===[] ? null : <PointList points={this.state.points}/> }
         </div>
       </Grid>
       <Popup parent={this} />
