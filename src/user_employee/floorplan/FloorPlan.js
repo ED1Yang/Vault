@@ -1,15 +1,23 @@
 import React from 'react';
 import Popup from 'react-popup';
+
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
-
-import AddCircle from "@material-ui/icons/AddCircle";
 import Button from "@material-ui/core/Button";
-
+import Icon from '@material-ui/core/Icon';
+import TextField from '@material-ui/core/TextField';
+//controlPanel
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import ListSubheader from '@material-ui/core/ListSubheader';
+import Switch from '@material-ui/core/Switch';
+import EditIcon from '@material-ui/icons/Edit';
 //components
-import Prompt from './component/Prompt';
 import Icons from './component/Icons';
-import AntSwitch from './component/AntSwitch';
 import ShowPoints from './component/ShowPoints';
 import Main from '../main/Main'
 //css
@@ -19,16 +27,35 @@ import '../../assets/css/floorplan.css';
 import Url from '../../components/Url';
 import Cookies from 'universal-cookie';
 
+
+
+const styles = theme => ({
+  root: {
+    width: '100%',
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper,
+  },
+  button: {
+    margin: theme.spacing(1),
+  },
+  leftIcon: {
+    marginRight: theme.spacing(1),
+  },
+  container: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  textField: {
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
+  },
+});
+
 const cookie = new Cookies();
 
 class FloorPlan extends React.Component {
   constructor(props) {
     super(props);
-    this.setPosition = this.setPosition.bind(this);
-    this.insertMarker = this.insertMarker.bind(this);
-    this.addNewPoint = this.addNewPoint.bind(this);
-    this.handleModeChange = this.handleModeChange.bind(this);
-    this.setRate = this.setRate.bind(this);
     this.state = {
       x: "",
       y: "",
@@ -39,27 +66,32 @@ class FloorPlan extends React.Component {
       rate: 0,
       loaded: false,
     };
+    this.setPosition = this.setPosition.bind(this);
+    this.insertMarker = this.insertMarker.bind(this);
+    this.addNewPoint = this.addNewPoint.bind(this);
+    this.handleModeChange = this.handleModeChange.bind(this);
+    this.setRate = this.setRate.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     // trigger setRate() when screen scale changed.
     window.addEventListener("resize", this.setRate);
     this.setRate();
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     window.removeEventListener("resize", this.setRate);
-    this.setState = (state,callback)=>{
+    this.setState = (state, callback) => {
       return;
     };
   }
-  
+
   setRate() {
     let photo = document.getElementById('main_map');
-    if(this.state.loaded&&photo){
-      this.setState({ rate: photo.width / photo.naturalWidth, photoInfo:{naturalWidth: photo.naturalWidth, naturalHeight: photo.naturalHeight}});
-    }else{
-      this.setState({ loaded: true,});
+    if (this.state.loaded && photo) {
+      this.setState({ rate: photo.width / photo.naturalWidth, photoInfo: { naturalWidth: photo.naturalWidth, naturalHeight: photo.naturalHeight } });
+    } else {
+      this.setState({ loaded: true, });
     }
   }
 
@@ -69,7 +101,7 @@ class FloorPlan extends React.Component {
 
   setPosition(e) {
     if (this.state.isEditMode)
-      this.setState({ x: Math.round(e.nativeEvent.offsetX/this.state.rate), y: Math.round(e.nativeEvent.offsetY/this.state.rate)});
+      this.setState({ x: Math.round(e.nativeEvent.offsetX / this.state.rate), y: Math.round(e.nativeEvent.offsetY / this.state.rate) });
   }
 
   insertMarker() {
@@ -77,17 +109,19 @@ class FloorPlan extends React.Component {
       const markerStyle = {
         color: 'goldenrod',
         // set center of the point to the coordinates
-        left: (this.state.x - 12)*this.state.rate + 'px',
-        top: (this.state.y - 12)*this.state.rate + 'px',
+        left: (this.state.x - 12) * this.state.rate + 'px',
+        top: (this.state.y - 12) * this.state.rate + 'px',
       }
       return <div className='marker' style={markerStyle}>
-        <Icons value={{
-          x: this.state.x,
-          y: this.state.y,
-          img: '',
-          rate:this.state.rate,
-        }} parent={this} />
-        
+        <Icons
+          value={{
+            x: this.state.x,
+            y: this.state.y,
+            img: '',
+            rate: this.state.rate,
+            newPoint: true,
+          }}
+          parent={this} />
       </div>
     }
   }
@@ -101,113 +135,119 @@ class FloorPlan extends React.Component {
     }
   }
 
-  addNewPoint() {
+  addNewPoint(classes) {
     let x = this.state.x;
     let y = this.state.y;
-    let feedback = "";
-    /** Prompt plugin */
-    Popup.registerPlugin('prompt', function (defaultValue, placeholder, callback) {
-      let promptValue = null;
-      let promptChange = function (value) {
-        promptValue = value;
-      };
-      this.create({
-        title: 'Add new task',
-        content: <Prompt onChange={promptChange} placeholder={placeholder} value={defaultValue} />,
-        buttons: {
-          left: [{
-            text: 'Cancel',
-            className: 'danger',
-            action: function () {
-                Popup.close();
-            }
+    Popup.create({
+      title: 'Add new task',
+      content: <form className={classes.container} noValidate autoComplete="off">
+              <TextField
+          id="outlined-multiline-static"
+          multiline
+          rows="4"
+          placeholder="task info here..."
+          className={classes.textField}
+          margin="normal"
+          variant="outlined"
+          fullWidth
+        />
+        </form>
+        ,
+      buttons: {
+        left: [{
+          text: 'Cancel',
+          className: 'danger',
+          action: function () {
+            Popup.close();
+          }
         }],
-          right: [{
-            text: 'Submit',
-            key: '⌘+s',
-            className: 'success',
-            action: function () {
-              let formData = new FormData();
-              formData.append('latitude', x)
-              formData.append('longitude', y)
-              formData.append('info', promptValue)
-              formData.append('emp_id', cookie.get('userID'))
-              formData.append('floor_id', this.props.parent.props.location.state.floorID)
-              fetch(Url.addNewPointEmp,
-                { method: 'POST', body: formData }
-              )
-                .then(res => res.json())
-                .then(data => {
-                  feedback = data.Message;
-                  callback(feedback);
-                  Popup.close();
-                  this.props.parent.showPoints.getData();
-                  this.props.parent.showPoints.displayPoints();
-                  this.props.parent.setState({ x: '', y: '' });
-                })
-                .catch(e => console.log('error:', e))
-            }
-          }]
-        }
-      });
+        right: [{
+          text: 'Create',
+          key: '⌘+s',
+          className: 'success',
+          action: function () {
+            let formData = new FormData();
+            formData.append('latitude', x)
+            formData.append('longitude', y)
+            formData.append('info', document.getElementById('outlined-multiline-static').value)
+            formData.append('emp_id', cookie.get('userID'))
+            formData.append('floor_id', this.props.parent.props.location.state.floorID)
+
+            fetch(Url.addNewPointEmp,
+              { method: 'POST', body: formData }
+            )
+              .then(res => res.json())
+              .then(data => {
+                alert(data.Message);
+                Popup.close();
+                this.props.parent.showPoints.getData();
+                this.props.parent.showPoints.displayPoints();
+                this.props.parent.setState({ x: '', y: '' });
+              })
+              .catch(e => console.log('error:', e))
+          }
+        }]
+      }
     });
-    /** Call the plugin */
-    Popup.plugins().prompt('', 'Task information', function (value) {
-      Popup.alert('feedback: ' + value);
-    });
-  }
-
-  render() {
-    const contents = <div className="container">
-      <Grid container spacing={3}>
-        <Grid item xs={10}>
-          <div className='main_div'>
-            <img
-              id='main_map'
-              alt='map'
-              src={this.props.location.state.floorplan}
-              onLoad={() => this.setRate()}
-              onClick={this.setPosition}
-            />
-            <ShowPoints setRate={this.setRate} photoInfo={this.state.photoInfo} rate={this.state.rate} onRef={this.onRef} floorID={this.props.location.state.floorID} floorplan={this.props.location.state.floorplan}/>
-            {this.insertMarker()}
-          </div>
-
-
-        </Grid>
-
-        <Grid item xs={2}>
-          <p>Control Panel</p>
-          <div className='panel'>
-            <Typography component="div">
-              <Grid component="label" container alignItems="center" spacing={1}>
-                <Grid item>Edit Mode</Grid>
-                <Grid item>
-                  <AntSwitch
-                    onChange={this.handleModeChange}
-                    value={this.state.isEditMode}
-                  />
-                </Grid>
-              </Grid>
-            </Typography>
-            {this.state.isEditMode && this.state.x !== "" &&
-              <div>
-              <Button
-                  color="primary"
-                  onClick={this.addNewPoint}
-                >
-                  <AddCircle />
-                  <p>&nbsp;Add new task</p>
-                </Button>
-                <p>Relative coordinates: {this.state.x} {this.state.y}</p>
-              </div>
-            }
-          </div>
-          <Popup parent={this} />
-        </Grid>
-      </Grid>
-    </div>
-    return <Main value={contents} />
-  }
 }
-export default FloorPlan;
+
+render() {
+  const { classes } = this.props;
+  const contents = <div className="container">
+    <Grid container spacing={3}>
+
+      <Grid item xs={10}>
+        <div className='main_div'>
+          <img
+            id='main_map'
+            alt='map'
+            src={this.props.location.state.floorplan}
+            onLoad={() => this.setRate()}
+            onClick={this.setPosition}
+          />
+          <ShowPoints setRate={this.setRate} photoInfo={this.state.photoInfo} rate={this.state.rate} onRef={this.onRef} floorID={this.props.location.state.floorID} floorplan={this.props.location.state.floorplan} />
+          {this.insertMarker()}
+        </div>
+      </Grid>
+
+      <Grid item xs={2}>
+        <p>Control Panel</p>
+         <div className='panel'>
+          <List subheader={<ListSubheader>Settings</ListSubheader>} className={classes.root}>
+            <ListItem>
+              <ListItemIcon>
+                <EditIcon />
+              </ListItemIcon>
+              <ListItemText id="switch-list-label-wifi" primary="Edit Mode" />
+              <ListItemSecondaryAction>
+                <Switch
+                  color="primary"
+                  onChange={this.handleModeChange}
+                  value={this.state.isEditMode}
+                />
+              </ListItemSecondaryAction>
+            </ListItem>
+          </List>
+          {this.state.isEditMode && this.state.x !== "" &&
+            <div>
+              <Button variant="contained" color="primary" className={classes.button} onClick={this.addNewPoint.bind(this,classes)}>
+                <Icon className={classes.leftIcon}>add</Icon>
+                Add New Point
+                </Button>
+              <p>Relative coordinates: {this.state.x} {this.state.y}</p>
+            </div>
+          }
+        </div>
+      </Grid>
+      <Popup parent={this} />
+    </Grid>
+  </div>
+  return <Main value={contents} />
+}
+}
+
+FloorPlan.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(FloorPlan);

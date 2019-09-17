@@ -40,7 +40,7 @@ class ShowPoints extends React.Component {
     }
     else {
       return this.state.points.map((point) => {
-        return this.showOnePoint(point.ID, point.Status, point.Lat, point.Lon, point.Img, point.Info);
+        return this.showOnePoint(point.ID, point.Status, point.Lat, point.Lon, point.Img, point.Info,point.Name,point.Contact);
       })
     }
   }
@@ -49,7 +49,7 @@ class ShowPoints extends React.Component {
     return PointsColor.setColor(status);
   }
 
-  showOnePoint(key, status, x, y, img, info) {
+  showOnePoint(key, status, x, y, img, info,emp,contact) {
     const color = this.getPointColor(status);
     let pointStyle = {
       color: color,
@@ -67,6 +67,8 @@ class ShowPoints extends React.Component {
             y: y,
             img: img,
             info: info,
+            emp:emp,
+            contact:contact,
           }}
           parent={this}
           floorID={this.props.floorID}

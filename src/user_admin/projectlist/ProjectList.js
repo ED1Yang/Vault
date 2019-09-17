@@ -43,6 +43,7 @@ class ProjectList extends React.Component{
   }
   render(){
     const { classes } = this.props;
+    
     if(this.state.loading || this.state.projects === [])
       return null;
     else{

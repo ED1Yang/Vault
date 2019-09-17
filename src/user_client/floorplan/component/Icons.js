@@ -6,8 +6,7 @@ import Point from '@material-ui/icons/FiberManualRecord'
 import Viewer from './Viewer';
 import IconButton from "@material-ui/core/IconButton";
 import Close from "@material-ui/icons/Close";
-import Popup from 'react-popup';
-import Url from '../../../components/Url';
+import Task from './Task';
 
 
 
@@ -72,49 +71,6 @@ export default function Icons(props) {
     setOpen(false);
   };
 
-  function RequestedTask() {
-    Popup.create({
-      title: 'Requested task',
-      content: <div>
-        <p>{x}  {y}</p>
-        <p className="taskInfo">{info}</p>
-      </div>,
-      buttons: {
-        left: [{
-          text: 'Delete',
-          className: 'danger',
-          key: 'delete',
-          action: function () {
-            if (window.confirm('Are you sure you wish to delete this task?')) {
-              fetch(Url.setStatus + taskId + '/Deleted',
-                { method: 'PUT', }
-              )
-                .then(res => {
-                  res.json();
-                  Popup.alert('Task has been deleted');
-                  Popup.close();
-                  props.parent.getData();
-                  props.parent.displayPoints();
-                })
-                .catch(e => console.log('error:', e))
-            }
-          }
-        }
-        ],
-      }
-    });
-  }
-
-  function AssignedTask() {
-    Popup.create({
-      title: 'Requested task',
-      content: <div>
-        <p>{x}  {y}</p>
-        <p className="taskInfo">{info}</p>
-      </div>,
-    });
-  }
-
   const closeButtonStyle = {
     position: 'absolute',
     right: '0',
@@ -158,9 +114,10 @@ export default function Icons(props) {
           </IconButton>
         </div>
       </Modal>
-      {props.value.status === 'Requested' ? <Point className={classes.iconHover} onClick={RequestedTask} style={pointStyle} /> :
-        props.value.status === 'Assigned' ? <Point className={classes.iconHover} onClick={AssignedTask} style={pointStyle} /> :
-          <Point className={classes.iconHover} onClick={handleOpen} style={pointStyle} />
+      {props.value.newPoint === true ? <Point className={classes.iconHover} style={pointStyle} /> :
+        props.value.status === 'Requested' ? <Point className={classes.iconHover} onClick={Task.RequestedTask.bind(this, x, y, info, taskId, props)} style={pointStyle} /> :
+          props.value.status === 'Assigned' ? <Point className={classes.iconHover} onClick={Task.AssignedTask.bind(this, x, y, info)} style={pointStyle} /> :
+            <Point className={classes.iconHover} onClick={handleOpen} style={pointStyle} />
       }
     </div>
   );

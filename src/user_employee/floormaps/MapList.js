@@ -2,6 +2,8 @@ import React from 'react';
 import { IconButton, Grid, Typography } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
 //components
 import TopToolbar from '../../components/TopToolbar'
 import ProjectCard from './components/MapCard';
@@ -9,6 +11,14 @@ import Main from '../main/Main'
 import Url from '../../components/Url';
 import Cookies from 'universal-cookie';
 
+const styles = theme => ({
+  root: {
+    padding: theme.spacing(3)
+  },
+  content: {
+    marginTop: theme.spacing(2)
+  }
+});
 const cookie = new Cookies();
 class MapList extends React.Component{
   constructor(props){
@@ -29,13 +39,15 @@ class MapList extends React.Component{
       .catch(e => console.log('error:', e))
   }
   render(){
+    const { classes } = this.props;
+
     if(this.state.loading || this.state.projects === [])
       return null;
     else{
       let contents =
-          <div>
+          <div className={classes.root}>
             <TopToolbar title='project' />
-            <div>
+            <div className={classes.content}>
               <Grid
                 container
                 spacing={3}
@@ -68,4 +80,8 @@ class MapList extends React.Component{
   }
 }
 
-export default MapList;
+MapList.propTypes = {
+  classes: PropTypes.object.isRequired,
+}
+
+export default withStyles(styles)(MapList);

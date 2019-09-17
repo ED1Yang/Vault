@@ -3,13 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import Modal from '@material-ui/core/Modal';
 import Point from '@material-ui/icons/FiberManualRecord'
-import Viewer from './Viewer';
-import ImageUploader from './ImageUploader';
-
 import IconButton from "@material-ui/core/IconButton";
 import Close from "@material-ui/icons/Close";
 
-
+import Viewer from './Viewer';
+import ImageUploader from './ImageUploader';
 
 const useStyles = makeStyles(theme => ({
   root: {
