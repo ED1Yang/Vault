@@ -99,7 +99,7 @@ export default function Icons(props) {
         onClose={handleClose}
       >
         <div style={modalStyle} className={classes.paper}>
-        {props.value.img === '' ? <ImageUploader setRate={props.setRate} taskId={taskId} parent={parent} x = {x} y = {y} info = {info} floorID={props.floorID} floorplan={props.floorplan} photoInfo={props.photoInfo}/> : <Viewer setRate={props.setRate} taskId={taskId} floorID={props.floorID} floorplan={props.floorplan} photoInfo={props.photoInfo}/>}
+        {props.value.status==='Assigned'||props.value.status==='Denied' ? <ImageUploader setRate={props.setRate} taskId={taskId} parent={parent} x = {x} y = {y} info = {info} floorID={props.floorID} floorplan={props.floorplan} photoInfo={props.photoInfo}/> : <Viewer setRate={props.setRate} taskId={taskId} floorID={props.floorID} floorplan={props.floorplan} photoInfo={props.photoInfo}/>}
           {/* close button */}
           <IconButton
             style={closeButtonStyle}
@@ -112,7 +112,7 @@ export default function Icons(props) {
           </IconButton>
         </div>
       </Modal>
-      <Point className={classes.iconHover} onClick={handleOpen} style={pointStyle}/>
+      <div id={'p'+taskId} onClick={handleOpen}><Point className={classes.iconHover} style={pointStyle} /></div>
     </div>
   );
 }

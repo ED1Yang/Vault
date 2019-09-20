@@ -115,9 +115,10 @@ export default function Icons(props) {
         </div>
       </Modal>
       {props.value.newPoint === true ? <Point className={classes.iconHover} style={pointStyle} /> :
-        props.value.status === 'Requested' ? <Point className={classes.iconHover} onClick={Task.RequestedTask.bind(this, x, y, info, taskId, props)} style={pointStyle} /> :
-          props.value.status === 'Assigned' ? <Point className={classes.iconHover} onClick={Task.AssignedTask.bind(this, x, y, info)} style={pointStyle} /> :
-            <Point className={classes.iconHover} onClick={handleOpen} style={pointStyle} />
+        props.value.status === 'Requested' ? <div id={'p'+taskId} onClick={Task.RequestedTask.bind(this, x, y, info, taskId, props)} ><Point className={classes.iconHover} style={pointStyle} /> </div>:
+          props.value.status === 'New' ? <div id={'p'+taskId} onClick={Task.NewTask.bind(this, x, y, info)} ><Point className={classes.iconHover} style={pointStyle} /></div> :
+            props.value.status === 'Assigned' ? <div id={'p'+taskId} onClick={Task.AssignedTask.bind(this, x, y, info)} ><Point className={classes.iconHover} style={pointStyle} /></div> :
+            <div id={'p'+taskId} onClick={handleOpen} ><Point className={classes.iconHover} style={pointStyle} /></div>
       }
     </div>
   );

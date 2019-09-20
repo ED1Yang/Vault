@@ -21,6 +21,7 @@ class Url{
     static setStatus = host + '/api/admin/';
     static assignTask = host + '/api/admin';
     static getAllEmp = host + '/api/emp/admin';
-    static setStatus = host + '/api/admin/'
+    static setStatus = host + '/api/admin/';
+    static resetTask = host + '/api/emp/admin/';
 }
 export default Url;

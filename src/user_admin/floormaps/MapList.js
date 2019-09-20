@@ -1,4 +1,5 @@
 import React from 'react';
+import { Redirect } from 'react-router-dom';
 import { IconButton, Grid, Typography } from '@material-ui/core';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -25,8 +26,10 @@ class MapList extends React.Component{
     this.state={
       maps: [],
       loading: true,
+      redirect: typeof this.props.location.state === 'undefined' ? true : false,
     }
-    this.getData();
+    if(!this.state.redirect)
+      this.getData();
   }
 
   getData = () =>{
@@ -39,42 +42,45 @@ class MapList extends React.Component{
   }
   render(){
     const { classes } = this.props;
-
-    if(this.state.loading || this.state.projects === [])
-      return null;
-    else{
-      let contents =
-          <div className={classes.root}>
-            <TopToolbar title='project' />
-            <div className={classes.content}>
-              <Grid
-                container
-                spacing={3}
-              >
-                {this.state.maps.map(map => (
-                  <Grid
-                    item
-                    key={map.FloorID}
-                    lg={4}
-                    md={6}
-                    xs={12}
-                  >
-                      <ProjectCard map={map} />
-                  </Grid>
-                ))}
-              </Grid>
+    if(this.state.redirect){
+      return <Redirect exact from="/" to="/admin/dashboard"/>
+    }else{
+      if(this.state.loading || this.state.projects === [])
+        return null;
+      else{
+        let contents =
+            <div className={classes.root}>
+              <TopToolbar title='project' />
+              <div className={classes.content}>
+                <Grid
+                  container
+                  spacing={3}
+                >
+                  {this.state.maps.map(map => (
+                    <Grid
+                      item
+                      key={map.FloorID}
+                      lg={4}
+                      md={6}
+                      xs={12}
+                    >
+                        <ProjectCard map={map} />
+                    </Grid>
+                  ))}
+                </Grid>
+              </div>
+              <div>
+                <Typography variant="caption">1-6 of 20</Typography>
+                <IconButton>
+                  <ChevronLeftIcon />
+                </IconButton>
+                <IconButton>
+                  <ChevronRightIcon />
+                </IconButton>
+              </div>
             </div>
-            <div>
-              <Typography variant="caption">1-6 of 20</Typography>
-              <IconButton>
-                <ChevronLeftIcon />
-              </IconButton>
-              <IconButton>
-                <ChevronRightIcon />
-              </IconButton>
-            </div>
-          </div>
-        return <Main value={contents} />
+          return <Main value={contents} />
+      }
     }
   }
 }

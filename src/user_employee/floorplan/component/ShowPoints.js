@@ -24,6 +24,7 @@ class ShowPoints extends React.Component {
             this.setState({ points: [] });
           else
             this.setState({ points: data });
+          this.props.setPoints(this.state.points);
         }));
   }
 
@@ -56,7 +57,7 @@ class ShowPoints extends React.Component {
       top: (y - 12) * this.props.rate + 'px',
     }
     return (
-      <div className='currentPoints' style={pointStyle} key={key}>
+      <div className='currentPoints' style={pointStyle} key={key} id={'point'+key}>
         <Icons
           value={{
             taskId: key,

@@ -39,7 +39,17 @@ export default class Task{
 
   static AssignedTask(x,y,info) {
     Popup.create({
-      title: 'Requested task',
+      title: 'Assigned task',
+      content: <div>
+        <p>{x}  {y}</p>
+        <p className="taskInfo">{info}</p>
+      </div>,
+    });
+  }
+
+  static NewTask(x,y,info) {
+    Popup.create({
+      title: 'Accepted new task',
       content: <div>
         <p>{x}  {y}</p>
         <p className="taskInfo">{info}</p>

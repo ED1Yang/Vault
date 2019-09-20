@@ -8,6 +8,7 @@ import Url from '../../../components/Url';
 
 export default class Task {
     static RequestedTask(x, y, info, taskId, props) {
+
         Popup.create({
             title: 'Requested task from client',
             content: <div>
@@ -22,12 +23,14 @@ export default class Task {
                         fetch(Url.setStatus + taskId + '/Reject',
                             { method: 'PUT', }
                         )
-                            .then(res => res.json())
+                            .then(res => {
+                                res.json();
+                                Popup.alert('Task has been rejected');
+                                props.getdata();
+                                props.displaypoints();
+                                Popup.close();
+                            })
                             .catch(e => console.log('error:', e))
-                        Popup.alert('Task has been rejected');
-                        props.getdata();
-                        props.displaypoints();
-                        Popup.close();
                     }
                 }, {
                     text: 'Delete',
@@ -37,12 +40,15 @@ export default class Task {
                             fetch(Url.setStatus + taskId + '/Deleted',
                                 { method: 'PUT', }
                             )
-                                .then(res => res.json())
+                                .then(res => {
+                                    res.json();
+                                    Popup.alert('Task has been deleted');
+                                    props.getdata();
+                                    props.displaypoints();
+                                    Popup.close();
+                                })
                                 .catch(e => console.log('error:', e))
-                            Popup.alert('Task has been deleted');
-                            props.getdata();
-                            props.displaypoints();
-                            Popup.close();
+                            
                         }
                     }
                 }],
@@ -54,12 +60,14 @@ export default class Task {
                         fetch(Url.setStatus + taskId + '/New',
                             { method: 'PUT', }
                         )
-                            .then(res => res.json())
+                            .then(res => {
+                                res.json();
+                                Popup.alert('Task has been approved');
+                                props.getdata();
+                                props.displaypoints();
+                                Popup.close();
+                            })
                             .catch(e => console.log('error:', e));
-                        Popup.alert('Task has been approved');
-                        props.getdata();
-                        props.displaypoints();
-                        Popup.close();
                     }
                 }]
             }
@@ -83,12 +91,15 @@ export default class Task {
                             fetch(Url.setStatus + taskId + '/Deleted',
                                 { method: 'PUT', }
                             )
-                                .then(res => res.json())
+                                .then(res => {
+                                    res.json();
+                                    Popup.alert('Task has been deleted');
+                                    props.getdata();
+                                    props.displaypoints();
+                                    Popup.close();
+                                })
                                 .catch(e => console.log('error:', e))
-                            Popup.alert('Task has been deleted');
-                            props.getdata();
-                            props.displaypoints();
-                            Popup.close();
+                            
                         }
                     }
                 }],
@@ -100,12 +111,14 @@ export default class Task {
                         fetch(Url.setStatus + taskId + '/Requested',
                             { method: 'PUT', }
                         )
-                            .then(res => res.json())
+                            .then(res => {
+                                res.json();
+                                Popup.alert('Task has been reactived');
+                                props.getdata();
+                                props.displaypoints();
+                                Popup.close();
+                            })
                             .catch(e => console.log('error:', e));
-                        Popup.alert('Task has been reactived');
-                        props.getdata();
-                        props.displaypoints();
-                        Popup.close();
                     }
                 }]
             }
@@ -123,15 +136,17 @@ export default class Task {
                 left: [{
                     text: 'New',
                     action: function () {
-                        fetch(Url.setStatus + taskId + '/New',
-                            { method: 'PUT', }
+                        fetch(Url.resetTask + taskId,
+                            { method: 'DELETE', }
                         )
-                            .then(res => res.json())
+                            .then(res => {
+                                res.json();
+                                Popup.alert('Task has been reactivated to the status New');
+                                props.getdata();
+                                props.displaypoints();
+                                Popup.close();
+                            })
                             .catch(e => console.log('error:', e))
-                        Popup.alert('Task has been reactivated to the status New');
-                        props.getdata();
-                        props.displaypoints();
-                        Popup.close();
                     }
                 }],
                 right: [{
@@ -142,19 +157,21 @@ export default class Task {
                         fetch(Url.setStatus + taskId + '/Done',
                             { method: 'PUT', }
                         )
-                            .then(res => res.json())
+                            .then(res => {
+                                res.json();
+                                Popup.alert('Task has been reactivated to the status Done');
+                                props.getdata();
+                                props.displaypoints();
+                                Popup.close();
+                            })
                             .catch(e => console.log('error:', e));
-                        Popup.alert('Task has been reactivated to the status Done');
-                        props.getdata();
-                        props.displaypoints();
-                        Popup.close();
                     }
                 }]
             }
         });
     }
 
-    static NewTask(x, y, info, taskId, props, classes, state, handleChange, empId) {
+    static NewTask(x, y, info, taskId, props, classes, state, handleChange) {
         let empList = [];
         fetch(Url.getAllEmp,
             { method: 'GET' }
@@ -172,7 +189,7 @@ export default class Task {
                             <Select
                                 native
                                 value={state.emp}
-                                onChange={handleChange('emp')}
+                                onChange={handleChange}
                                 name="emp"
                                 inputProps={{
                                     id: 'emp-native-required',
@@ -193,12 +210,14 @@ export default class Task {
                                     fetch(Url.setStatus + taskId + '/Deleted',
                                         { method: 'PUT', }
                                     )
-                                        .then(res => res.json())
+                                        .then(res => {
+                                            res.json();
+                                            Popup.alert('Task has been deleted');
+                                            props.getdata();
+                                            props.displaypoints();
+                                            Popup.close();
+                                        })
                                         .catch(e => console.log('error:', e))
-                                    Popup.alert('Task has been deleted');
-                                    props.getdata();
-                                    props.displaypoints();
-                                    Popup.close();
                                 }
                             }
                         }],
@@ -206,18 +225,21 @@ export default class Task {
                             text: 'Assign',
                             className: 'success',
                             action: function () {
+                                // if(empId!==''){
                                 let formData = new FormData();
-                                formData.append('empid', empId);
+                                formData.append('empid', handleChange);
                                 formData.append('jobid', taskId);
                                 fetch(Url.assignTask,
                                     { method: 'POST', body: formData }
                                 )
-                                    .then(res => res.json())
+                                    .then(res => {
+                                        res.json();
+                                        alert('Task has been assigned');
+                                        props.getdata();
+                                        props.displaypoints();
+                                        Popup.close();
+                                    })
                                     .catch(e => console.log('error:', e));
-                                alert('Task has been assigned');
-                                props.getdata();
-                                props.displaypoints();
-                                Popup.close();
                             }
                         }]
                     }
@@ -227,7 +249,6 @@ export default class Task {
     }
 
     static AssignedTask(x, y, info, taskId, props,emp,contact) {
-        console.log(taskId+ emp+contact);
         Popup.create({
             title: 'Assigned task',
             content: <div>
@@ -246,12 +267,14 @@ export default class Task {
                             fetch(Url.setStatus + taskId + '/Deleted',
                                 { method: 'PUT', }
                             )
-                                .then(res => res.json())
+                                .then(res => {
+                                    res.json();
+                                    Popup.alert('Task has been deleted');
+                                    props.getdata();
+                                    props.displaypoints();
+                                    Popup.close();
+                                })
                                 .catch(e => console.log('error:', e))
-                            Popup.alert('Task has been deleted');
-                            props.getdata();
-                            props.displaypoints();
-                            Popup.close();
                         }
                     }
                 }],
@@ -259,15 +282,17 @@ export default class Task {
                     text: 'Reset',
                     className: 'success',
                     action: function () {
-                        fetch(Url.setStatus + taskId + '/New',
-                            { method: 'PUT', }
+                        fetch(Url.resetTask + taskId,
+                            { method: 'DELETE', }
                         )
-                            .then(res => res.json())
+                            .then(res => {
+                                res.json();
+                                Popup.alert('Task has been reset to new');
+                                props.getdata();
+                                props.displaypoints();
+                                Popup.close();
+                            })
                             .catch(e => console.log('error:', e))
-                        Popup.alert('Task has been reset to new');
-                        props.getdata();
-                        props.displaypoints();
-                        Popup.close();
                     }
                 }]
             }

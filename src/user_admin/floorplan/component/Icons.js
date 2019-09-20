@@ -7,6 +7,12 @@ import Viewer from './Viewer';
 import IconButton from "@material-ui/core/IconButton";
 import Close from "@material-ui/icons/Close";
 import Task from './Task';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+import Popup from 'react-popup';
+import Url from '../../../components/Url';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -82,7 +88,85 @@ export default function Icons(props) {
       empid: event.target.value,
     });
   };
-
+  
+  const submit = () => {
+    let empList = [];
+        fetch(Url.getAllEmp,
+            { method: 'GET' }
+        )
+            .then(res => res.json())
+            .then(data => {
+                empList = data;
+                Popup.create({
+                    title: 'Assign task',
+                    content: <div>
+                        <p>{x}  {y}</p>
+                        <p className="taskInfo">{info}</p>
+                        <FormControl required className={classes.formControl}>
+                            <InputLabel htmlFor="emp-native-required">Employee</InputLabel>
+                            <Select
+                                native
+                                value={state.emp}
+                                onChange={handleChange('emp')}
+                                name="emp"
+                                inputProps={{
+                                    id: 'emp-native-required',
+                                }}
+                            >
+                                <option value="" />
+                                {empList.map(emp => <option key={emp.ID} value={emp.ID}>{emp.Name}</option>)}
+                            </Select>
+                            <FormHelperText>Required</FormHelperText>
+                        </FormControl>
+                    </div>,
+                    buttons: {
+                        left: [{
+                            text: 'Delete',
+                            className: 'danger',
+                            action: function () {
+                                if (window.confirm('Are you sure you wish to delete this task?')) {
+                                    fetch(Url.setStatus + taskId + '/Deleted',
+                                        { method: 'PUT', }
+                                    )
+                                        .then(res => {
+                                          res.json();
+                                          Popup.alert('Task has been deleted');
+                                          props.getdata();
+                                          props.displaypoints();
+                                          Popup.close();
+                                        })
+                                        .catch(e => console.log('error:', e))
+                                }
+                            }
+                        }],
+                        right: [{
+                            text: 'Assign',
+                            className: 'success',
+                            action: function () {
+                              if(empId!==''){
+                                let formData = new FormData();
+                                formData.append('empid', empId);
+                                formData.append('jobid', taskId);
+                                fetch(Url.assignTask,
+                                    { method: 'POST', body: formData }
+                                )
+                                    .then(res => {
+                                      res.json();
+                                      alert('Task has been assigned');
+                                      props.getdata();
+                                      props.displaypoints();
+                                      Popup.close();
+                                    })
+                                    .catch(e => console.log('error:', e));
+                            }else
+                              alert('Please select a employee.');
+                          }
+                        }]
+                    }
+                })
+            })
+            .catch(e => console.log('error:', e));
+  }
   const closeButtonStyle = {
     position: 'absolute',
     right: '0',
@@ -132,13 +216,13 @@ export default function Icons(props) {
           </IconButton>
         </div>
       </Modal>
-      {props.value.newPoint === true ? <Point className={classes.iconHover} style={pointStyle} /> :
-        props.value.status === 'Requested' ? <Point className={classes.iconHover} onClick={Task.RequestedTask.bind(this,x,y,info,taskId,props)} style={pointStyle} /> :
-          props.value.status === 'New' ? <Point className={classes.iconHover} onClick={Task.NewTask.bind(this,x,y,info,taskId,props,classes,state,handleChange,empId)} style={pointStyle} /> :
-            props.value.status === 'Reject' ? <Point className={classes.iconHover} onClick={Task.RejectedTask.bind(this,x,y,info,taskId,props)} style={pointStyle} /> :
-              props.value.status === 'Deleted' ? <Point className={classes.iconHover} onClick={Task.DeletedTask.bind(this,x,y,info,taskId,props)} style={pointStyle} /> :
-                props.value.status === 'Assigned' ? <Point className={classes.iconHover} onClick={Task.AssignedTask.bind(this,x,y,info,taskId,props,emp,contact)} style={pointStyle} /> :
-                  <Point className={classes.iconHover} onClick={handleOpen} style={pointStyle} />
+      {props.value.newPoint === true ? <div id={'p'+taskId}><Point className={classes.iconHover} style={pointStyle} /></div> :
+        props.value.status === 'Requested' ? <div id={'p'+taskId} onClick={Task.RequestedTask.bind(this,x,y,info,taskId,props)}><Point className={classes.iconHover} style={pointStyle} /></div> :
+          props.value.status === 'New' ? <div id={'p'+taskId} onClick={submit} ><Point className={classes.iconHover} style={pointStyle} /></div> :
+            props.value.status === 'Reject' ? <div id={'p'+taskId} onClick={Task.RejectedTask.bind(this,x,y,info,taskId,props)}><Point className={classes.iconHover} style={pointStyle} /></div> :
+              props.value.status === 'Deleted' ? <div id={'p'+taskId} onClick={Task.DeletedTask.bind(this,x,y,info,taskId,props)}><Point className={classes.iconHover} style={pointStyle} /></div> :
+                props.value.status === 'Assigned' ? <div id={'p'+taskId} onClick={Task.AssignedTask.bind(this,x,y,info,taskId,props,emp,contact)}><Point className={classes.iconHover} style={pointStyle} /></div> :
+                <div id={'p'+taskId} onClick={handleOpen}><Point className={classes.iconHover} style={pointStyle} /></div>
       }
     </div>
   );

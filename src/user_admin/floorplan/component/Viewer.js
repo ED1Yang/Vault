@@ -28,7 +28,6 @@ export default class Viewer extends React.Component {
       imgPitch: 6,
       imgYaw: 60,
       imgHfov: 100,
-      nextStatus: 'Done',
     }
     this.changeImage = this.changeImage.bind(this);
     this.addScenToNewHotspot = this.addScenToNewHotspot.bind(this);
@@ -37,9 +36,6 @@ export default class Viewer extends React.Component {
     this.deleteTask = this.deleteTask.bind(this);
     this.reassignTask=this.reassignTask.bind(this);
     this.exitHandler = this.exitHandler.bind(this);
-    //for testing
-    this.setStatus = this.setStatus.bind(this);
-    this.handleChange = this.handleChange.bind(this);
     if (this.props.source !== "uploader")
       this.getData(this.props.taskId);
     else
@@ -73,11 +69,6 @@ export default class Viewer extends React.Component {
     event.preventDefault();
   };
 
-  handleChange(event) {
-    this.setState({ nextStatus: event.target.value });
-  }
-
-
   changeImage(id) {
     this.getData(id);
   }
@@ -104,8 +95,10 @@ export default class Viewer extends React.Component {
               cssClass="custom-hotspot"
             />);
             this.setState({ taskId: data.ID, img: data.Img, hotspots: points, x: data.X, y: data.Y, info: data.Info, status: data.Status });
+            //this.setState({ taskId: data.ID, hotspots: points, x: data.X, y: data.Y, info: data.Info, status: data.Status, imgPitch: data.Pitch, imgYaw: data.Yaw, imgHfov: data.Hfov, img: data.Img});
           } else {
             this.setState({ taskId: data.ID, img: data.Img, hotspots: [], x: data.X, y: data.Y, info: data.Info, status: data.Status });
+            //this.setState({ taskId: data.ID, hotspots: [], x: data.X, y: data.Y, info: data.Info, status: data.Status, imgPitch: data.Pitch, imgYaw: data.Yaw, imgHfov: data.Hfov, img: data.Img});
           }
         })).catch(e => console.log('error: ' + e));
   }
@@ -151,6 +144,13 @@ export default class Viewer extends React.Component {
         cssClass: "custom-hotspot"
       })
       this.setState({ rightClick: true })
+    }
+  }
+
+  onLoadHandler = (e) => {
+    let elements = document.getElementsByClassName('pnlm-about-msg');
+    while (elements.length > 0) {
+      elements[0].parentNode.removeChild(elements[0]);
     }
   }
 
@@ -219,6 +219,21 @@ export default class Viewer extends React.Component {
 
   changePhotoInfo = () => {
     if (this.state.editPhoto) {
+      // let formData = new FormData();
+      // formData.append('imgid', this.state.taskId)
+      // formData.append('pitch', this.panImage.current.getViewer().getPitch())
+      // formData.append('yaw', this.panImage.current.getViewer().getYaw())
+      // formData.append('hfov', this.panImage.current.getViewer().getHfov())
+      // fetch(Url.initialPosition,
+      //   { method: 'POST', body: formData }
+      // )
+      //   .then(res => res.json())
+      //   .then(data => {
+      //     this.getData(this.state.taskId);
+      //     this.setState({ editPhoto: false })
+      //     alert(data.Message);
+      //   })
+      //   .catch(e => console.log('error:', e))
       console.log('Pitch: ' + this.panImage.current.getViewer().getPitch() + ' Yaw: ' + this.panImage.current.getViewer().getYaw() + ' Hfov: ' + this.panImage.current.getViewer().getHfov())
     } else {
       this.setState({ editPhoto: true })
@@ -266,8 +281,8 @@ export default class Viewer extends React.Component {
   }
 
   reassignTask(){
-    fetch(Url.setStatus + this.state.taskId + '/New',
-        { method: 'PUT', }
+    fetch(Url.resetTask + this.state.taskId,
+        { method: 'DELETE', }
       )
         .then(res => res.json())
         .catch(e => console.log('error:', e));
@@ -275,21 +290,6 @@ export default class Viewer extends React.Component {
       this.props.getdata();
       this.props.displaypoints();
       this.getData(this.state.taskId);
-  }
-
-
-  setStatus() {
-    if (this.state.nextStatus !== '') {
-      fetch(Url.setStatus + this.state.taskId + '/' + this.state.nextStatus,
-        { method: 'PUT', }
-      )
-        .then(res => res.json())
-        .catch(e => console.log('error:', e));
-      this.props.getdata();
-      this.props.displaypoints();
-      this.getData(this.state.taskId);
-    } else
-      alert('Please add a status.');
   }
 
   render() {
@@ -317,6 +317,7 @@ export default class Viewer extends React.Component {
             hfov={this.state.imgHfov}
             autoLoad
             showControls={false}
+            onLoad={e => this.onLoadHandler(e)}
             onMouseup={e => this.handleMouseUp(e)}
           >
             {this.state.hotspots}
@@ -391,20 +392,6 @@ export default class Viewer extends React.Component {
               </IconButton>
             </div> :
             <div></div>}
-
-          <div className="admin_test">
-            <select value={this.state.nextStatus} onChange={this.handleChange}>
-              <option value="New">New</option>
-              <option value="Requested">Requested</option>
-              <option value="Assigned">Assigned</option>
-              <option value="Uploaded">Uploaded</option>
-              <option value="Done">Done</option>
-              <option value="Denied">Denied</option>
-              <option value="Reject">Reject</option>
-              <option value="Deleted">Deleted</option>
-            </select>
-            <button id='next_status_submit' onClick={this.setStatus}>Change Status</button>
-          </div>
 
           <div className="photo-info">
             <div>

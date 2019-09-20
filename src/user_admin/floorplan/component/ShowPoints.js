@@ -59,7 +59,7 @@ class ShowPoints extends React.Component {
       top: (y - 12) * this.props.rate + 'px',
     }
     return (
-      <div className='currentPoints' style={pointStyle} key={key}>
+      <div className='currentPoints' style={pointStyle} key={key} id={'point' + key}>
         <Icons
           value={{
             taskId: key,

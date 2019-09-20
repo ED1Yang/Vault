@@ -50,8 +50,8 @@ class Thumbnail extends React.Component {
     return (
       <div
         className="container_map"
-        onMouseOver={() => this.hoverHandler()}
-        onMouseOut={() => this.hoverOutHandler()}>
+        onMouseEnter={() => this.hoverHandler()}
+        onMouseLeave={() => this.hoverOutHandler()}>
         <img
           id='thumbnail_map'
           alt='map'

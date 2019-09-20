@@ -29,7 +29,7 @@ class AllPoints extends React.Component {
 
   displayPoints = () => {
     return this.state.points.map((point) => {
-        return this.showOnePoint(point.ID, point.Status, point.Lat, point.Lon, point.Img, point.Info);
+          return this.showOnePoint(point.ID, point.Status, point.Lat, point.Lon, point.Img, point.Info);
     })
   }
 

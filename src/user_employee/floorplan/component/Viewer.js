@@ -87,8 +87,10 @@ export default class Viewer extends React.Component {
               cssClass="custom-hotspot"
             />);
             this.setState({ taskId: data.ID, img: data.Img, hotspots: points, x: data.X, y: data.Y, info: data.Info});
+            //this.setState({ taskId: data.ID, hotspots: [], x: data.X, y: data.Y, info: data.Info, status: data.Status, imgPitch: data.Pitch, imgYaw: data.Yaw, imgHfov: data.Hfov, img: data.Img});
           } else {
             this.setState({ taskId: data.ID, img: data.Img, hotspots: [], x: data.X, y: data.Y, info: data.Info});
+            //this.setState({ taskId: data.ID, hotspots: [], x: data.X, y: data.Y, info: data.Info, status: data.Status, imgPitch: data.Pitch, imgYaw: data.Yaw, imgHfov: data.Hfov, img: data.Img});
           }
         })).catch(e => console.log('error: ' + e));
   }
@@ -134,6 +136,13 @@ export default class Viewer extends React.Component {
         cssClass: "custom-hotspot"
       })
       this.setState({ rightClick: true })
+    }
+  }
+
+  onLoadHandler = (e) => {
+    let elements = document.getElementsByClassName('pnlm-about-msg');
+    while (elements.length > 0) {
+      elements[0].parentNode.removeChild(elements[0]);
     }
   }
 
@@ -201,6 +210,21 @@ export default class Viewer extends React.Component {
 
   changePhotoInfo = () => {
     if(this.state.editPhoto){
+      // let formData = new FormData();
+      // formData.append('imgid', this.state.taskId)
+      // formData.append('pitch', this.panImage.current.getViewer().getPitch())
+      // formData.append('yaw', this.panImage.current.getViewer().getYaw())
+      // formData.append('hfov', this.panImage.current.getViewer().getHfov())
+      // fetch(Url.initialPosition,
+      //   { method: 'POST', body: formData }
+      // )
+      //   .then(res => res.json())
+      //   .then(data => {
+      //     this.getData(this.state.taskId);
+      //     this.setState({ editPhoto: false })
+      //     alert(data.Message);
+      //   })
+      //   .catch(e => console.log('error:', e))
       console.log('Pitch: ' + this.panImage.current.getViewer().getPitch() + ' Yaw: ' + this.panImage.current.getViewer().getYaw() + ' Hfov: ' + this.panImage.current.getViewer().getHfov())
     }else{
       this.setState({editPhoto: true})
@@ -222,6 +246,7 @@ export default class Viewer extends React.Component {
             hfov={this.state.imgHfov}
             autoLoad
             showControls={false}
+            onLoad={e => this.onLoadHandler(e)}
             onMouseup={e => this.handleMouseUp(e)}
           >
             {this.state.hotspots}

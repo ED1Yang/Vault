@@ -33,7 +33,10 @@ class AllPoints extends React.Component {
 
   displayPoints = () => {
     return this.state.points.map((point) => {
-        return this.showOnePoint(point.ID, point.Status, point.Lat, point.Lon, point.Img, point.Info);
+        if (point.Status!=='New'&&point.Status!=='Requested'&&point.Status!=='Assigned'&&point.Status!=='Deleted'&&point.Status!=='Reject'){
+          return this.showOnePoint(point.ID, point.Status, point.Lat, point.Lon, point.Img, point.Info);
+        }
+        return null;
     })
   }
 

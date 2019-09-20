@@ -1,6 +1,6 @@
 import React from 'react';
 import Popup from 'react-popup';
-
+import { Redirect } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import Button from "@material-ui/core/Button";
 import Icon from '@material-ui/core/Icon';
@@ -66,26 +66,37 @@ class FloorPlan extends React.Component {
       // 10/12 is 0.83. two grids: 10 + 2.
       rate: 0,
       loaded: false,
+      redirect: typeof this.props.location.state === 'undefined' ? true : false,
     };
-    this.setPosition = this.setPosition.bind(this);
-    this.insertMarker = this.insertMarker.bind(this);
-    this.addNewPoint = this.addNewPoint.bind(this);
-    this.handleModeChange = this.handleModeChange.bind(this);
-    this.setRate = this.setRate.bind(this);
-    this.setPoints = this.setPoints.bind(this);
+    if(!this.state.redirect){
+      this.setPosition = this.setPosition.bind(this);
+      this.insertMarker = this.insertMarker.bind(this);
+      this.addNewPoint = this.addNewPoint.bind(this);
+      this.handleModeChange = this.handleModeChange.bind(this);
+      this.setRate = this.setRate.bind(this);
+      this.setPoints = this.setPoints.bind(this);
+    }
   }
 
   componentDidMount() {
     // trigger setRate() when screen scale changed.
-    window.addEventListener("resize", this.setRate);
-    this.setRate();
+    if(!this.state.redirect){
+      window.addEventListener("resize", this.setRate);
+      this.setRate();
+    }
   }
 
   componentWillUnmount() {
-    window.removeEventListener("resize", this.setRate);
-    this.setState = (state, callback) => {
-      return;
-    };
+    if(!this.state.redirect){
+      window.removeEventListener("resize", this.setRate);
+      this.setState = (state, callback) => {
+        return;
+      };
+    }
+  }
+
+  setPoints = (points) =>{
+    this.setState({points: points});
   }
 
   setPoints = (points) =>{
@@ -207,11 +218,11 @@ render() {
           <img
             id='main_map'
             alt='map'
-            src={this.props.location.state.floorplan}
+            src={this.state.redirect ? null : this.props.location.state.floorplan}
             onLoad={() => this.setRate()}
             onClick={this.setPosition}
           />
-          <ShowPoints setPoints={this.setPoints} setRate={this.setRate} photoInfo={this.state.photoInfo} rate={this.state.rate} onRef={this.onRef} floorID={this.props.location.state.floorID} floorplan={this.props.location.state.floorplan} />
+          <ShowPoints setPoints={this.setPoints} setRate={this.setRate} photoInfo={this.state.photoInfo} rate={this.state.rate} onRef={this.onRef} floorID={this.state.redirect ? null : this.props.location.state.floorID} floorplan={this.state.redirect ? null : this.props.location.state.floorplan} />
           {this.insertMarker()}
         </div>
       </Grid>
@@ -243,14 +254,13 @@ render() {
               <p>Relative coordinates: {this.state.x} {this.state.y}</p>
             </div>
           }
-          {console.log(this.state.points.length)}
           {this.state.points ===[] ? null : <PointList points={this.state.points}/> }
         </div>
       </Grid>
       <Popup parent={this} />
     </Grid>
   </div>
-  return <Main value={contents} />
+  return this.state.redirect ? <Redirect exact from="/" to="/admin/dashboard"/> : <Main value={contents}/>
 }
 }
 

@@ -87,10 +87,10 @@ export default class Viewer extends React.Component {
               cssClass="custom-hotspot"
             />);
             this.setState({ taskId: data.ID, img: data.Img, hotspots: points, x: data.X, y: data.Y, info: data.Info});
-            
+            //this.setState({ taskId: data.ID, hotspots: points, x: data.X, y: data.Y, info: data.Info, status: data.Status, imgPitch: data.Pitch, imgYaw: data.Yaw, imgHfov: data.Hfov, img: data.Img});
           } else {
             this.setState({ taskId: data.ID, img: data.Img, hotspots: [], x: data.X, y: data.Y, info: data.Info});
-            
+            //this.setState({ taskId: data.ID, hotspots: [], x: data.X, y: data.Y, info: data.Info, status: data.Status, imgPitch: data.Pitch, imgYaw: data.Yaw, imgHfov: data.Hfov, img: data.Img});
           }
         })).catch(e => console.log('error: ' + e));
   }
@@ -139,6 +139,13 @@ export default class Viewer extends React.Component {
     }
   }
 
+  onLoadHandler = (e) => {
+    let elements = document.getElementsByClassName('pnlm-about-msg');
+    while (elements.length > 0) {
+      elements[0].parentNode.removeChild(elements[0]);
+    }
+  }
+  
   handlePanUp = () => {
     this.panImage.current.getViewer().setPitch(this.panImage.current.getViewer().getPitch() + 10);
   }
@@ -224,6 +231,7 @@ export default class Viewer extends React.Component {
             hfov={this.state.imgHfov}
             autoLoad
             showControls={false}
+            onLoad={e => this.onLoadHandler(e)}
             onMouseup={e => this.handleMouseUp(e)}
           >
             {this.state.hotspots}
