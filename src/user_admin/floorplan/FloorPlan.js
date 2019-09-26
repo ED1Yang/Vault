@@ -81,14 +81,14 @@ class FloorPlan extends React.Component {
   componentDidMount() {
     // trigger setRate() when screen scale changed.
     if(!this.state.redirect){
-      window.addEventListener("resize", this.setRate);
+      window.addEventListener("resize", this.setRate, {passive: true});
       this.setRate();
     }
   }
 
   componentWillUnmount() {
     if(!this.state.redirect){
-      window.removeEventListener("resize", this.setRate);
+      window.removeEventListener("resize", this.setRate, {passive: true});
       this.setState = (state, callback) => {
         return;
       };
@@ -228,7 +228,6 @@ render() {
       </Grid>
 
       <Grid item xs={2}>
-        <p>Control Panel</p>
          <div className='panel'>
           <List subheader={<ListSubheader>Settings</ListSubheader>} className={classes.root}>
             <ListItem>

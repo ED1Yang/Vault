@@ -1,4 +1,5 @@
-const host="https://vault-intern-app-prod.azurewebsites.net";
+const host="";
+// const host="https://vault-intern-app-prod.azurewebsites.net";
 
 class Url{
     

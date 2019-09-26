@@ -1,0 +1,29 @@
+version: '3'
+ 
+services:       
+        
+    webapi:
+        image: asbuiltinternregistry.azurecr.io/app-api:v1
+        restart: always
+        ports:
+          - "8081:8081"
+        command: go run main.go
+        environment:
+          DATABASE_HOST: "vault-db-intern-prod.postgres.database.azure.com"
+          DATABASE_USER: asbuilt_ops@vault-db-intern-prod       
+          DATABASE_PASSWORD: 8b8e7610-29f4-4bce-a143-3d39923b58bc
+          DATABASE_DB: postgres
+          AZURE_STORAGE_ACCOUNT: vaultinternfilesprod
+          AZURE_STORAGE_ACCESS_KEY: 9RQQ3ZEZa5dTRk/8KYSHPU0UZeGPfDswR1x3Ta6olNMdZT1VcQTVUAfqdA8O6h9Q8cVMX1AXyyQ+Jg4t7kUZQQ==    
+    frontend:
+      image: asbuiltinternregistry.azurecr.io/360front:v1.4
+      restart: always
+      ports: 
+        - "8080:8080"
+ 
+    web-router:
+      image: asbuiltinternregistry.azurecr.io/360router4
+      restart: always
+      ports:
+        - "80:80"
+        - "443:443"

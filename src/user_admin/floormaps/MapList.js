@@ -38,7 +38,7 @@ class MapList extends React.Component{
       .then(data => {
         data.Message !== 'null' ? this.setState({maps: data, loading: false}) : this.setState({maps: [], loading: false});
       })
-      .catch(e => console.log('error:', e))
+      .catch(e => console.log('error:', e)) 
   }
   render(){
     const { classes } = this.props;
@@ -50,7 +50,7 @@ class MapList extends React.Component{
       else{
         let contents =
             <div className={classes.root}>
-              <TopToolbar title='project' />
+              <TopToolbar title='floor plan' />
               <div className={classes.content}>
                 <Grid
                   container

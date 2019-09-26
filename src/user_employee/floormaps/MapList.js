@@ -51,7 +51,7 @@ class MapList extends React.Component{
       else{
         let contents =
             <div className={classes.root}>
-              <TopToolbar title='project' />
+              <TopToolbar title='floor plan' />
               <div className={classes.content}>
                 <Grid
                   container

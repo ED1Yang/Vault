@@ -69,7 +69,8 @@ const styles = (theme) => ({
       });
     }
   
-  handlePostJSON() {
+  handlePostJSON = (e) => {
+    e.preventDefault();
     this.setState({isLoading: 0});
     let formData = new FormData();
     formData.append('username',this.state.username);
