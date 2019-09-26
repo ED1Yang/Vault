@@ -47,7 +47,7 @@ const MapCard = props => {
       className={clsx(classes.root, className)}
     >
       <CardContent>
-        <Link to={{ pathname:'/admin/floorplans/asbuilt-ground-floor' , state:{ floorID: map.FloorID, floorplan: map.Floorplan}}}>
+        <Link to={{ pathname:'/admin/floorplans/floorplan' , state:{ floorID: map.FloorID, floorplan: map.Floorplan}}}>
           <div className={classes.imageContainer}>
             <img
               alt="Map"

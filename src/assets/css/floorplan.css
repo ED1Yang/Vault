@@ -7,11 +7,6 @@
   position:relative;
 }
 
-#main_map {
-    max-width: 100%;
-    max-height: 100%;
-}
-
 .currentPoints{
   max-width: 100%;
   max-height: 100%;

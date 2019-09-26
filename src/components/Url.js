@@ -1,4 +1,4 @@
-const host="http://localhost";
+const host="https://vault-intern-app-prod.azurewebsites.net";
 
 class Url{
     

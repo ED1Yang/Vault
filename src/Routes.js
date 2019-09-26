@@ -52,7 +52,7 @@ class Routes extends React.Component {
                             <Route
                                 component={adminFloorPlan}
                                 exact
-                                path="/admin/floorplans/asbuilt-ground-floor"
+                                path="/admin/floorplans/floorplan"
                             />
                             <Route
                                 component={adminProject}
@@ -64,7 +64,6 @@ class Routes extends React.Component {
                                 exact
                                 path="/admin/clients"
                             />
-
                             {/* 404 pager */}
                             <Route
                                 component={NotFound}
@@ -102,7 +101,7 @@ class Routes extends React.Component {
                             <Route
                                 component={employeeFloorPlan}
                                 exact
-                                path="/employee/floorplans/asbuilt-ground-floor"
+                                path="/employee/floorplans/floorplan"
                             />
                             <Route
                                 component={employeeProject}
@@ -147,7 +146,7 @@ class Routes extends React.Component {
                             <Route
                                 component={clientFloorPlan}
                                 exact
-                                path="/client/floorplans/asbuilt-ground-floor"
+                                path="/client/floorplans/floorplan"
                             />
                             <Route
                                 component={clientProject}

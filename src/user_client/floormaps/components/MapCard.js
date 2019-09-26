@@ -49,7 +49,7 @@ const MapCard = props => {
     >
       <CardContent>
         {/* Div for test */}
-        <Link to={{ pathname:'/client/floorplans/asbuilt-ground-floor' , state:{ floorID: map.FloorID, floorplan: map.Floorplan}}}>
+        <Link to={{ pathname:'/client/floorplans/floorplan' , state:{ floorID: map.FloorID, floorplan: map.Floorplan}}}>
           <div className={classes.imageContainer}>
             <img
               alt="Map"
