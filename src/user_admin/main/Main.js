@@ -18,6 +18,8 @@ import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import Link from '@material-ui/core/Link';
+import Avatar from '@material-ui/core/Avatar';
+import Chip from '@material-ui/core/Chip';
 //components
 import { mainListItems } from './ListItems';
 //images
@@ -53,7 +55,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'flex-end',
-    padding: '0 8px',
+    padding: '0 70px',
     ...theme.mixins.toolbar,
   },
   appBar: {
@@ -183,6 +185,12 @@ function Main(props) {
         open={open}
       >
         <div className={classes.toolbarIcon}>
+          <Chip
+          avatar={<Avatar>A</Avatar>}
+          label="Admin"
+          className={classes.chip}
+          color="primary"
+        />
         </div>
         <Divider />
         <List>{mainListItems}</List>

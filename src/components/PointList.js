@@ -37,12 +37,17 @@ class PointList extends React.Component {
         const list = this.props.points.map((point)=>(
             <ListItem button key={point.ID} onClick={(e)=>{this.clickHandler(point.ID)}} onMouseEnter={() => this.hoverHandler(point.ID)}
             onMouseLeave={() => this.hoverOutHandler(point.ID, point.Status)}>
-                <ListItemText primary={'ID:' + point.ID+' X:'+ point.Lat + ' Y:' + point.Lon + ' status:' + point.Status}/>
+                <ListItemText primary={'Task ' + point.ID+' ('+ point.Lat + ', ' + point.Lon +")  "}/>
+                <ListItemText primary={ point.Status} style={{textAlign: 'right'}}/>
             </ListItem>));
         const { classes } = this.props;
+        let height=800;
+        if(this.props.isOpen){
+            height=400;
+        }
         return (
             <div className={classes.root}>
-                <Scrollbars style={{ width: 270, height: 800 }}>
+                <Scrollbars style={{ width: 270, height: height}}>
                     <List>
                         {list}
                     </List>

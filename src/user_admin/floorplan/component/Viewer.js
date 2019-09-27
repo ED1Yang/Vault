@@ -73,6 +73,17 @@ export default class Viewer extends React.Component {
     this.getData(id);
   }
 
+  check_devices(){
+    let ua = navigator.userAgent;
+    let agents = new Array(["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"]);
+    let flag = true;
+    for (let v = 0; v < agents.length; v++) {  
+      if (ua.indexOf(agents[v]) > 0) 
+        { flag = false; break; }  
+    } 
+    return flag;
+  }
+
   getData(id) {
     fetch(Url.getHotspots + id)
       .then((r) => r.json()

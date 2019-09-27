@@ -21,6 +21,7 @@ import Icons from './component/Icons';
 import ShowPoints from './component/ShowPoints';
 import Main from '../main/Main';
 import PointList from '../../components/PointList';
+import Legend from '../../components/Legend';
 //css
 import '../../assets/css/popup.css';
 import '../../assets/css/floorplan.css';
@@ -67,6 +68,7 @@ class FloorPlan extends React.Component {
       rate: 0,
       loaded: false,
       redirect: typeof this.props.location.state === 'undefined' ? true : false,
+      legendIsOpen: true,
     };
     if(!this.state.redirect){
       this.setPosition = this.setPosition.bind(this);
@@ -74,6 +76,7 @@ class FloorPlan extends React.Component {
       this.addNewPoint = this.addNewPoint.bind(this);
       this.handleModeChange = this.handleModeChange.bind(this);
       this.setRate = this.setRate.bind(this);
+      this.getLegendStatus = this.getLegendStatus.bind(this);
     }
   }
 
@@ -203,6 +206,12 @@ class FloorPlan extends React.Component {
     });
 }
 
+getLegendStatus(status){
+  this.setState({
+    legendIsOpen:status
+  });
+}
+
 render() {
   const { classes } = this.props;
   const contents = <div className="container">
@@ -249,7 +258,8 @@ render() {
               <p>Relative coordinates: {this.state.x} {this.state.y}</p>
             </div>
           }
-          {this.state.points ===[] ? null : <PointList points={this.state.points}/> }
+          <Legend setStatus={this.getLegendStatus}/>
+          {this.state.points ===[] ? null : <PointList isOpen={this.state.legendIsOpen} points={this.state.points}/> }
         </div>
       </Grid>
       <Popup parent={this} />

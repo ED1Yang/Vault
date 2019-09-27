@@ -13,14 +13,15 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import ListItemText from '@material-ui/core/ListItemText';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import Switch from '@material-ui/core/Switch';
 import EditIcon from '@material-ui/icons/Edit';
+import VisibilityRoundedIcon from '@material-ui/icons/VisibilityRounded';
 //components
 import Icons from './component/Icons';
 import ShowPoints from './component/ShowPoints';
 import Main from '../main/Main';
 import PointList from '../../components/PointList';
+import Legend from '../../components/Legend';
 //css
 import '../../assets/css/popup.css';
 import '../../assets/css/floorplan.css';
@@ -61,20 +62,23 @@ class FloorPlan extends React.Component {
       x: "",
       y: "",
       isEditMode: false,
+      isCBMode:false,
       points: [],
       show: false,
-      // 10/12 is 0.83. two grids: 10 + 2.
       rate: 0,
       loaded: false,
       redirect: typeof this.props.location.state === 'undefined' ? true : false,
+      legendIsOpen: true,
     };
     if(!this.state.redirect){
       this.setPosition = this.setPosition.bind(this);
       this.insertMarker = this.insertMarker.bind(this);
       this.addNewPoint = this.addNewPoint.bind(this);
       this.handleModeChange = this.handleModeChange.bind(this);
+      this.handleCBChange = this.handleCBChange.bind(this);
       this.setRate = this.setRate.bind(this);
       this.setPoints = this.setPoints.bind(this);
+      this.getLegendStatus = this.getLegendStatus.bind(this);
     }
   }
 
@@ -93,10 +97,6 @@ class FloorPlan extends React.Component {
         return;
       };
     }
-  }
-
-  setPoints = (points) =>{
-    this.setState({points: points});
   }
 
   setPoints = (points) =>{
@@ -150,6 +150,10 @@ class FloorPlan extends React.Component {
     else {
       this.setState({ isEditMode: false, x: '', y: '' })
     }
+  }
+
+  handleCBChange(){
+      this.setState({ isCBMode: !this.state.isCBMode });
   }
 
   addNewPoint(classes) {
@@ -208,6 +212,12 @@ class FloorPlan extends React.Component {
     });
 }
 
+getLegendStatus(status){
+    this.setState({
+      legendIsOpen:status
+    });
+}
+
 render() {
   const { classes } = this.props;
   const contents = <div className="container">
@@ -222,14 +232,24 @@ render() {
             onLoad={() => this.setRate()}
             onClick={this.setPosition}
           />
-          <ShowPoints setPoints={this.setPoints} setRate={this.setRate} photoInfo={this.state.photoInfo} rate={this.state.rate} onRef={this.onRef} floorID={this.state.redirect ? null : this.props.location.state.floorID} floorplan={this.state.redirect ? null : this.props.location.state.floorplan} />
+          <ShowPoints
+          setPoints={this.setPoints} 
+          setRate={this.setRate} 
+          photoInfo={this.state.photoInfo} 
+          rate={this.state.rate} 
+          onRef={this.onRef} 
+          floorID={this.state.redirect ? null : this.props.location.state.floorID} 
+          floorplan={this.state.redirect ? null : this.props.location.state.floorplan}
+          cbmode={this.state.isCBMode}
+          />
           {this.insertMarker()}
         </div>
       </Grid>
 
       <Grid item xs={2}>
          <div className='panel'>
-          <List subheader={<ListSubheader>Settings</ListSubheader>} className={classes.root}>
+          <List className={classes.root}>
+            {/* edit mode */}
             <ListItem>
               <ListItemIcon>
                 <EditIcon />
@@ -243,6 +263,20 @@ render() {
                 />
               </ListItemSecondaryAction>
             </ListItem>
+            {/* color blind mode */}
+            <ListItem>
+              <ListItemIcon>
+                <VisibilityRoundedIcon />
+              </ListItemIcon>
+              <ListItemText id="switch-list-label-wifi" primary="Colorblind Mode" />
+              <ListItemSecondaryAction>
+                <Switch
+                  color="primary"
+                  onChange={this.handleCBChange}
+                  value={this.state.isCBMode}
+                />
+              </ListItemSecondaryAction>
+            </ListItem>
           </List>
           {this.state.isEditMode && this.state.x !== "" &&
             <div>
@@ -253,7 +287,8 @@ render() {
               <p>Relative coordinates: {this.state.x} {this.state.y}</p>
             </div>
           }
-          {this.state.points ===[] ? null : <PointList points={this.state.points}/> }
+          <Legend setStatus={this.getLegendStatus} cbmode={this.state.isCBMode}/>
+          {this.state.points ===[] ? null : <PointList isOpen={this.state.legendIsOpen} points={this.state.points}/> }
         </div>
       </Grid>
       <Popup parent={this} />

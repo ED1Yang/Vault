@@ -6,7 +6,8 @@ class PointsColor{
                             status === 'Done' ? 'green' :
                                 status === 'Denied' ? 'black' :
                                     status === 'Requested' ? 'BlueViolet' :
-                                        status === 'Reject' ? 'brown' : 'grey'
+                                        status === 'Reject' ? 'brown':
+                                            status === 'Deleted' ? 'silver' : 'Aqua'
     }
 }
 export default PointsColor;

@@ -14,6 +14,17 @@ import Select from '@material-ui/core/Select';
 import Popup from 'react-popup';
 import Url from '../../../components/Url';
 
+import BrightnessLowRoundedIcon from '@material-ui/icons/BrightnessLowRounded';
+import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
+import StarRoundedIcon from '@material-ui/icons/StarRounded';
+import CameraAltRoundedIcon from '@material-ui/icons/CameraAltRounded';
+import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
+import PrintDisabledRoundedIcon from '@material-ui/icons/PrintDisabledRounded';
+import CancelRoundedIcon from '@material-ui/icons/CancelRounded';
+import LocationOffRoundedIcon from '@material-ui/icons/LocationOffRounded';
+
+
+
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
@@ -66,9 +77,9 @@ export default function Icons(props) {
   let x = props.value.x;
   let y = props.value.y;
   let info = props.value.info;
-  let emp=props.value.emp;
-  let contact=props.value.contact;
- 
+  let emp = props.value.emp;
+  let contact = props.value.contact;
+
 
   const classes = useStyles();
   const [modalStyle] = React.useState(centerModal);
@@ -88,84 +99,84 @@ export default function Icons(props) {
       empid: event.target.value,
     });
   };
-  
+
   const submit = () => {
     let empList = [];
-        fetch(Url.getAllEmp,
-            { method: 'GET' }
-        )
-            .then(res => res.json())
-            .then(data => {
-                empList = data;
-                Popup.create({
-                    title: 'Assign task',
-                    content: <div>
-                        <p>{x}  {y}</p>
-                        <p className="taskInfo">{info}</p>
-                        <FormControl required className={classes.formControl}>
-                            <InputLabel htmlFor="emp-native-required">Employee</InputLabel>
-                            <Select
-                                native
-                                value={state.emp}
-                                onChange={handleChange('emp')}
-                                name="emp"
-                                inputProps={{
-                                    id: 'emp-native-required',
-                                }}
-                            >
-                                <option value="" />
-                                {empList.map(emp => <option key={emp.ID} value={emp.ID}>{emp.Name}</option>)}
-                            </Select>
-                            <FormHelperText>Required</FormHelperText>
-                        </FormControl>
-                    </div>,
-                    buttons: {
-                        left: [{
-                            text: 'Delete',
-                            className: 'danger',
-                            action: function () {
-                                if (window.confirm('Are you sure you wish to delete this task?')) {
-                                    fetch(Url.setStatus + taskId + '/Deleted',
-                                        { method: 'PUT', }
-                                    )
-                                        .then(res => {
-                                          res.json();
-                                          Popup.alert('Task has been deleted');
-                                          props.getdata();
-                                          props.displaypoints();
-                                          Popup.close();
-                                        })
-                                        .catch(e => console.log('error:', e))
-                                }
-                            }
-                        }],
-                        right: [{
-                            text: 'Assign',
-                            className: 'success',
-                            action: function () {
-                              if(empId!==''){
-                                let formData = new FormData();
-                                formData.append('empid', empId);
-                                formData.append('jobid', taskId);
-                                fetch(Url.assignTask,
-                                    { method: 'POST', body: formData }
-                                )
-                                    .then(res => {
-                                      res.json();
-                                      alert('Task has been assigned');
-                                      props.getdata();
-                                      props.displaypoints();
-                                      Popup.close();
-                                    })
-                                    .catch(e => console.log('error:', e));
-                            }else
-                              alert('Please select a employee.');
-                          }
-                        }]
-                    }
-                })
-            })
-            .catch(e => console.log('error:', e));
+    fetch(Url.getAllEmp,
+      { method: 'GET' }
+    )
+      .then(res => res.json())
+      .then(data => {
+        empList = data;
+        Popup.create({
+          title: 'Assign task',
+          content: <div>
+            <p>{x}  {y}</p>
+            <p className="taskInfo">{info}</p>
+            <FormControl required className={classes.formControl}>
+              <InputLabel htmlFor="emp-native-required">Employee</InputLabel>
+              <Select
+                native
+                value={state.emp}
+                onChange={handleChange('emp')}
+                name="emp"
+                inputProps={{
+                  id: 'emp-native-required',
+                }}
+              >
+                <option value="" />
+                {empList.map(emp => <option key={emp.ID} value={emp.ID}>{emp.Name}</option>)}
+              </Select>
+              <FormHelperText>Required</FormHelperText>
+            </FormControl>
+          </div>,
+          buttons: {
+            left: [{
+              text: 'Delete',
+              className: 'danger',
+              action: function () {
+                if (window.confirm('Are you sure you wish to delete this task?')) {
+                  fetch(Url.setStatus + taskId + '/Deleted',
+                    { method: 'PUT', }
+                  )
+                    .then(res => {
+                      res.json();
+                      Popup.alert('Task has been deleted');
+                      props.getdata();
+                      props.displaypoints();
+                      Popup.close();
+                    })
+                    .catch(e => console.log('error:', e))
+                }
+              }
+            }],
+            right: [{
+              text: 'Assign',
+              className: 'success',
+              action: function () {
+                if (empId !== '') {
+                  let formData = new FormData();
+                  formData.append('empid', empId);
+                  formData.append('jobid', taskId);
+                  fetch(Url.assignTask,
+                    { method: 'POST', body: formData }
+                  )
+                    .then(res => {
+                      res.json();
+                      alert('Task has been assigned');
+                      props.getdata();
+                      props.displaypoints();
+                      Popup.close();
+                    })
+                    .catch(e => console.log('error:', e));
+                } else
+                  alert('Please select a employee.');
+              }
+            }]
+          }
+        })
+      })
+      .catch(e => console.log('error:', e));
   }
   const closeButtonStyle = {
     position: 'absolute',
@@ -216,7 +227,21 @@ export default function Icons(props) {
           </IconButton>
         </div>
       </Modal>
-      {props.value.newPoint === true ? <div id={'p'+taskId}><Point className={classes.iconHover} style={pointStyle} /></div> :
+
+      {props.cbmode?
+      //colorblind mode
+      props.value.newPoint === true ? <div id={'p' + taskId}><StarBorderRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+        props.value.status === 'Uploaded' ? <div id={'p' + taskId} onClick={handleOpen}><CameraAltRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+          props.value.status === 'Done' ? <div id={'p' + taskId} onClick={handleOpen}><CheckCircleRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+            props.value.status === 'Denied' ? <div id={'p' + taskId} onClick={handleOpen}><PrintDisabledRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+              props.value.status === 'Requested' ? <div id={'p' + taskId} onClick={Task.RequestedTask.bind(this, x, y, info, taskId, props)}><BrightnessLowRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+                props.value.status === 'New' ? <div id={'p' + taskId} onClick={submit} ><StarBorderRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+                  props.value.status === 'Reject' ? <div id={'p' + taskId} onClick={Task.RejectedTask.bind(this, x, y, info, taskId, props)}><LocationOffRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+                    props.value.status === 'Deleted' ? <div id={'p' + taskId} onClick={Task.DeletedTask.bind(this, x, y, info, taskId, props)}><CancelRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+                      props.value.status === 'Assigned' ? <div id={'p' + taskId} onClick={Task.AssignedTask.bind(this, x, y, info, taskId, props, emp, contact)}><StarRoundedIcon className={classes.iconHover} style={pointStyle} /></div> : <div />
+      :
+      //normal mode
+      props.value.newPoint === true ? <div id={'p'+taskId}><Point className={classes.iconHover} style={pointStyle} /></div> :
         props.value.status === 'Requested' ? <div id={'p'+taskId} onClick={Task.RequestedTask.bind(this,x,y,info,taskId,props)}><Point className={classes.iconHover} style={pointStyle} /></div> :
           props.value.status === 'New' ? <div id={'p'+taskId} onClick={submit} ><Point className={classes.iconHover} style={pointStyle} /></div> :
             props.value.status === 'Reject' ? <div id={'p'+taskId} onClick={Task.RejectedTask.bind(this,x,y,info,taskId,props)}><Point className={classes.iconHover} style={pointStyle} /></div> :
@@ -224,6 +249,9 @@ export default function Icons(props) {
                 props.value.status === 'Assigned' ? <div id={'p'+taskId} onClick={Task.AssignedTask.bind(this,x,y,info,taskId,props,emp,contact)}><Point className={classes.iconHover} style={pointStyle} /></div> :
                 <div id={'p'+taskId} onClick={handleOpen}><Point className={classes.iconHover} style={pointStyle} /></div>
       }
+      
+      
+
     </div>
   );
 }
