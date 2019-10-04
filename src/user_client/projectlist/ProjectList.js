@@ -1,7 +1,8 @@
 import React from 'react';
-import { IconButton, Grid, Typography } from '@material-ui/core';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import { Grid } from '@material-ui/core';
+// import { IconButton, Typography } from '@material-ui/core';
+// import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+// import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 //components
@@ -29,7 +30,12 @@ class ProjectList extends React.Component{
     this.state={
       projects: [],
       loading: true,
+      search:"",
+      searching:false,
+      searchedProjects:[],
     }
+    this.getsearch=this.getsearch.bind(this);
+    this.getData = this.getData.bind(this)
     this.getData();
   }
 
@@ -37,10 +43,42 @@ class ProjectList extends React.Component{
     fetch(Url.getClientProjects + cookies.get('userID'),{method: 'GET'})
 		  .then(res => res.json())
       .then(data => {
-        data.Message !== 'null' ? this.setState({projects: data, loading: false}) : this.setState({projects: [], loading: false});
+        data.Message !== 'null' ? this.setState({projects: data, loading: false,searchedProjects:data}) : this.setState({projects: [], loading: false});
+
 		  })
       .catch(e => console.log('error:', e))
   }
+
+  searchData(){
+          let data = this.state.projects;
+          let search =this.state.search;
+          let newList = [];
+          if (search !== "") {
+            newList = data.filter(item => {
+              const lc = item.Projname.toLowerCase();
+              const filter = search.toLowerCase();
+              return lc.includes(filter);
+            });
+          } else {
+            newList = data;
+          }
+          this.setState({
+            searchedProjects: newList,
+            searching:false,
+          });
+  }
+
+  getsearch(search){
+    this.setState({search:search,searching:true,});
+
+  }
+
+  componentDidUpdate() {
+    if(this.state.searching){
+      this.searchData();
+    }
+  }
+
   render(){
     const { classes } = this.props;
     if(this.state.loading || this.state.projects === [])
@@ -48,13 +86,13 @@ class ProjectList extends React.Component{
     else{
       let contents =
           <div className={classes.root}>
-            <TopToolbar title='project' />
+            <TopToolbar title='project' getsearch={this.getsearch}/>
             <div className={classes.content}>
               <Grid
                 container
                 spacing={3}
               >
-                {this.state.projects.map(project => (
+                {this.state.searchedProjects.map(project => (
                   <Grid
                     item
                     key={project.Projid}
@@ -67,7 +105,7 @@ class ProjectList extends React.Component{
                 ))}
               </Grid>
             </div>
-            <div>
+            {/* <div>
               <Typography variant="caption">1-6 of 20</Typography>
               <IconButton>
                 <ChevronLeftIcon />
@@ -75,7 +113,7 @@ class ProjectList extends React.Component{
               <IconButton>
                 <ChevronRightIcon />
               </IconButton>
-            </div>
+            </div> */}
           </div>
         return <Main value={contents} />
     }

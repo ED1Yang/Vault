@@ -47,6 +47,16 @@ export default class Task{
     });
   }
 
+  static RejectedTask(x,y,info) {
+    Popup.create({
+      title: 'Rejected task',
+      content: <div>
+        <p>{x}  {y}</p>
+        <p className="taskInfo">{info}</p>
+      </div>,
+    });
+  }
+
   static NewTask(x,y,info) {
     Popup.create({
       title: 'Accepted new task',

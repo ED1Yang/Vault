@@ -74,18 +74,15 @@ export default class Viewer extends React.Component {
   }
 
   check_devices(){
-    let ua = navigator.userAgent;
-    let agents = new Array(["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"]);
-    let flag = true;
-    for (let v = 0; v < agents.length; v++) {  
-      if (ua.indexOf(agents[v]) > 0) 
-        { flag = false; break; }  
-    } 
-    return flag;
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+      return false;
+     else
+      return true;
   }
 
   getData(id) {
-    fetch(Url.getHotspots + id)
+    fetch(Url.getHotspots+id+'/'+this.check_devices())
+    // fetch(Url.getHotspots+id)
       .then((r) => r.json()
         .then((data) => {
           if (data.Hotspot !== null) {
@@ -354,7 +351,9 @@ export default class Viewer extends React.Component {
               changeViewerImage={this.changeImage}
               currentImg={this.state.img}
               rightClick={this.state.rightClick}
-              addScenToNewHotspot={this.addScenToNewHotspot} />
+              addScenToNewHotspot={this.addScenToNewHotspot} 
+              cbmode={this.props.cbmode}
+              />
           </div>
           {/* Uploaded photo approval */}
           {this.state.status === 'Uploaded' ?

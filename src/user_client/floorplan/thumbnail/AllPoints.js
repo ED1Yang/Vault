@@ -43,6 +43,9 @@ class AllPoints extends React.Component {
   changeImage(id) {
     //pass image id to Thumbnail
     this.props.rightClick ? this.props.addScenToNewHotspot(id) : this.props.changeThumbnailImage(id);
+    //render the thumbnail when admin change the task status.
+    this.getData();
+    this.displayPoints();
   }
 
   showOnePoint(key, status, x, y, img) {
@@ -64,7 +67,7 @@ class AllPoints extends React.Component {
 
     return (
       <div className='currentPoints' style={pointStyle} key={key} onClick={() => this.changeImage(key)}>
-        <Point rate={this.props.rate} />
+        <Point rate={this.props.rate} cbmode={this.props.cbmode} status={status}/>
       </div>
     )
   }

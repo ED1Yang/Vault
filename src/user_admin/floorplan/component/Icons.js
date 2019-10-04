@@ -214,7 +214,9 @@ export default function Icons(props) {
             photoInfo={props.photoInfo}
             getdata={props.getdata}
             displaypoints={props.displaypoints}
-            setRate={props.setRate} />
+            setRate={props.setRate} 
+            cbmode={props.cbmode}
+            />
           {/* close button */}
           <IconButton
             style={closeButtonStyle}
@@ -249,9 +251,6 @@ export default function Icons(props) {
                 props.value.status === 'Assigned' ? <div id={'p'+taskId} onClick={Task.AssignedTask.bind(this,x,y,info,taskId,props,emp,contact)}><Point className={classes.iconHover} style={pointStyle} /></div> :
                 <div id={'p'+taskId} onClick={handleOpen}><Point className={classes.iconHover} style={pointStyle} /></div>
       }
-      
-      
-
     </div>
   );
 }

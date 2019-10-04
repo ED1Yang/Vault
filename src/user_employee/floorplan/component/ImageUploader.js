@@ -136,7 +136,9 @@ class ImageUpload extends React.Component {
             info={this.props.info}
             floorID={this.props.floorID}
             floorplan={this.props.floorplan}
-            photoInfo={this.props.photoInfo} />
+            photoInfo={this.props.photoInfo} 
+            cbmode={this.props.cbmode}
+            />
           }
         {imagePreviewUrl === null &&
           <div className="photo-info">

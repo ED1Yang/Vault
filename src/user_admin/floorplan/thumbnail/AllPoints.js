@@ -16,10 +16,6 @@ class AllPoints extends React.Component {
     this.getData();
   }
 
-  test(){
-    alert('hadfhafadf');
-  }
-
   getData() {
     fetch(Url.getAdminPoints + cookie.get('userID') + '/' + this.props.floorID)
       .then((r) => r.json()
@@ -71,7 +67,7 @@ class AllPoints extends React.Component {
 
     return (
       <div className='currentPoints' style={pointStyle} key={key} onClick={() => this.changeImage(key)}>
-        <Point rate={this.props.rate} />
+        <Point rate={this.props.rate} cbmode={this.props.cbmode} status={status}/>
       </div>
     )
   }

@@ -138,7 +138,8 @@ class FloorPlan extends React.Component {
             rate: this.state.rate,
             newPoint: true,
           }}
-          parent={this} />
+          parent={this} 
+          cbmode={this.state.isCBMode}/>
       </div>
     }
   }
@@ -200,10 +201,10 @@ class FloorPlan extends React.Component {
               .then(res => res.json())
               .then(data => {
                 alert(data.Message);
-                Popup.close();
                 this.props.parent.showPoints.getData();
                 this.props.parent.showPoints.displayPoints();
                 this.props.parent.setState({ x: '', y: '' });
+                Popup.close();
               })
               .catch(e => console.log('error:', e))
           }
@@ -268,7 +269,7 @@ render() {
               <ListItemIcon>
                 <VisibilityRoundedIcon />
               </ListItemIcon>
-              <ListItemText id="switch-list-label-wifi" primary="Colorblind Mode" />
+              <ListItemText id="switch-list-label-wifi" primary="Icon Mode" />
               <ListItemSecondaryAction>
                 <Switch
                   color="primary"

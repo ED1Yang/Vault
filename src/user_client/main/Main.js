@@ -13,10 +13,10 @@ import Typography from '@material-ui/core/Typography';
 import Divider from '@material-ui/core/Divider';
 import IconButton from '@material-ui/core/IconButton';
 import InputIcon from '@material-ui/icons/Input';
-import Badge from '@material-ui/core/Badge';
+// import Badge from '@material-ui/core/Badge';
+// import NotificationsIcon from '@material-ui/icons/Notifications';
 import Container from '@material-ui/core/Container';
 import MenuIcon from '@material-ui/icons/Menu';
-import NotificationsIcon from '@material-ui/icons/Notifications';
 import Link from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
 import Chip from '@material-ui/core/Chip';
@@ -37,8 +37,6 @@ function Copyright() {
         asBUILT
         </Link>{' '}
       {new Date().getFullYear()}
-      <br />
-      {'Built with ❤️'}
     </Typography>
   );
 }
@@ -162,11 +160,11 @@ function Main(props) {
             <img alt='asBUILT-logo' src={logo} width='40' />
           </Typography>
           {cookies.get('name')}
-          <IconButton color="inherit">
+          {/* <IconButton color="inherit">
             <Badge badgeContent={4} color="secondary">
               <NotificationsIcon />
             </Badge>
-          </IconButton>
+          </IconButton> */}
           <IconButton
             className={classes.signOutButton}
             color="inherit"

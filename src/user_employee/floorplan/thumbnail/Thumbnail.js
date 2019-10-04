@@ -47,6 +47,7 @@ class Thumbnail extends React.Component {
       width: this.state.width + 'px',
       height: this.state.height + 'px',
     }
+    
     return (
       <div
         className="container_map"
@@ -60,7 +61,15 @@ class Thumbnail extends React.Component {
           style={photoStyle}
         />
         <div className="map_points">
-          <AllPoints floorID={this.props.floorID} changeThumbnailImage={this.changeImage} rate={this.state.rate} currentImg={this.props.currentImg} addScenToNewHotspot={this.addScenToNewHotspot} rightClick={this.props.rightClick}/>
+          <AllPoints 
+          floorID={this.props.floorID} 
+          changeThumbnailImage={this.changeImage} 
+          rate={this.state.rate} 
+          currentImg={this.props.currentImg} 
+          addScenToNewHotspot={this.addScenToNewHotspot} 
+          rightClick={this.props.rightClick}
+          cbmode={this.props.cbmode}
+          />
         </div>
 
       </div>

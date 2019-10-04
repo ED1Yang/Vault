@@ -9,6 +9,13 @@ import Close from "@material-ui/icons/Close";
 import Viewer from './Viewer';
 import ImageUploader from './ImageUploader';
 
+import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
+import StarRoundedIcon from '@material-ui/icons/StarRounded';
+import CameraAltRoundedIcon from '@material-ui/icons/CameraAltRounded';
+import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
+import PrintDisabledRoundedIcon from '@material-ui/icons/PrintDisabledRounded';
+
+
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
@@ -79,13 +86,13 @@ export default function Icons(props) {
     opacity: ".9",
   }
 
-  let pointStyle={};
-  if(props.rate===undefined){
-    pointStyle={
+  let pointStyle = {};
+  if (props.rate === undefined) {
+    pointStyle = {
       fontSize: 24 * props.value.rate + 'px',
     }
-  }else{
-    pointStyle={
+  } else {
+    pointStyle = {
       fontSize: 24 * props.rate + 'px',
     }
   }
@@ -99,7 +106,26 @@ export default function Icons(props) {
         onClose={handleClose}
       >
         <div style={modalStyle} className={classes.paper}>
-        {props.value.status==='Assigned'||props.value.status==='Denied' ? <ImageUploader setRate={props.setRate} taskId={taskId} parent={parent} x = {x} y = {y} info = {info} floorID={props.floorID} floorplan={props.floorplan} photoInfo={props.photoInfo}/> : <Viewer setRate={props.setRate} taskId={taskId} floorID={props.floorID} floorplan={props.floorplan} photoInfo={props.photoInfo}/>}
+          {props.value.status === 'Assigned' || props.value.status === 'Denied' ?
+            <ImageUploader
+              setRate={props.setRate}
+              taskId={taskId}
+              parent={parent}
+              x={x}
+              y={y}
+              info={info}
+              floorID={props.floorID}
+              floorplan={props.floorplan}
+              photoInfo={props.photoInfo} 
+              cbmode={props.cbmode}/> :
+            <Viewer
+              setRate={props.setRate}
+              taskId={taskId}
+              floorID={props.floorID}
+              floorplan={props.floorplan}
+              photoInfo={props.photoInfo} 
+              cbmode={props.cbmode}
+              />}
           {/* close button */}
           <IconButton
             style={closeButtonStyle}
@@ -112,7 +138,20 @@ export default function Icons(props) {
           </IconButton>
         </div>
       </Modal>
-      <div id={'p'+taskId} onClick={handleOpen}><Point className={classes.iconHover} style={pointStyle} /></div>
+      
+      {props.cbmode?
+      //colorblind mode
+      props.value.newPoint === true ? <div id={'p' + taskId}><StarBorderRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+        props.value.status === 'Uploaded' ? <div id={'p' + taskId} onClick={handleOpen}><CameraAltRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+          props.value.status === 'Done' ? <div id={'p' + taskId} onClick={handleOpen}><CheckCircleRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+            props.value.status === 'Denied' ? <div id={'p' + taskId} onClick={handleOpen}><PrintDisabledRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+              props.value.status === 'Assigned' ? <div id={'p' + taskId} onClick={handleOpen}><StarRoundedIcon className={classes.iconHover} style={pointStyle} /></div> : <div />
+      :
+      //normal mode
+      props.value.newPoint === true ? <div id={'p'+taskId}><Point className={classes.iconHover} style={pointStyle} /></div>:
+      <div id={'p'+taskId} onClick={handleOpen} ><Point className={classes.iconHover} style={pointStyle} /></div>
+      }
+    
     </div>
   );
 }

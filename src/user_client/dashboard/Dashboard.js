@@ -6,7 +6,6 @@ import Paper from '@material-ui/core/Paper';
 //components
 import Main from '../main/Main'
 import Chart from './components/Chart';
-import Deposits from './components/Deposits';
 import Tasks from './components/Tasks';
 
 const useStyles = makeStyles(theme => ({
@@ -17,7 +16,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
   },
   fixedHeight: {
-    height: 240,
+    height: 500,
   },
 }));
 
@@ -29,21 +28,15 @@ export default function Dashboard(props) {
   const defaultDashboard =
     <Grid container spacing={3}>
       {/* Chart */}
-      <Grid item xs={12} md={8} lg={9}>
+      <Grid item xs={12} md={4} lg={4}>
         <Paper className={fixedHeightPaper}>
           <Chart />
         </Paper>
       </Grid>
-      {/* recent deposits */}
-      <Grid item xs={12} md={4} lg={3}>
+      {/* project list */}
+      <Grid item xs={12} md={8} lg={8}>
         <Paper className={fixedHeightPaper}>
-          <Deposits />
-        </Paper>
-      </Grid>
-      {/* recent orders */}
-      <Grid item xs={12}>
-        <Paper className={classes.paper}>
-          <Tasks />
+          <Tasks className={fixedHeightPaper}/>
         </Paper>
       </Grid>
     </Grid>

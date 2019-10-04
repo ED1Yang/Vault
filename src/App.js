@@ -75,7 +75,7 @@ const styles = (theme) => ({
     let formData = new FormData();
     formData.append('username',this.state.username);
     formData.append('password',this.state.password); 
-		fetch(Url.login,{method: 'POST', body: formData})
+		fetch(Url.login,{method: 'POST', header:{}, body: formData})
 		  .then(res => res.json())
       .then(data => {
         if(data.Result==='true'){

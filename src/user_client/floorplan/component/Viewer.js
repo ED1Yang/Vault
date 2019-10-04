@@ -66,18 +66,15 @@ export default class Viewer extends React.Component {
   }
 
   check_devices(){
-    let ua = navigator.userAgent;
-    let agents = new Array(["Android", "iPhone", "SymbianOS", "Windows Phone", "iPad", "iPod"]);
-    let flag = true;
-    for (let v = 0; v < agents.length; v++) {  
-      if (ua.indexOf(agents[v]) > 0) 
-        { flag = false; break; }  
-    } 
-    return flag;
+    if(/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent))
+      return false;
+     else
+      return true;
   }
 
   getData(id) {
-    fetch(Url.getHotspots + id)
+    fetch(Url.getHotspots+id+'/'+this.check_devices())
+    // fetch(Url.getHotspots+id)
       .then((r) => r.json()
         .then((data) => {
           if (data.Hotspot !== null) {
@@ -97,10 +94,10 @@ export default class Viewer extends React.Component {
               tooltipArg={{ 'message': item.Message }}
               cssClass="custom-hotspot"
             />);
-            this.setState({ taskId: data.ID, img: data.Img, hotspots: points, x: data.X, y: data.Y, info: data.Info});
+            this.setState({ taskId: data.ID, img: data.Img, hotspots: points, x: data.X, y: data.Y, info: data.Info });
             //this.setState({ taskId: data.ID, hotspots: points, x: data.X, y: data.Y, info: data.Info, status: data.Status, imgPitch: data.Pitch, imgYaw: data.Yaw, imgHfov: data.Hfov, img: data.Img});
           } else {
-            this.setState({ taskId: data.ID, img: data.Img, hotspots: [], x: data.X, y: data.Y, info: data.Info});
+            this.setState({ taskId: data.ID, img: data.Img, hotspots: [], x: data.X, y: data.Y, info: data.Info });
             //this.setState({ taskId: data.ID, hotspots: [], x: data.X, y: data.Y, info: data.Info, status: data.Status, imgPitch: data.Pitch, imgYaw: data.Yaw, imgHfov: data.Hfov, img: data.Img});
           }
         })).catch(e => console.log('error: ' + e));
@@ -156,7 +153,7 @@ export default class Viewer extends React.Component {
       elements[0].parentNode.removeChild(elements[0]);
     }
   }
-  
+
   handlePanUp = () => {
     this.panImage.current.getViewer().setPitch(this.panImage.current.getViewer().getPitch() + 10);
   }
@@ -180,8 +177,8 @@ export default class Viewer extends React.Component {
   handleZoomOut = () => {
     this.panImage.current.getViewer().setHfov(this.panImage.current.getViewer().getHfov() + 10);
   }
-  addScenToNewHotspot(id){
-    this.setState({nextScene: id})
+  addScenToNewHotspot(id) {
+    this.setState({ nextScene: id })
   }
   editHotSpots = () => {
     if (this.state.editHotSpot) {
@@ -194,7 +191,7 @@ export default class Viewer extends React.Component {
 
   submitHandler = () => {
     let tooltipText = document.getElementById('next-scene-input').value;
-    if(this.state.nextScene !== '' && tooltipText !== ''){
+    if (this.state.nextScene !== '' && tooltipText !== '') {
       let formData = new FormData();
       formData.append('imgid', this.state.taskId)
       formData.append('destid', this.state.nextScene)
@@ -210,20 +207,21 @@ export default class Viewer extends React.Component {
             rightClick: false,
             nextScene: '',
             newPitch: '',
-            newYam: '',});
-            this.getData(this.state.taskId);
-            alert(data.Message);
+            newYam: '',
+          });
+          this.getData(this.state.taskId);
+          alert(data.Message);
         })
         .catch(e => console.log('error:', e))
-    }else
+    } else
       alert('Please add the next scene and text.');
   }
 
   changePhotoInfo = () => {
-    if(this.state.editPhoto){
+    if (this.state.editPhoto) {
       console.log('Pitch: ' + this.panImage.current.getViewer().getPitch() + ' Yaw: ' + this.panImage.current.getViewer().getYaw() + ' Hfov: ' + this.panImage.current.getViewer().getHfov())
-    }else{
-      this.setState({editPhoto: true})
+    } else {
+      this.setState({ editPhoto: true })
     }
   }
   render() {
@@ -257,7 +255,16 @@ export default class Viewer extends React.Component {
             <div id="fullscreen" className="ab-controls pnlm-zoom-controls pnlm-controls" onClick={this.goFull}>&#x2922;</div>
           </div>
           <div className="thumbnail_div">
-            <Thumbnail photoInfo={this.props.photoInfo} floorID={this.props.floorID} floorplan={this.props.floorplan} changeViewerImage={this.changeImage} currentImg={this.state.img} rightClick={this.state.rightClick} addScenToNewHotspot={this.addScenToNewHotspot}/>
+            <Thumbnail
+              photoInfo={this.props.photoInfo}
+              floorID={this.props.floorID}
+              floorplan={this.props.floorplan}
+              changeViewerImage={this.changeImage}
+              currentImg={this.state.img}
+              rightClick={this.state.rightClick}
+              addScenToNewHotspot={this.addScenToNewHotspot} 
+              cbmode={this.props.cbmode}
+              />
           </div>
           <div className="photo-info">
             <div>
@@ -267,7 +274,7 @@ export default class Viewer extends React.Component {
               </p>
               <p> {this.state.info}</p>
               {/* delete false && */}
-              {false && this.props.source !== "uploader" && (this.state.editPhoto ? <div><button onClick={this.changePhotoInfo}>sumbit</button><button onClick={cancel=>{this.setState({editPhoto: false})}}>cancel</button></div> : <button onClick={this.changePhotoInfo}>change inital configuration</button>)}
+              {false && this.props.source !== "uploader" && (this.state.editPhoto ? <div><button onClick={this.changePhotoInfo}>sumbit</button><button onClick={cancel => { this.setState({ editPhoto: false }) }}>cancel</button></div> : <button onClick={this.changePhotoInfo}>change inital configuration</button>)}
             </div>
             {this.state.editHotSpot && this.state.rightClick && <div id='next-scene'>
               {this.state.nextScene === '' ? <span role="img" aria-label="pin">&#128306;</span> : <span role="img" aria-label="pin">&#128307;</span>}
@@ -280,7 +287,7 @@ export default class Viewer extends React.Component {
             </div>}
           </div>
         </Fullscreen>
-        </div>
+      </div>
     );
   }
 }

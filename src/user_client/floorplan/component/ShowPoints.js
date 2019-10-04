@@ -68,6 +68,7 @@ class ShowPoints extends React.Component {
             info: info,
           }}
           parent={this}
+          cbmode={this.props.cbmode}
           floorID={this.props.floorID}
           floorplan={this.props.floorplan}
           rate={this.props.rate}

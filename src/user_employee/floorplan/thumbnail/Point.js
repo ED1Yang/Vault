@@ -3,6 +3,11 @@ import { makeStyles } from '@material-ui/core/styles';
 import { red } from '@material-ui/core/colors';
 import Point from '@material-ui/icons/FiberManualRecord'
 
+import CameraAltRoundedIcon from '@material-ui/icons/CameraAltRounded';
+import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
+import PrintDisabledRoundedIcon from '@material-ui/icons/PrintDisabledRounded';
+
+
 const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
@@ -29,7 +34,12 @@ export default function Icons(props) {
   }
   return (
     <div className={classes.root} >
-      <Point className={classes.iconHover} style={style} />
+      {props.cbmode?
+        props.status === 'Uploaded' ? <CameraAltRoundedIcon className={classes.iconHover} style={style} />:
+          props.status === 'Done' ? <CheckCircleRoundedIcon className={classes.iconHover} style={style} />:
+            props.status === 'Denied' ? <PrintDisabledRoundedIcon className={classes.iconHover} style={style} />: <div/>
+      :
+      <Point className={classes.iconHover} style={style} />}
     </div>
   );
 }

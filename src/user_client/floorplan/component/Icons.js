@@ -8,6 +8,13 @@ import IconButton from "@material-ui/core/IconButton";
 import Close from "@material-ui/icons/Close";
 import Task from './Task';
 
+import BrightnessLowRoundedIcon from '@material-ui/icons/BrightnessLowRounded';
+import StarBorderRoundedIcon from '@material-ui/icons/StarBorderRounded';
+import StarRoundedIcon from '@material-ui/icons/StarRounded';
+import CameraAltRoundedIcon from '@material-ui/icons/CameraAltRounded';
+import CheckCircleRoundedIcon from '@material-ui/icons/CheckCircleRounded';
+import PrintDisabledRoundedIcon from '@material-ui/icons/PrintDisabledRounded';
+import LocationOffRoundedIcon from '@material-ui/icons/LocationOffRounded';
 
 
 const useStyles = makeStyles(theme => ({
@@ -101,7 +108,15 @@ export default function Icons(props) {
         onClose={handleClose}
       >
         <div style={modalStyle} className={classes.paper}>
-          <Viewer setRate={props.setRate} taskId={taskId} floorID={props.floorID} floorplan={props.floorplan} photoInfo={props.photoInfo} />
+        <Viewer taskId={taskId}
+            floorID={props.floorID}
+            floorplan={props.floorplan}
+            photoInfo={props.photoInfo}
+            getdata={props.getdata}
+            displaypoints={props.displaypoints}
+            setRate={props.setRate} 
+            cbmode={props.cbmode}
+            />
           {/* close button */}
           <IconButton
             style={closeButtonStyle}
@@ -114,10 +129,24 @@ export default function Icons(props) {
           </IconButton>
         </div>
       </Modal>
-      {props.value.newPoint === true ? <Point className={classes.iconHover} style={pointStyle} /> :
+      
+      {props.cbmode?
+      //colorblind mode
+      props.value.newPoint === true ? <div id={'p' + taskId}><StarBorderRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+        props.value.status === 'Uploaded' ? <div id={'p' + taskId} onClick={handleOpen}><CameraAltRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+          props.value.status === 'Done' ? <div id={'p' + taskId} onClick={handleOpen}><CheckCircleRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+            props.value.status === 'Denied' ? <div id={'p' + taskId} onClick={handleOpen}><PrintDisabledRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+              props.value.status === 'Requested' ? <div id={'p' + taskId} onClick={Task.RequestedTask.bind(this, x, y, info, taskId, props)}><BrightnessLowRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+                props.value.status === 'New' ? <div id={'p' + taskId} onClick={Task.NewTask.bind(this, x, y, info)} ><StarBorderRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+                  props.value.status === 'Assigned' ? <div id={'p' + taskId} onClick={Task.AssignedTask.bind(this, x, y, info)}><StarRoundedIcon className={classes.iconHover} style={pointStyle} /></div> :
+                  props.value.status === 'Reject' ? <div id={'p' + taskId} onClick={Task.RejectedTask.bind(this, x, y, info)}><LocationOffRoundedIcon className={classes.iconHover} style={pointStyle} /></div> : <div />
+      :
+      //normal mode
+      props.value.newPoint === true ? <Point className={classes.iconHover} style={pointStyle} /> :
         props.value.status === 'Requested' ? <div id={'p'+taskId} onClick={Task.RequestedTask.bind(this, x, y, info, taskId, props)} ><Point className={classes.iconHover} style={pointStyle} /> </div>:
           props.value.status === 'New' ? <div id={'p'+taskId} onClick={Task.NewTask.bind(this, x, y, info)} ><Point className={classes.iconHover} style={pointStyle} /></div> :
             props.value.status === 'Assigned' ? <div id={'p'+taskId} onClick={Task.AssignedTask.bind(this, x, y, info)} ><Point className={classes.iconHover} style={pointStyle} /></div> :
+            props.value.status === 'Reject' ? <div id={'p'+taskId} onClick={Task.RejectedTask.bind(this,x,y,info)}><Point className={classes.iconHover} style={pointStyle} /></div> :
             <div id={'p'+taskId} onClick={handleOpen} ><Point className={classes.iconHover} style={pointStyle} /></div>
       }
     </div>

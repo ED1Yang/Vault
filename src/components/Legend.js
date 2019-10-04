@@ -83,7 +83,6 @@ class Legend extends React.Component {
                                     <ListItemText primary={l.status} style={{ paddingLeft: 10, }} />
                                 </ListItem>
                             })
-
                             :
                             //normal mode
                             legend.map(function (l, index) {

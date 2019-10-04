@@ -22,8 +22,9 @@ These dependencies are used at the moment:
     npm install -s react-popup
     npm install -s pannellum-react
     npm i react-full-screen
+    npm install -s react-custom-scrollbars
 
-    -dashboard
+    -main
     npm install @material-ui/core -s
     npm install @material-ui/icons -s
     npm i recharts -s
@@ -31,7 +32,11 @@ These dependencies are used at the moment:
     -router
     npm install react-router-dom
 
+    -cookies
+    npm i universal-cookie
+
     -userlist
+    npm install material-table --save
     npm i react-perfect-scrollbar
     npm install --save moment react-moment
 

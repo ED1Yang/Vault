@@ -26,22 +26,23 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const SearchInput = props => {
-  const { className, onChange, style, ...rest } = props;
+  const { className, style } = props;
 
   const classes = useStyles();
 
+  const handleOnChange = e => props.getsearch(e.target.value);
+  
+
   return (
     <Paper
-      {...rest}
       className={clsx(classes.root, className)}
       style={style}
     >
       <SearchIcon className={classes.icon} />
       <Input
-        {...rest}
         className={classes.input}
         disableUnderline
-        onChange={onChange}
+        onChange={handleOnChange}
       />
     </Paper>
   );

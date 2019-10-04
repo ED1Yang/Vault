@@ -1,46 +1,103 @@
-import React from 'react';
-import { LineChart, Line, XAxis, YAxis, Label, ResponsiveContainer } from 'recharts';
+import React, { PureComponent } from 'react';
+import { PieChart, Pie, Sector,Cell } from 'recharts';
+import PointsColor from '../../../components/PointsColor';
 import Title from './Title';
+import Typography from '@material-ui/core/Typography';
 
-// Generate Sales Data
-function createData(time, amount) {
-  return { time, amount };
-}
+
 
 const data = [
-  createData('06:00', 100),
-  createData('08:00', 200),
-  createData('10:00', 300),
-  createData('12:00', 200),
-  createData('14:00', 400),
-  createData('16:00', 200),
-  createData('18:00', 100),
-  createData('20:00', 50),
+  { name: 'Assigned', value: 20 },
+  { name: 'Uploaded', value: 50 },
+  { name: 'Done', value: 100 },
+  { name: 'Denied', value: 10 },
 ];
 
-export default function Chart() {
+const renderActiveShape = (props) => {
+  const RADIAN = Math.PI / 180;
+  const {
+    cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
+    fill, payload, percent, value,
+  } = props;
+  const sin = Math.sin(-RADIAN * midAngle);
+  const cos = Math.cos(-RADIAN * midAngle);
+  const sx = cx + (outerRadius + 10) * cos;
+  const sy = cy + (outerRadius + 10) * sin;
+  const mx = cx + (outerRadius + 30) * cos;
+  const my = cy + (outerRadius + 30) * sin;
+  const ex = mx + (cos >= 0 ? 1 : -1) * 22;
+  const ey = my;
+  const textAnchor = cos >= 0 ? 'start' : 'end';
+
   return (
-    <React.Fragment>
-      <Title>Today</Title>
-      <ResponsiveContainer>
-        <LineChart
-          data={data}
-          margin={{
-            top: 16,
-            right: 16,
-            bottom: 0,
-            left: 24,
-          }}
-        >
-          <XAxis dataKey="time" />
-          <YAxis>
-            <Label angle={270} position="left" style={{ textAnchor: 'middle' }}>
-              Uploads (/pics)
-            </Label>
-          </YAxis>
-          <Line type="monotone" dataKey="amount" stroke="#556CD6" dot={false} />
-        </LineChart>
-      </ResponsiveContainer>
-    </React.Fragment>
+    <g>
+      <text x={cx} y={cy} dy={8} textAnchor="middle" fill={fill}>{payload.name}</text>
+      <Sector
+        cx={cx}
+        cy={cy}
+        innerRadius={innerRadius}
+        outerRadius={outerRadius}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        fill={fill}
+      />
+      <Sector
+        cx={cx}
+        cy={cy}
+        startAngle={startAngle}
+        endAngle={endAngle}
+        innerRadius={outerRadius + 6}
+        outerRadius={outerRadius + 10}
+        fill={fill}
+      />
+      <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
+      <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
+      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} textAnchor={textAnchor} fill="#333">{`amount: ${value}`}</text>
+      <text x={ex + (cos >= 0 ? 1 : -1) * 12} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
+        {`(${(percent * 100).toFixed(2)}%)`}
+      </text>
+    </g>
   );
+};
+
+
+export default class Example extends PureComponent {
+  state = {
+    activeIndex: 0,
+  };
+
+  onPieEnter = (data, index) => {
+    this.setState({
+      activeIndex: index,
+    });
+  };
+
+  render() {
+    return (
+      <div>
+      <Title>Project Status</Title>
+      <Typography color="textSecondary">
+      for asBUILT
+      </Typography>
+      <PieChart width={450} height={380}>
+        <Pie
+          activeIndex={this.state.activeIndex}
+          activeShape={renderActiveShape}
+          data={data}
+          cx="50%"
+          cy="50%"
+          innerRadius={60}
+          outerRadius={80}
+          fill="#8884d8"
+          dataKey="value"
+          onMouseEnter={this.onPieEnter}
+        >
+        {
+          data.map((entry, index) => <Cell key={`cell-${index}`} fill={PointsColor.setColor(entry.name)} />)
+        }
+          </Pie>
+      </PieChart>
+      </div>
+    );
+  }
 }
