@@ -3,8 +3,6 @@ const host="https://vault-intern-app-prod.azurewebsites.net";
 
 class Url{
     
-    static host = host;
-
     static addNewPoint = host + '/api/job/admin';
     static addNewPointEmp = host + '/api/job/emp';
 
